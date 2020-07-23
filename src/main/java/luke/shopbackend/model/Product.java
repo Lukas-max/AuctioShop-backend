@@ -1,5 +1,6 @@
 package luke.shopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,6 +25,7 @@ public class Product {
     @Column(name = "name")
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
@@ -41,17 +43,17 @@ public class Product {
     private int unitsInStock;
 
     @Column(name = "date_time_created")
-    @CreationTimestamp
+//    @CreationTimestamp
     private Timestamp dateTimeCreated;
 
     @Column(name = "date_time_updated")
-    @UpdateTimestamp
+//    @UpdateTimestamp
     private Timestamp dateTimeUpdated;
 
     @ManyToOne
     @JoinColumn(name = "product_category_id",
-            referencedColumnName = "product_category_id",
             nullable = false)
+    @JsonBackReference
     private ProductCategory productCategory;
 
     public Long getProductId() {
