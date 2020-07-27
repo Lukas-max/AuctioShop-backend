@@ -51,7 +51,7 @@ public class Product {
     private Timestamp dateTimeUpdated;
 
     @ManyToOne
-    @JoinColumn(name = "product_category_id",
+    @JoinColumn(name = "category_id",
             nullable = false)
     @JsonBackReference
     private ProductCategory productCategory;

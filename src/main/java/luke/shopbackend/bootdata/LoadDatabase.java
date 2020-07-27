@@ -33,6 +33,9 @@ public class LoadDatabase implements CommandLineRunner {
         ProductCategory categoryGames = new ProductCategory();
         categoryGames.setCategoryName("Gry");
 
+        ProductCategory categoryElectronics = new ProductCategory();
+        categoryElectronics.setCategoryName("Elektronika");
+
         Product product1 = new Product();
         product1.setSku("111");
         product1.setName("God of War 4");
@@ -68,20 +71,33 @@ public class LoadDatabase implements CommandLineRunner {
 
         Product product4 = new Product();
         product4.setSku("444");
-        product4.setName("The Last Of Us");
-        product4.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
-        product4.setUnitPrice(new BigDecimal("50"));
+        product4.setName("Sony Playstation 4");
+        product4.setDescription("Konsola do gier");
+        product4.setUnitPrice(new BigDecimal("1999"));
         product4.setActive(true);
-        product4.setUnitsInStock(9);
+        product4.setUnitsInStock(10);
         product4.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
-        product4.setProductCategory(categoryGames);
-        product4.setProductImage(getImage(path + "the-last-of-us.jpg"));
+        product4.setProductCategory(categoryElectronics);
+        product4.setProductImage(getImage(path + "ps4.jpg"));
+
+        Product product5 = new Product();
+        product5.setSku("555");
+        product5.setName("The Last Of Us");
+        product5.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
+        product5.setUnitPrice(new BigDecimal("50"));
+        product5.setActive(true);
+        product5.setUnitsInStock(9);
+        product5.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
+        product5.setProductCategory(categoryGames);
+        product5.setProductImage(getImage(path + "the-last-of-us.jpg"));
 
 
         categoryGames.getProducts().add(product1);
         categoryGames.getProducts().add(product2);
         categoryGames.getProducts().add(product3);
-        categoryGames.getProducts().add(product4);
+        categoryGames.getProducts().add(product5);
+        categoryElectronics.getProducts().add(product4);
+        productCategoryRepository.save(categoryElectronics);
         productCategoryRepository.save(categoryGames);
     }
 

@@ -36,4 +36,13 @@ public class ProductController {
                   .map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
                   .orElseThrow(() -> new NotFoundException("Did not found product with ID: " + id));
     }
+
+    @GetMapping(path = "/getByCategoryId/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategoryId(@PathVariable Long categoryId)
+        throws NotFoundException {
+        List<Product> products =
+                productRepository.findProductsByProductCategoryId(categoryId)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono produktów o Category ID: "+ categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(products);
+    }
 }
