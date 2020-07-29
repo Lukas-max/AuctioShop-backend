@@ -13,4 +13,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
     @Query("SELECT p FROM Product p WHERE p.productCategory.productCategoryId = ?1")
     Optional<List<Product>> findProductsByProductCategoryId(Long categoryId);
+
+//    @Query("SELECT p FROM Product p WHERE upper(p.name) LIKE upper(CONCAT('%',?1,'%'))")
+    Optional<List<Product>> findByNameContainsIgnoreCase(String name);
 }

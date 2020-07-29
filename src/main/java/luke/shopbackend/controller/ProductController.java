@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/product={id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws NotFoundException {
         return productRepository
                   .findById(id)
@@ -42,7 +43,16 @@ public class ProductController {
         throws NotFoundException {
         List<Product> products =
                 productRepository.findProductsByProductCategoryId(categoryId)
-                .orElseThrow(() -> new NotFoundException("Nie znaleziono produktów o Category ID: "+ categoryId));
+                .orElseThrow(() ->
+                        new NotFoundException("Did not found products of Category ID: "+ categoryId));
         return ResponseEntity.status(HttpStatus.OK).body(products);
+    }
+
+    @GetMapping(path = "/name={name}")
+    public ResponseEntity<List<Product>> getProductsByName(@PathVariable String name){
+        List<Product> products = productRepository.findByNameContainsIgnoreCase(name).orElse(
+                Collections.emptyList()
+        );
+        return ResponseEntity.ok(products);
     }
 }

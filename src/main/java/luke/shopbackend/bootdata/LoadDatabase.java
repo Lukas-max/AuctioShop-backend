@@ -50,7 +50,31 @@ public class LoadDatabase implements CommandLineRunner {
         Product product2 = new Product();
         product2.setSku("222");
         product2.setName("Final Fantasy VII Remake");
-        product2.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
+        product2.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry." +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry." +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry." +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry." +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. " +
+                "To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
         product2.setUnitPrice(new BigDecimal("199.99"));
         product2.setActive(true);
         product2.setUnitsInStock(30);
