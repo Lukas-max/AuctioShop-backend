@@ -1,19 +1,18 @@
 package luke.shopbackend.repository;
 
 import luke.shopbackend.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.productCategory.productCategoryId = ?1")
-    Optional<List<Product>> findProductsByProductCategoryId(Long categoryId);
+    Page<Product> findProductsByProductCategoryId(Long categoryId, Pageable pageable);
 
 //    @Query("SELECT p FROM Product p WHERE upper(p.name) LIKE upper(CONCAT('%',?1,'%'))")
-    Optional<List<Product>> findByNameContainsIgnoreCase(String name);
+    Page<Product> findByNameContainsIgnoreCase(String name, Pageable pageable);
 }

@@ -3,6 +3,7 @@ package luke.shopbackend.controller;
 import javassist.NotFoundException;
 import luke.shopbackend.model.Product;
 import luke.shopbackend.repository.ProductRepository;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -23,10 +21,13 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts(){
-        List<Product> products = new ArrayList<>();
-        productRepository.findAll().forEach(products::add);
+    @GetMapping(path = "/page={pageNo}&size={size}")
+    public ResponseEntity<Page<Product>> getAllProducts(
+            @PathVariable int pageNo,
+            @PathVariable int size){
+        Pageable page = PageRequest.of(pageNo, size);
+        Page<Product> products = productRepository.findAll(page);
+
         return ResponseEntity.ok().body(products);
     }
 
@@ -38,21 +39,26 @@ public class ProductController {
                   .orElseThrow(() -> new NotFoundException("Did not found product with ID: " + id));
     }
 
-    @GetMapping(path = "/getByCategoryId/{categoryId}")
-    public ResponseEntity<List<Product>> getProductsByCategoryId(@PathVariable Long categoryId)
-        throws NotFoundException {
-        List<Product> products =
-                productRepository.findProductsByProductCategoryId(categoryId)
-                .orElseThrow(() ->
-                        new NotFoundException("Did not found products of Category ID: "+ categoryId));
-        return ResponseEntity.status(HttpStatus.OK).body(products);
+    @GetMapping(path = "/getByCategoryId={categoryId}$page={pageNo}$size={size}")
+    public ResponseEntity<Page<Product>> getProductsByCategoryId(
+            @PathVariable Long categoryId,
+            @PathVariable int pageNo,
+            @PathVariable int size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        Page<Product> productsByCategoryId = productRepository
+                .findProductsByProductCategoryId(categoryId, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(productsByCategoryId);
     }
 
-    @GetMapping(path = "/name={name}")
-    public ResponseEntity<List<Product>> getProductsByName(@PathVariable String name){
-        List<Product> products = productRepository.findByNameContainsIgnoreCase(name).orElse(
-                Collections.emptyList()
-        );
+    @GetMapping(path = "/name={name}&page={pageNo}&size={size}")
+    public ResponseEntity<Page<Product>> getProductsByName
+            (@PathVariable String name,
+             @PathVariable("pageNo") int pageNo,
+             @PathVariable("size") int size){
+        Pageable page = PageRequest.of(pageNo, size);
+        Page<Product> products = productRepository.findByNameContainsIgnoreCase(name, page);
+
         return ResponseEntity.ok(products);
     }
 }
