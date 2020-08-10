@@ -1,18 +1,19 @@
 package luke.shopbackend.controller;
 
 import javassist.NotFoundException;
+import luke.shopbackend.exception.model.ProductNotFoundResponse;
 import luke.shopbackend.model.Product;
 import luke.shopbackend.repository.ProductRepository;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/products")
 public class ProductController {
     private final ProductRepository productRepository;
@@ -60,5 +61,15 @@ public class ProductController {
         Page<Product> products = productRepository.findByNameContainsIgnoreCase(name, page);
 
         return ResponseEntity.ok(products);
+    }
+
+    @DeleteMapping(path = "/product={id}")
+    public void deleteById(@PathVariable Long id) throws NotFoundException {
+        Optional<Product>optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()){
+            productRepository.deleteById(id);
+        }else {
+            throw  new NotFoundException("Product ID: " + id + " not found");
+        }
     }
 }
