@@ -15,4 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowedOrigins("http://localhost:4200");
     }
+
+
 }

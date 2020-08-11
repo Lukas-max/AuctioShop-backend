@@ -1,7 +1,5 @@
 package luke.shopbackend.controller;
-
 import javassist.NotFoundException;
-import luke.shopbackend.exception.model.ProductNotFoundResponse;
 import luke.shopbackend.model.Product;
 import luke.shopbackend.repository.ProductRepository;
 import org.springframework.data.domain.*;
