@@ -1,4 +1,4 @@
-package luke.shopbackend.security;
+package security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ public class BasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE).authenticated()
+                .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()

@@ -2,30 +2,33 @@ package luke.shopbackend.bootdata;
 
 import luke.shopbackend.model.Product;
 import luke.shopbackend.model.ProductCategory;
+import luke.shopbackend.model.Role;
+import luke.shopbackend.model.User;
+import luke.shopbackend.model.enums.ShopRole;
 import luke.shopbackend.repository.ProductCategoryRepository;
-import luke.shopbackend.repository.ProductRepository;
-import org.apache.commons.io.FileUtils;
+import luke.shopbackend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 @Component
 public class LoadDatabase implements CommandLineRunner {
-    private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private static final String path = "src/main/resources/static/";
 
-    public LoadDatabase(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
-        this.productRepository = productRepository;
+    public LoadDatabase(ProductCategoryRepository productCategoryRepository,
+                        UserRepository userRepository,
+                        PasswordEncoder passwordEncoder) {
         this.productCategoryRepository = productCategoryRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -123,6 +126,15 @@ public class LoadDatabase implements CommandLineRunner {
         categoryElectronics.getProducts().add(product4);
         productCategoryRepository.save(categoryElectronics);
         productCategoryRepository.save(categoryGames);
+
+        Role adminRole = new Role();
+        adminRole.setRole(ShopRole.ROLE_ADMIN);
+
+        User adminUser = new User();
+        adminUser.setUsername("admin");
+        adminUser.setPassword(passwordEncoder.encode("admin"));
+        adminUser.getRoles().add(adminRole);
+        userRepository.save(adminUser);
     }
 
     private byte[] getImage(String path) throws IOException {
