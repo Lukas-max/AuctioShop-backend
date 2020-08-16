@@ -17,7 +17,7 @@ public class GetUserDetails implements UserDetails {
     public GetUserDetails(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        user.getRoles().forEach(u -> authorities.add(new SimpleGrantedAuthority(u.getRole().toString())));
+        user.getRoles().forEach(usr -> authorities.add(new SimpleGrantedAuthority(usr.getRole().toString())));
     }
 
     @Override

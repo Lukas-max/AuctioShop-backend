@@ -6,6 +6,7 @@ import luke.shopbackend.model.Role;
 import luke.shopbackend.model.User;
 import luke.shopbackend.model.enums.ShopRole;
 import luke.shopbackend.repository.ProductCategoryRepository;
+import luke.shopbackend.repository.RoleRepository;
 import luke.shopbackend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,14 +21,16 @@ import java.sql.Timestamp;
 public class LoadDatabase implements CommandLineRunner {
     private final ProductCategoryRepository productCategoryRepository;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private static final String path = "src/main/resources/static/";
 
     public LoadDatabase(ProductCategoryRepository productCategoryRepository,
                         UserRepository userRepository,
-                        PasswordEncoder passwordEncoder) {
+                        RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.productCategoryRepository = productCategoryRepository;
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -111,13 +114,12 @@ public class LoadDatabase implements CommandLineRunner {
         product5.setSku("555");
         product5.setName("The Last Of Us");
         product5.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
-        product5.setUnitPrice(new BigDecimal("50"));
+        product5.setUnitPrice(new BigDecimal("49.99"));
         product5.setActive(true);
         product5.setUnitsInStock(9);
         product5.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product5.setProductCategory(categoryGames);
         product5.setProductImage(getImage(path + "the-last-of-us.jpg"));
-
 
         categoryGames.getProducts().add(product1);
         categoryGames.getProducts().add(product2);
@@ -129,12 +131,23 @@ public class LoadDatabase implements CommandLineRunner {
 
         Role adminRole = new Role();
         adminRole.setRole(ShopRole.ROLE_ADMIN);
+        roleRepository.save(adminRole);
+
+        Role userRole1 = new Role();
+        userRole1.setRole(ShopRole.ROLE_USER);
+        roleRepository.save(userRole1);
 
         User adminUser = new User();
         adminUser.setUsername("admin");
         adminUser.setPassword(passwordEncoder.encode("admin"));
         adminUser.getRoles().add(adminRole);
         userRepository.save(adminUser);
+
+        User user = new User();
+        user.setUsername("user1");
+        user.setPassword(passwordEncoder.encode("pass1"));
+        user.getRoles().add(userRole1);
+        userRepository.save(user);
     }
 
     private byte[] getImage(String path) throws IOException {
