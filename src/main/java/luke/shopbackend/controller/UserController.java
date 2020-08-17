@@ -44,12 +44,11 @@ public class UserController {
     public ResponseEntity<?> addUser(@RequestBody User user) throws NotFoundException {
         Optional<Role> optional = roleRepository.findById(2L);
         Role role = null;
-        if (optional.isPresent()){
-            role = optional.get();
-        }else {
+        if (optional.isEmpty()){
             throw new NotFoundException("Didn't found Role object in database");
         }
 
+        role = optional.get();
         user.getRoles().add(role);
         String encryptPass = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPass);
@@ -61,5 +60,12 @@ public class UserController {
                 .buildAndExpand(savedUser.getId())
                 .toUri();
         return ResponseEntity.created(locationUri).body(savedUser);
+    }
+
+    // check if username exists, if no, send empty user:
+    @GetMapping(path = "user={name}")
+    public ResponseEntity<?> getUserByName(@PathVariable("name") String username){
+        return userRepository.findByUsername(username).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.ok(new User()));
     }
 }
