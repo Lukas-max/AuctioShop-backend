@@ -1,4 +1,4 @@
-package luke.shopbackend.controller;
+package luke.shopbackend.controller.authentication;
 
 import luke.shopbackend.jwt_security.JwtUtil;
 import luke.shopbackend.model.AuthenticationRequest;

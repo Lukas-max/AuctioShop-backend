@@ -1,4 +1,4 @@
-package luke.shopbackend.controller;
+package luke.shopbackend.controller.product;
 
 import javassist.NotFoundException;
 import luke.shopbackend.model.ProductCategory;

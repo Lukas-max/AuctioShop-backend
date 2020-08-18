@@ -1,4 +1,4 @@
-package luke.shopbackend.controller;
+package luke.shopbackend.controller.authentication;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 //@RestController
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BasicAuthenticationController {
 
 

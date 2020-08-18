@@ -1,4 +1,4 @@
-package luke.shopbackend.controller;
+package luke.shopbackend.controller.user;
 
 import javassist.NotFoundException;
 import luke.shopbackend.model.Role;
