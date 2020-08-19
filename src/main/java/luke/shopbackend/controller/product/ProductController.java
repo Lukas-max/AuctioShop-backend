@@ -18,18 +18,15 @@ import java.util.Optional;
 
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/products")
 public class ProductController {
     private final ProductRepository productRepository;
-    private final ProductCategoryRepository productCategoryRepository;
     private final ProductService productService;
 
     public ProductController(ProductRepository productRepository,
                              ProductCategoryRepository productCategoryRepository,
                              ProductService productService) {
         this.productRepository = productRepository;
-        this.productCategoryRepository = productCategoryRepository;
         this.productService = productService;
     }
 
@@ -87,7 +84,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> saveProduct(@RequestBody ProductRequest productRequest)
             throws NotFoundException, IOException {
-        Product product = productService.getProduct(productRequest);
+        Product product = productService.getNewProduct(productRequest);
         productRepository.save(product);
 
         URI uri = ServletUriComponentsBuilder
@@ -97,5 +94,30 @@ public class ProductController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(product);
+    }
+
+    @PutMapping
+    public ResponseEntity<Product> updateProduct(@RequestBody ProductRequest productRequest)
+            throws NotFoundException, IOException {
+        boolean isImageChanged = productRequest.getProductImage() != null;
+        Product product = productService.getProductForUpdate(productRequest, isImageChanged);
+
+        if (isImageChanged){
+            productRepository.save(product);
+        }else{
+            productRepository.saveProductWithoutImage(
+                    product.getProductId(),
+                    product.getSku(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getUnitPrice(),
+                    product.isActive(),
+                    product.getUnitsInStock(),
+                    product.getDateTimeCreated(),
+                    product.getDateTimeUpdated(),
+                    product.getProductCategory());
+        }
+
+        return ResponseEntity.accepted().body(product);
     }
 }

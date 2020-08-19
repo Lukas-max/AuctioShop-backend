@@ -12,6 +12,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product")
+@NamedQueries({
+        @NamedQuery(name = "Product.saveProductWithoutImage",
+                query = "UPDATE Product p " +
+                        "SET p.sku = :sku, p.name = :name, p.description = :description, " +
+                        "p.unitPrice = :unitPrice, p.active = :active, p.unitsInStock = :unitsInStock, " +
+                        "p.dateTimeCreated = :dateTimeCreated, p.dateTimeUpdated = :dateTimeUpdated, " +
+                        "p.productCategory = :productCategory " +
+                        "WHERE p.productId = :productId")
+})
 public class Product {
 
     @Id
@@ -60,6 +69,7 @@ public class Product {
     }
 
     private Product(ProductBuilder builder) {
+        this.productId = builder.productId;
         this.sku = builder.sku;
         this.name = builder.name;
         this.description = builder.description;
@@ -204,6 +214,7 @@ public class Product {
     }
 
     public static class ProductBuilder {
+        private Long productId;
         private String sku;
         private String name;
         private String description;
@@ -217,6 +228,11 @@ public class Product {
 
         public Product build() {
             return new Product(this);
+        }
+
+        public ProductBuilder buildId(Long productId) {
+            this.productId = productId;
+            return this;
         }
 
         public ProductBuilder buildSku(String sku) {

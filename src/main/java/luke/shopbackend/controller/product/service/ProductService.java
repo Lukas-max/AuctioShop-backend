@@ -21,17 +21,34 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Product getProduct(ProductRequest request) throws NotFoundException, IOException {
+    public Product getNewProduct(ProductRequest request) throws NotFoundException, IOException {
         return new Product.ProductBuilder()
                 .buildSku(request.getSku())
                 .buildName(request.getName())
                 .buildDescription(request.getDescription())
                 .buildUnitPrice(request.getUnitPrice())
-                .buildProductImage(getByteArray(request.getProductImage()))
+                .buildProductImage(getByteArray(request.getProductImage(), true))
                 .buildActive(true)
                 .buildUnitsInStock(request.getUnitsInStock())
                 .buildDateTimeCreated(request.getDateTimeCreated())
                 .buildDateTimeUpdated(null)
+                .buildProductCategory(getProductCategory(request.getProductCategoryId()))
+                .build();
+    }
+
+    public Product getProductForUpdate(ProductRequest request, boolean newImage)
+            throws NotFoundException, IOException{
+        return new Product.ProductBuilder()
+                .buildId(request.getProductId())
+                .buildSku(request.getSku())
+                .buildName(request.getName())
+                .buildDescription(request.getDescription())
+                .buildUnitPrice(request.getUnitPrice())
+                .buildProductImage(getByteArray(request.getProductImage(), newImage))
+                .buildActive(request.isActive())
+                .buildUnitsInStock(request.getUnitsInStock())
+                .buildDateTimeCreated(request.getDateTimeCreated())
+                .buildDateTimeUpdated(request.getDateTimeUpdated())
                 .buildProductCategory(getProductCategory(request.getProductCategoryId()))
                 .build();
     }
@@ -41,11 +58,14 @@ public class ProductService {
                 .orElseThrow(() -> new NotFoundException("Didn't fount product category id: " + id));
     }
 
-    private byte[] getByteArray(String base64data) throws IOException {
-        if (base64data != null)
-        return Base64.getDecoder().decode(base64data.split(",")[1]);
-        else
-            return getStandardImage();
+    private byte[] getByteArray(String base64data, boolean newImage) throws IOException {
+        if (newImage) {
+            if (base64data != null)
+                return Base64.getDecoder().decode(base64data.split(",")[1]);
+            else
+                return getStandardImage();
+        }
+        return null;
     }
 
     private byte[] getStandardImage() throws IOException {

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 public class ProductRequest {
 
+    private Long productId;
     private String sku;
     private String name;
     private String description;
@@ -16,6 +17,14 @@ public class ProductRequest {
     private Timestamp dateTimeCreated;
     private Timestamp dateTimeUpdated;
     private Long productCategoryId;
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
     public String getSku() {
         return sku;
@@ -97,11 +106,11 @@ public class ProductRequest {
         this.productCategoryId = productCategoryId;
     }
 
-
     @Override
     public String toString() {
         return "ProductRequest{" +
-                "sku='" + sku + '\'' +
+                "productId=" + productId +
+                ", sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", unitPrice=" + unitPrice +
