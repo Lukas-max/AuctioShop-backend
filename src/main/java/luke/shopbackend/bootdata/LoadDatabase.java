@@ -133,17 +133,6 @@ public class LoadDatabase implements CommandLineRunner {
         product6.setProductCategory(categoryElectronics);
         product6.setProductImage(getImage( "xbox.jpg"));
 
-        Product product7 = new Product();
-        product7.setSku("777");
-        product7.setName("Goblins 3");
-        product7.setDescription("To jest test opisu gry Goblins 3.");
-        product7.setUnitPrice(new BigDecimal("29.99"));
-        product7.setActive(true);
-        product7.setUnitsInStock(1000);
-        product7.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
-        product7.setProductCategory(categoryGames);
-        product7.setProductImage(getImage( "goblins3.jpg"));
-
         Product product8 = new Product();
         product8.setSku("888");
         product8.setName("Horizon Zero Dawn");
@@ -176,17 +165,6 @@ public class LoadDatabase implements CommandLineRunner {
         product10.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product10.setProductCategory(categoryGames);
         product10.setProductImage(getImage( "mk11.jpg"));
-
-        Product product11 = new Product();
-        product11.setSku("11111111");
-        product11.setName("Mortal Kombat 3");
-        product11.setDescription("To jest test opisu gry Mortal Kombat 3.");
-        product11.setUnitPrice(new BigDecimal("59.99"));
-        product11.setActive(true);
-        product11.setUnitsInStock(233);
-        product11.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
-        product11.setProductCategory(categoryGames);
-        product11.setProductImage(getImage( "mk3.jpg"));
 
         Product product12 = new Product();
         product12.setSku("12121212");
@@ -292,11 +270,9 @@ public class LoadDatabase implements CommandLineRunner {
         categoryGames.getProducts().add(product2);
         categoryGames.getProducts().add(product3);
         categoryGames.getProducts().add(product5);
-        categoryGames.getProducts().add(product7);
         categoryGames.getProducts().add(product8);
         categoryGames.getProducts().add(product9);
         categoryGames.getProducts().add(product10);
-        categoryGames.getProducts().add(product11);
         categoryGames.getProducts().add(product12);
         categoryGames.getProducts().add(product13);
         categoryGames.getProducts().add(product14);
@@ -321,13 +297,13 @@ public class LoadDatabase implements CommandLineRunner {
 
         User adminUser = new User();
         adminUser.setUsername("admin");
-        adminUser.setPassword(passwordEncoder.encode("admin"));
+        adminUser.setPassword(passwordEncoder.encode("MyAdmin"));
         adminUser.getRoles().add(adminRole);
         userRepository.save(adminUser);
 
         User user = new User();
         user.setUsername("jurek");
-        user.setPassword(passwordEncoder.encode("jurek"));
+        user.setPassword(passwordEncoder.encode("MyJurek"));
         user.getRoles().add(userRole1);
         userRepository.save(user);
     }
