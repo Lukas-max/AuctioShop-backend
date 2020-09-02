@@ -36,7 +36,7 @@ public class ProductService {
                 .build();
     }
 
-    public Product getProductForUpdate(ProductRequest request, boolean newImage)
+    public Product getProductForUpdate(ProductRequest request, boolean isImageChanged)
             throws NotFoundException, IOException{
         return new Product.ProductBuilder()
                 .buildId(request.getProductId())
@@ -44,7 +44,7 @@ public class ProductService {
                 .buildName(request.getName())
                 .buildDescription(request.getDescription())
                 .buildUnitPrice(request.getUnitPrice())
-                .buildProductImage(getByteArray(request.getProductImage(), newImage))
+                .buildProductImage(getByteArray(request.getProductImage(), isImageChanged))
                 .buildActive(request.isActive())
                 .buildUnitsInStock(request.getUnitsInStock())
                 .buildDateTimeCreated(request.getDateTimeCreated())

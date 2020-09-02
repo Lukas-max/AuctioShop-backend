@@ -127,7 +127,7 @@ public class LoadDatabase implements CommandLineRunner {
         product6.setName("X-box");
         product6.setDescription("To jest test opisu gry. To jest est opisu gry. X-box");
         product6.setUnitPrice(new BigDecimal("1349.99"));
-        product6.setActive(true);
+        product6.setActive(false);
         product6.setUnitsInStock(0);
         product6.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product6.setProductCategory(categoryElectronics);
