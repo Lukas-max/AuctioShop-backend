@@ -63,8 +63,8 @@ public class UserController {
     }
 
     // check if username exists, if no, send empty user:
-    @GetMapping(path = "user={name}")
-    public ResponseEntity<?> getUserByName(@PathVariable("name") String username){
+    @GetMapping(path = "user")
+    public ResponseEntity<?> getUserByName(@RequestParam(name = "username") String username){
         return userRepository.findByUsername(username).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.ok(new User()));
     }

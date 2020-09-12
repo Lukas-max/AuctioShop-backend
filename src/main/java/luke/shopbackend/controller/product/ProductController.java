@@ -30,10 +30,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path = "/page={pageNo}&size={size}")
+    @GetMapping
     public ResponseEntity<Page<Product>> getAllProducts(
-            @PathVariable int pageNo,
-            @PathVariable int size) {
+            @RequestParam(name = "page", defaultValue = "1") int pageNo,
+            @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
         Page<Product> products = productRepository.findAll(page);
 
@@ -48,11 +48,11 @@ public class ProductController {
                 .orElseThrow(() -> new NotFoundException("Did not found product with ID: " + id));
     }
 
-    @GetMapping(path = "/getByCategoryId={categoryId}$page={pageNo}$size={size}")
+    @GetMapping(path = "/getByCategoryId")
     public ResponseEntity<Page<Product>> getProductsByCategoryId(
-            @PathVariable Long categoryId,
-            @PathVariable int pageNo,
-            @PathVariable int size) {
+            @RequestParam(name = "categoryId") Long categoryId,
+            @RequestParam(name = "page", defaultValue = "1") int pageNo,
+            @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
         Page<Product> productsByCategoryId = productRepository
                 .findProductsByProductCategoryId(categoryId, pageable);
@@ -60,11 +60,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productsByCategoryId);
     }
 
-    @GetMapping(path = "/name={name}&page={pageNo}&size={size}")
+    @GetMapping(path = "/name")
     public ResponseEntity<Page<Product>> getProductsByName
-            (@PathVariable String name,
-             @PathVariable("pageNo") int pageNo,
-             @PathVariable("size") int size) {
+            (@RequestParam(name = "keyWord") String name,
+             @RequestParam(name = "page", defaultValue = "1") int pageNo,
+             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
         Page<Product> products = productRepository.findByNameContainsIgnoreCase(name, page);
 
