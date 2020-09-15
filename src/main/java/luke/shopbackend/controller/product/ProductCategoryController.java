@@ -3,7 +3,6 @@ package luke.shopbackend.controller.product;
 import javassist.NotFoundException;
 import luke.shopbackend.model.ProductCategory;
 import luke.shopbackend.repository.ProductCategoryRepository;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,7 @@ public class ProductCategoryController {
         this.productCategoryRepository = productCategoryRepository;
     }
 
-    @GetMapping(path = "/categories")
+    @GetMapping
     public ResponseEntity<List<ProductCategory>> getCategories() throws NotFoundException {
         List<ProductCategory> categories =
                 productCategoryRepository.getCategories()
