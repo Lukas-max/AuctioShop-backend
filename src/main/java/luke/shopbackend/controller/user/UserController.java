@@ -54,19 +54,11 @@ public class UserController {
         }
 
         User savedUser = userService.addUser(userRequest);
-
         URI locationUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
                 .toUri();
         return ResponseEntity.created(locationUri).body(savedUser);
-    }
-
-    // check if username exists, if no, send empty user:
-    @GetMapping(path = "/user")
-    public ResponseEntity<?> getUserByName(@RequestParam(name = "username") String username) {
-        return userRepository.findByUsername(username).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.ok(new User()));
     }
 }

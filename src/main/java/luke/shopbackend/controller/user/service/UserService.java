@@ -36,6 +36,15 @@ public class UserService {
         return allUsers;
     }
 
+    /**
+     *
+     * Will:
+     *   - validate data from user, using helper methods
+     *   - add ROLE_USER to new user
+     *   - encrypt the user sent password
+     *   - persist user in database
+     * @return
+     */
     public User addUser(UserRequest userRequest) {
         validateRegisterData(userRequest);
 
@@ -47,6 +56,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     *
+     * Will throw exception if:
+     * a) user has set ID
+     * b) username already exists in database
+     * c) email already exists in database
+     */
     private void validateRegisterData(UserRequest request) {
         if (request.getId() != null)
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
@@ -63,6 +79,10 @@ public class UserService {
                     "Taki email już istnieje w bazie");
     }
 
+    /**
+     *
+     * @return  ROLE_USER for every new created User.
+     */
     private Role getUserRole(){
         Optional<Role> optional = roleRepository.findById(2L);
         if (optional.isEmpty()) {
