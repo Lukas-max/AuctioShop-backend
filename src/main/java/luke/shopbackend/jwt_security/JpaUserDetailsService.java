@@ -1,6 +1,6 @@
 package luke.shopbackend.jwt_security;
 
-import luke.shopbackend.model.User;
+import luke.shopbackend.model.entity.User;
 import luke.shopbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

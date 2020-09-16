@@ -1,8 +1,11 @@
-package luke.shopbackend.model;
+package luke.shopbackend.model.entity;
 
 import luke.shopbackend.model.enums.ShopRole;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "roles")
@@ -15,6 +18,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column
+    @NotNull
     private ShopRole role;
 
     public Role() {

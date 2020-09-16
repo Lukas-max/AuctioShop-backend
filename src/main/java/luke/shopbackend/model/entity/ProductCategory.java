@@ -1,4 +1,4 @@
-package luke.shopbackend.model;
+package luke.shopbackend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

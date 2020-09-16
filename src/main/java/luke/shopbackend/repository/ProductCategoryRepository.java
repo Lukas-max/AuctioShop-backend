@@ -1,6 +1,6 @@
 package luke.shopbackend.repository;
 
-import luke.shopbackend.model.ProductCategory;
+import luke.shopbackend.model.entity.ProductCategory;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

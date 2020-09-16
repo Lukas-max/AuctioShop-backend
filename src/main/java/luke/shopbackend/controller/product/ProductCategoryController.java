@@ -1,7 +1,7 @@
 package luke.shopbackend.controller.product;
 
 import javassist.NotFoundException;
-import luke.shopbackend.model.ProductCategory;
+import luke.shopbackend.model.entity.ProductCategory;
 import luke.shopbackend.repository.ProductCategoryRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

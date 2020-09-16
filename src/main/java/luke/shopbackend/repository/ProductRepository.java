@@ -1,7 +1,7 @@
 package luke.shopbackend.repository;
 
-import luke.shopbackend.model.Product;
-import luke.shopbackend.model.ProductCategory;
+import luke.shopbackend.model.entity.Product;
+import luke.shopbackend.model.entity.ProductCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

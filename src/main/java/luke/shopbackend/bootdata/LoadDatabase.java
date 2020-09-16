@@ -1,9 +1,9 @@
 package luke.shopbackend.bootdata;
 
-import luke.shopbackend.model.Product;
-import luke.shopbackend.model.ProductCategory;
-import luke.shopbackend.model.Role;
-import luke.shopbackend.model.User;
+import luke.shopbackend.model.entity.Product;
+import luke.shopbackend.model.entity.ProductCategory;
+import luke.shopbackend.model.entity.Role;
+import luke.shopbackend.model.entity.User;
 import luke.shopbackend.model.enums.ShopRole;
 import luke.shopbackend.repository.ProductCategoryRepository;
 import luke.shopbackend.repository.RoleRepository;
@@ -298,12 +298,14 @@ public class LoadDatabase implements CommandLineRunner {
         User adminUser = new User();
         adminUser.setUsername("admin");
         adminUser.setPassword(passwordEncoder.encode("MyAdmin"));
+        adminUser.setEmail("abc@o2.pl");
         adminUser.getRoles().add(adminRole);
         userRepository.save(adminUser);
 
         User user = new User();
         user.setUsername("jurek");
-        user.setPassword(passwordEncoder.encode("MyJurek"));
+        user.setPassword(passwordEncoder.encode("user"));
+        user.setEmail("jurek@interia.pl");
         user.getRoles().add(userRole1);
         userRepository.save(user);
     }

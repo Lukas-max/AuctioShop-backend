@@ -1,14 +1,13 @@
-package luke.shopbackend.model;
+package luke.shopbackend.model.entity;
+
+import luke.shopbackend.model.data_transfer.UserRequest;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username")
-        })
+@Table(name = "users")
 public class User {
 
     @Id
@@ -22,6 +21,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,6 +36,14 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(UserRequest request){
+        this.id = request.getId();
+        this.username = request.getUsername();
+        this.password = request.getPassword();
+        this.email = request.getEmail();
+        this.roles = new HashSet<>(request.getRoles());
     }
 
     public Long getId() {
@@ -60,6 +70,14 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -74,6 +92,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 ", roles=" + roles +
                 '}';
     }

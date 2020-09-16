@@ -1,4 +1,4 @@
-package luke.shopbackend.model;
+package luke.shopbackend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -13,9 +13,13 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "Product.saveProductWithoutImage",
                 query = "UPDATE Product p " +
-                        "SET p.sku = :sku, p.name = :name, p.description = :description, " +
-                        "p.unitPrice = :unitPrice, p.active = :active, p.unitsInStock = :unitsInStock, " +
-                        "p.dateTimeCreated = :dateTimeCreated, p.dateTimeUpdated = :dateTimeUpdated, " +
+                        "SET p.sku = :sku, p.name = :name, " +
+                        "p.description = :description, " +
+                        "p.unitPrice = :unitPrice, " +
+                        "p.active = :active, " +
+                        "p.unitsInStock = :unitsInStock, " +
+                        "p.dateTimeCreated = :dateTimeCreated, " +
+                        "p.dateTimeUpdated = :dateTimeUpdated, " +
                         "p.productCategory = :productCategory " +
                         "WHERE p.productId = :productId")
 })

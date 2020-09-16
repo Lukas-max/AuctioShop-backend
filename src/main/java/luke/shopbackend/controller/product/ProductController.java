@@ -1,15 +1,14 @@
 package luke.shopbackend.controller.product;
 
-import javassist.NotFoundException;
 import luke.shopbackend.controller.product.service.ProductService;
-import luke.shopbackend.model.Product;
-import luke.shopbackend.model.ProductRequest;
-import luke.shopbackend.repository.ProductCategoryRepository;
+import luke.shopbackend.model.entity.Product;
+import luke.shopbackend.model.data_transfer.ProductRequest;
 import luke.shopbackend.repository.ProductRepository;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
@@ -24,7 +23,6 @@ public class ProductController {
     private final ProductService productService;
 
     public ProductController(ProductRepository productRepository,
-                             ProductCategoryRepository productCategoryRepository,
                              ProductService productService) {
         this.productRepository = productRepository;
         this.productService = productService;
@@ -40,12 +38,12 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
-    @GetMapping(path = "/product={id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws NotFoundException {
+    @GetMapping(path = "/product/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         return productRepository
                 .findById(id)
                 .map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
-                .orElseThrow(() -> new NotFoundException("Did not found product with ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find product"));
     }
 
     @GetMapping(path = "/getByCategoryId")
@@ -71,20 +69,10 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @DeleteMapping(path = "/product={id}")
-    public void deleteById(@PathVariable Long id) throws NotFoundException {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isPresent()) {
-            productRepository.deleteById(id);
-        } else {
-            throw new NotFoundException("Product ID: " + id + " not found");
-        }
-    }
-
     @PostMapping
     public ResponseEntity<Product> saveProduct(@RequestBody ProductRequest productRequest)
-            throws NotFoundException, IOException {
-        Product product = productService.getNewProduct(productRequest);
+            throws IOException {
+        Product product = productService.formatProduct(productRequest);
         productRepository.save(product);
 
         URI uri = ServletUriComponentsBuilder
@@ -98,9 +86,9 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<Product> updateProduct(@RequestBody ProductRequest productRequest)
-            throws NotFoundException, IOException {
+            throws IOException {
         boolean isImageChanged = productRequest.getProductImage() != null;
-        Product product = productService.getProductForUpdate(productRequest, isImageChanged);
+        Product product = productService.formatProductForUpdate(productRequest, isImageChanged);
 
         if (isImageChanged){
             productRepository.save(product);
@@ -120,4 +108,16 @@ public class ProductController {
 
         return ResponseEntity.accepted().body(product);
     }
+
+    @DeleteMapping(path = "/product/{id}")
+    public void deleteById(@PathVariable Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            productRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product with id: " + id);
+        }
+    }
+
+
 }

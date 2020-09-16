@@ -1,4 +1,4 @@
-package luke.shopbackend.model;
+package luke.shopbackend.model.data_transfer;
 
 public class AuthenticationRequest {
     private String username;
