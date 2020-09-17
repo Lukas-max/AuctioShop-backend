@@ -1,6 +1,5 @@
 package luke.shopbackend.controller.user.service;
 
-import javassist.NotFoundException;
 import luke.shopbackend.model.entity.Role;
 import luke.shopbackend.model.entity.User;
 import luke.shopbackend.model.data_transfer.UserRequest;
@@ -41,9 +40,8 @@ public class UserService {
      * Will:
      *   - validate data from user, using helper methods
      *   - add ROLE_USER to new user
-     *   - encrypt the user sent password
+     *   - encrypt the user send password
      *   - persist user in database
-     * @return
      */
     public User addUser(UserRequest userRequest) {
         validateRegisterData(userRequest);
@@ -66,7 +64,7 @@ public class UserService {
     private void validateRegisterData(UserRequest request) {
         if (request.getId() != null)
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-                    "User with id not allowed when adding new user.");
+                    "Użytkownik z ustawionym ID nie może być zapisany w bazie.");
 
         Optional<User> optionalUser1 = userRepository.findByUsername(request.getUsername());
         if (optionalUser1.isPresent())
