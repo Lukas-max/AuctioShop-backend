@@ -43,17 +43,9 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserRequest userRequest, BindingResult result) throws NotFoundException {
-        if (result.hasErrors()){
-            List<String> errors = result.getAllErrors()
-                    .stream()
-                    .map(e -> e.getDefaultMessage())
-                    .collect(Collectors.toList());
-
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserRequest userRequest) {
         User savedUser = userService.addUser(userRequest);
+
         URI locationUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
