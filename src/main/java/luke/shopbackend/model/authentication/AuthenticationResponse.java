@@ -1,4 +1,4 @@
-package luke.shopbackend.model.data_transfer;
+package luke.shopbackend.model.authentication;
 
 import java.util.HashSet;
 import java.util.Set;

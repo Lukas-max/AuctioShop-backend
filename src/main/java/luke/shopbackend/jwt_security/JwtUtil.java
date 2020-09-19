@@ -6,6 +6,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
@@ -25,7 +28,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }

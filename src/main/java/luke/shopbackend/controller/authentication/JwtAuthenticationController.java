@@ -1,8 +1,8 @@
 package luke.shopbackend.controller.authentication;
 
 import luke.shopbackend.jwt_security.JwtUtil;
-import luke.shopbackend.model.data_transfer.AuthenticationRequest;
-import luke.shopbackend.model.data_transfer.AuthenticationResponse;
+import luke.shopbackend.model.authentication.AuthenticationRequest;
+import luke.shopbackend.model.authentication.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;

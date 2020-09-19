@@ -70,12 +70,11 @@ public class ProductService {
     }
 
     /**
-     * If boolean newImage true - that means one of those:
-     *  a) It is a new Product so we need to add the image. Image from admin, or standard image from
-     *  category.
-     *  b) We are updating an old product and we are updating it with new image.
+     * If boolean newImage true - that means one of these:
+     *  a) It is a new Product so we need to add the image. Image from user, or standard image.
+     *  b) We are updating an old product with a new image.
      *
-     *  In other way we are updating the product without changing the image and newImage will equal false.
+     *  And if we are updating the product without changing the image then newImage equals false.
      */
     private byte[] getByteArray(String base64data, boolean newImage) throws IOException {
         if (newImage) {
@@ -90,7 +89,7 @@ public class ProductService {
     /**
      *
      * @return standard image from folder.
-     * It's on when admin didnt send and an image when adding a product.
+     * It's works when user didn't send and an image when adding a product.
      */
     private byte[] getStandardImage() throws IOException {
         String PATH = "src/main/resources/static/empty.jpg";

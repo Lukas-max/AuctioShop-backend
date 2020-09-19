@@ -4,7 +4,6 @@ package luke.shopbackend.controller.user;
 import luke.shopbackend.controller.user.service.UserService;
 import luke.shopbackend.model.entity.User;
 import luke.shopbackend.model.data_transfer.UserRequest;
-import luke.shopbackend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

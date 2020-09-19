@@ -29,6 +29,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * @return All users in database. Data without password.
+     */
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         userRepository.findAll().forEach(allUsers::add);
