@@ -1,8 +1,11 @@
 package luke.shopbackend.model.data_transfer;
 
+import java.math.BigDecimal;
+
 public class CartItemValidateDto {
     private Long productId;
     private String name;
+    private BigDecimal unitPrice;
     private int quantity;
 
     public Long getProductId() {
@@ -21,6 +24,14 @@ public class CartItemValidateDto {
         this.name = name;
     }
 
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -31,9 +42,10 @@ public class CartItemValidateDto {
 
     @Override
     public String toString() {
-        return "CartItem{" +
-                "id=" + productId +
+        return "CartItemValidateDto{" +
+                "productId=" + productId +
                 ", name='" + name + '\'' +
+                ", unitPrice=" + unitPrice +
                 ", quantity=" + quantity +
                 '}';
     }

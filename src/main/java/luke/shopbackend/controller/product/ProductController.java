@@ -40,11 +40,8 @@ public class ProductController {
 
     @GetMapping(path = "/product/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-        return productRepository
-                .findById(id)
-                .map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Nie znaleziono produktu o Id: " + id));
+        Product product = productService.getProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @GetMapping(path = "/getByCategoryId")

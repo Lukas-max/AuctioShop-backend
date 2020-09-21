@@ -4,6 +4,7 @@ import luke.shopbackend.model.data_transfer.CartItemValidateDto;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.math.BigDecimal;
 
 @Embeddable
 public class CartItem {
@@ -14,6 +15,9 @@ public class CartItem {
     @Column(name = "product_name")
     private String name;
 
+    @Column(name = "unit_price_at_bought")
+    private BigDecimal unitPriceAtBought;
+
     @Column(name = "quantity")
     private int quantity;
 
@@ -23,6 +27,7 @@ public class CartItem {
     public CartItem(CartItemValidateDto dto) {
         this.productId = dto.getProductId();
         this.name = dto.getName();
+        this.unitPriceAtBought = dto.getUnitPrice();
         this.quantity = dto.getQuantity();
     }
 
@@ -42,6 +47,14 @@ public class CartItem {
         this.name = name;
     }
 
+    public BigDecimal getUnitPriceAtBought() {
+        return unitPriceAtBought;
+    }
+
+    public void setUnitPriceAtBought(BigDecimal unitPriceAtBought) {
+        this.unitPriceAtBought = unitPriceAtBought;
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -52,9 +65,10 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "CartItemDto{" +
+        return "CartItem{" +
                 "productId=" + productId +
                 ", name='" + name + '\'' +
+                ", unitPriceAtBought=" + unitPriceAtBought +
                 ", quantity=" + quantity +
                 '}';
     }

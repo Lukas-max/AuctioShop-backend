@@ -32,7 +32,7 @@ public class Customer implements Serializable {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     @JsonManagedReference
     private List<CustomerOrder> orderList = new ArrayList<>();
 

@@ -5,6 +5,9 @@ import luke.shopbackend.model.data_transfer.CustomerOrderRequest;
 import luke.shopbackend.model.entity.CustomerOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/order")
@@ -16,9 +19,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveOrder(@RequestBody CustomerOrderRequest orderRequest){
-        orderService.addOrder(orderRequest);
-        return ResponseEntity.ok(orderRequest);
+    public ResponseEntity<CustomerOrder> saveOrder(@RequestBody CustomerOrderRequest orderRequest){
+        CustomerOrder order = orderService.addOrder(orderRequest);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(order.getOrderId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(order);
     }
 
     @GetMapping("/{id}")

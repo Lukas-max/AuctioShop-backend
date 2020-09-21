@@ -4,7 +4,9 @@ import luke.shopbackend.model.entity.Product;
 import luke.shopbackend.model.entity.ProductCategory;
 import luke.shopbackend.model.data_transfer.ProductRequest;
 import luke.shopbackend.repository.ProductCategoryRepository;
+import luke.shopbackend.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,10 +19,17 @@ import java.util.Base64;
 public class ProductService {
 
     private final ProductCategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
 
-    public ProductService(ProductCategoryRepository categoryRepository) {
+    public ProductService(ProductCategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
+    }
+
+    public Product getProductById(Long id){
+        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Nie znaleziono produktu o Id: " + id));
     }
 
     /**
