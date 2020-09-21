@@ -1,14 +1,17 @@
 package luke.shopbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import luke.shopbackend.model.embeddable.Address;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "customer")
-public class Customer {
+public class Customer implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
@@ -29,7 +32,8 @@ public class Customer {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CustomerOrder> orderList = new ArrayList<>();
 
     public Customer() {

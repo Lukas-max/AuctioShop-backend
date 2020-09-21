@@ -43,7 +43,8 @@ public class ProductController {
         return productRepository
                 .findById(id)
                 .map(p -> ResponseEntity.status(HttpStatus.OK).body(p))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find product"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Nie znaleziono produktu o Id: " + id));
     }
 
     @GetMapping(path = "/getByCategoryId")

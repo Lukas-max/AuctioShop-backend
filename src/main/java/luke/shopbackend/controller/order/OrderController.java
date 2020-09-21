@@ -4,10 +4,7 @@ import luke.shopbackend.controller.order.service.OrderService;
 import luke.shopbackend.model.data_transfer.CustomerOrderRequest;
 import luke.shopbackend.model.entity.CustomerOrder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/order")
@@ -22,5 +19,11 @@ public class OrderController {
     public ResponseEntity<?> saveOrder(@RequestBody CustomerOrderRequest orderRequest){
         orderService.addOrder(orderRequest);
         return ResponseEntity.ok(orderRequest);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerOrder> getOrderById(@PathVariable Long id){
+        CustomerOrder order = orderService.getOrder(id);
+        return ResponseEntity.ok().body(order);
     }
 }

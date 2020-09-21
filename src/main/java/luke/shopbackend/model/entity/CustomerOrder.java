@@ -1,16 +1,18 @@
 package luke.shopbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import luke.shopbackend.model.data_transfer.CustomerOrderRequest;
 import luke.shopbackend.model.embeddable.CartItem;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 @Table(name = "customer_order")
-public class CustomerOrder {
+public class CustomerOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +30,7 @@ public class CustomerOrder {
     private Integer totalQuantity;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "customer_id")
     private Customer customer;
 

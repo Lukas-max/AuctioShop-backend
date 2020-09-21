@@ -1,6 +1,8 @@
 package luke.shopbackend.exception;
 
 import luke.shopbackend.exception.model.ErrorValidationResponse;
+import luke.shopbackend.exception.model.ExceptionMessage;
+import luke.shopbackend.exception.model.OrderNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -50,6 +53,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     /**
+     *
      * Second implementation of handleMethodArgumentNotValid. Done and left here for training
      * purpose.
      */
@@ -73,4 +77,20 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 //
 //        return new ResponseEntity<>(body, headers, status);
 //    }
+
+    /**
+     *
+     * Handles OrderNotFoundException from OrderController.getOrderById(Long id);
+     * Now, a user wont see a full stack trace when typing wrong order id on /api/order/{id} ,
+     * but an info he will clearly understand.
+     */
+    @ExceptionHandler
+    public ResponseEntity<ExceptionMessage> handleOrderNotFoundException(OrderNotFoundException ex){
+        ExceptionMessage message = new ExceptionMessage();
+        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        message.setStatus(404);
+        message.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
 }
