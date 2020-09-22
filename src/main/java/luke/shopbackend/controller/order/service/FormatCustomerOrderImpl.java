@@ -75,10 +75,21 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
                 int toRemove = inStock - quantityToBuy;
                 quantityToBuy += toRemove;
                 isRefactored = true;
+
+                item.setQuantity(quantityToBuy);
             }
-            item.setQuantity(quantityToBuy);
+
+            setUnitsInStock(product, quantityToBuy);
         }
         return isRefactored;
+    }
+
+    private void setUnitsInStock(Product product, int itemsBought){
+        product.setUnitsInStock(product.getUnitsInStock() - itemsBought);
+        if (product.getUnitsInStock() < 1)
+            product.setActive(false);
+
+        productRepository.save(product);
     }
 
     private void recountPriceAndQuantity(CustomerOrder order) {
@@ -88,10 +99,13 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         for (CartItem i : order.getCartItems()) {
             int quantity = i.getQuantity();
             totalQuantity += quantity;
-            totalPrice = totalPrice.add(i.getUnitPriceAtBought().multiply(BigDecimal.valueOf(quantity)));
+            totalPrice = totalPrice.add(
+                    i.getUnitPriceAtBought()
+                            .multiply(
+                                    BigDecimal.valueOf(quantity)));
         }
-            order.setTotalQuantity(totalQuantity);
-            order.setTotalPrice(totalPrice);
+        order.setTotalQuantity(totalQuantity);
+        order.setTotalPrice(totalPrice);
     }
 
     private Product getProductById(Long id) {

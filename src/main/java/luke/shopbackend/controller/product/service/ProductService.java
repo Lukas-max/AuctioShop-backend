@@ -27,11 +27,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product getProductById(Long id){
-        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Nie znaleziono produktu o Id: " + id));
-    }
-
     /**
      *
      * @return Product.class from formatting ProductRequest. Product has an image wrapped in byte[].
@@ -54,6 +49,7 @@ public class ProductService {
 
     /**
      * Method similar to that above. Just meant to work with updating a product.
+     *  -> Product.isActive is set on the client side depending on the number of products.
      */
     public Product formatProductForUpdate(ProductRequest request, boolean isImageChanged)
             throws IOException{

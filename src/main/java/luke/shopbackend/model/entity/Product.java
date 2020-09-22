@@ -3,6 +3,7 @@ package luke.shopbackend.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ import java.util.Objects;
                         "p.productCategory = :productCategory " +
                         "WHERE p.productId = :productId")
 })
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
