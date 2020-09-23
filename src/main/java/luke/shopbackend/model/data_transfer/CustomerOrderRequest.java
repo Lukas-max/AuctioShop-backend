@@ -1,13 +1,19 @@
 package luke.shopbackend.model.data_transfer;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class CustomerOrderRequest {
     private Long clientId;
+    @NotNull(message = "Brak danych klienta.")
     private CustomerDto customer;
+    @NotNull(message = "Brak koszyka z zakupami.")
     private CartItemValidateDto[] items;
+    @Min(value = 1, message = "Niepoprawna cena")
     private BigDecimal totalPrice;
+    @Min(value = 1, message = "Niepoprawna ilość przedmiotów w koszyku.")
     private int totalQuantity;
 
     public Long getClientId() {

@@ -1,14 +1,26 @@
 package luke.shopbackend.model.data_transfer;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 public class CustomerDto {
+
+    @NotEmpty(message = "Pole imię nie może zostać puste.")
     private String firstName;
+    @NotEmpty(message = "Pole nazwisko nie może być puste.")
     private String lastName;
     private long telephone;
+    @NotEmpty(message = "Pole email nie może być puste")
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Musisz podać poprawny email.")
     private String email;
     private String country;
+    @Min(value = 1, message = "Numer domu to przynajmniej 1.")
     private int houseNumber;
     private int apartmentNumber;
+    @NotEmpty(message = "Musisz podać kod pocztowy.")
     private String postalCode;
+    @NotEmpty(message = "Musisz podać miasto.")
     private String city;
 
 

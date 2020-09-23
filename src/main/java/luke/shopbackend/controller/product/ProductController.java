@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
@@ -70,7 +71,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody ProductRequest productRequest)
+    public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductRequest productRequest)
             throws IOException {
         Product product = productService.formatProduct(productRequest);
         productRepository.save(product);
@@ -85,7 +86,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductRequest productRequest)
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductRequest productRequest)
             throws IOException {
         boolean isImageChanged = productRequest.getProductImage() != null;
         Product product = productService.formatProductForUpdate(productRequest, isImageChanged);

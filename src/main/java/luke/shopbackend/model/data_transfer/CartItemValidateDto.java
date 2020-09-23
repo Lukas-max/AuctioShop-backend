@@ -1,11 +1,18 @@
 package luke.shopbackend.model.data_transfer;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class CartItemValidateDto {
+
+    @NotNull
     private Long productId;
+    @NotNull
     private String name;
+    @Min(1)
     private BigDecimal unitPrice;
+    @Min(1)
     private int quantity;
 
     public Long getProductId() {

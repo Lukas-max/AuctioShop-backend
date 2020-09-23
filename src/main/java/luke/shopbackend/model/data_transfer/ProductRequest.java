@@ -1,21 +1,32 @@
 package luke.shopbackend.model.data_transfer;
 
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class ProductRequest {
 
     private Long productId;
+    @NotEmpty
+    @Size(max = 255, message = "Pole SKU nie może mieć więcej niż 255 znaków")
     private String sku;
+    @NotEmpty
+    @Size(max = 255, message = "Pole nazwa produktu nie może mieć więcej niż 255 znaków")
     private String name;
     private String description;
+    @NotNull(message = "Cena musi być podana")
+    @Min(value = 0, message = "Cena nie może być mniejsza niż zero")
     private BigDecimal unitPrice;
     private String productImage;
     private boolean active;
+    @NotNull(message = "Pole ilość produktów musi być wypełnione")
+    @Min(value = 1, message = "Musi być dodana przynajmniej jedna sztuka produktu")
     private int unitsInStock;
+    @NotNull(message = "Nie przesłano czasu stworzenia produktu")
     private Timestamp dateTimeCreated;
     private Timestamp dateTimeUpdated;
+    @NotNull(message = "Nie przesłano kategorii produktu")
     private Long productCategoryId;
 
     public Long getProductId() {
