@@ -1,0 +1,3 @@
+This security package is outside Spring component scan. It was used first for basic authorization.
+Now, after implementing json web token auth, it was cast out outside the component scan to reside here and
+now it wait's for a day it may come back.
