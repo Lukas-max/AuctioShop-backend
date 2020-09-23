@@ -1,13 +1,13 @@
 package luke.shopbackend.bootdata;
 
-import luke.shopbackend.model.entity.Product;
-import luke.shopbackend.model.entity.ProductCategory;
-import luke.shopbackend.model.entity.Role;
-import luke.shopbackend.model.entity.User;
-import luke.shopbackend.model.enums.ShopRole;
-import luke.shopbackend.repository.ProductCategoryRepository;
-import luke.shopbackend.repository.RoleRepository;
-import luke.shopbackend.repository.UserRepository;
+import luke.shopbackend.product.model.Product;
+import luke.shopbackend.product_category.model.ProductCategory;
+import luke.shopbackend.user.model.Role;
+import luke.shopbackend.user.model.User;
+import luke.shopbackend.user.enums.ShopRole;
+import luke.shopbackend.product_category.repository.ProductCategoryRepository;
+import luke.shopbackend.user.repository.RoleRepository;
+import luke.shopbackend.user.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

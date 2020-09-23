@@ -1,7 +1,7 @@
 package luke.shopbackend.controller.product;
 
-import luke.shopbackend.model.entity.ProductCategory;
-import luke.shopbackend.repository.ProductCategoryRepository;
+import luke.shopbackend.product_category.model.ProductCategory;
+import luke.shopbackend.product_category.repository.ProductCategoryRepository;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
