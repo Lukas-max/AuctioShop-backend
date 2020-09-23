@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 
 
 @Repository
+@Transactional
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.productCategory.productCategoryId = ?1")

@@ -18,8 +18,7 @@ public class Role implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column
-    @NotNull
+    @Column(name = "role")
     private ShopRole role;
 
     public Role() {

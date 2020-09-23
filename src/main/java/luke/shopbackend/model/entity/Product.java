@@ -1,6 +1,7 @@
 package luke.shopbackend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,10 +42,11 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "unitPrice")
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     @Column(name = "product_image")
     private byte[] productImage;
 

@@ -1,5 +1,6 @@
 package luke.shopbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import luke.shopbackend.model.embeddable.Address;
 
@@ -33,8 +34,10 @@ public class Customer implements Serializable {
     private Address address;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private List<CustomerOrder> orderList = new ArrayList<>();
+
 
     public Customer() {
     }
