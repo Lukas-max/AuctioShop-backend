@@ -2,6 +2,7 @@ package luke.shopbackend.controller.order;
 
 import luke.shopbackend.controller.order.service.OrderService;
 import luke.shopbackend.model.data_transfer.CustomerOrderRequest;
+import luke.shopbackend.model.entity.Customer;
 import luke.shopbackend.model.entity.CustomerOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +46,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerOrder> getOrderById(@PathVariable Long id){
         CustomerOrder order = orderService.getOrder(id);
+        order.setCustomer(new Customer());
         return ResponseEntity.ok().body(order);
     }
 
