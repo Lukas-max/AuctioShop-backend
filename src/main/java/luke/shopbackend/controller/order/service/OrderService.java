@@ -7,6 +7,8 @@ import luke.shopbackend.model.embeddable.CartItem;
 import luke.shopbackend.model.entity.Customer;
 import luke.shopbackend.model.entity.CustomerOrder;
 import luke.shopbackend.repository.CustomerOrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +39,9 @@ public class OrderService {
     public CustomerOrder getOrder(Long id){
         return customerOrderRepository.findById(id).orElseThrow(
                 ()-> new OrderNotFoundException("Nie znaleziono zamówienia o numerze: " + id));
+    }
+
+    public Page<CustomerOrder> getAllPageable(Pageable pageable){
+        return customerOrderRepository.findAll(pageable);
     }
 }

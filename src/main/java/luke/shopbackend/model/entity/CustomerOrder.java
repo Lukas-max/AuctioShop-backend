@@ -1,6 +1,4 @@
 package luke.shopbackend.model.entity;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import luke.shopbackend.model.data_transfer.CustomerOrderRequest;
 import luke.shopbackend.model.embeddable.CartItem;
 
@@ -30,7 +28,7 @@ public class CustomerOrder implements Serializable {
     private Integer totalQuantity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+//    @JsonBackReference
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
