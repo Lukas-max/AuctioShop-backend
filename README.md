@@ -21,7 +21,7 @@ Data loading is done by Class implementing CommandLineRunner to postgreSQL datab
 Copy/download, run on compiler. Only one thing to configure is you database connection. Whole configuration is in Spring application.properties.
 
 ### Features
-- Loading data to memory - products, categories and users (with one admin account).
+- Loading data to database - products, categories and users (with one admin account).
 - Spring security - basic and JSON Web Token auth (However the active implem. is now JWT auth)
 - REST - providing endpoints for frontend app. 
  * Product categories endpoint  [ GET ]
@@ -43,7 +43,7 @@ Copy/download, run on compiler. Only one thing to configure is you database conn
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
 | `GET` | `/api/users` | `Get a list of users` | `ADMIN` | 
-| `POST` | `/api/users/register` | `Resgister user with  ROLE_USER` | `*` |
+| `POST` | `/api/users/register` | `Resgister user with  ROLE_USER` | `ALL` |
 
 ### Product Controller
 Paging defaults refer to the values in front end. If change, change both sides of the app.
@@ -52,10 +52,10 @@ page nr: 1
 size: 8
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
-|  `GET` | `/api/products` | `Get page of products` | `*` |
-| `GET` | `/api/products/product/{id}` | `Get product by its id` | `*` |
-| `GET` | `/api/products/getByCategoryId` | `Get page of products by id` | `*` | 
-| `GET` | `/api/products/name` | `Get page of products by name` | `*` |
+|  `GET` | `/api/products` | `Get page of products` | `ALL` |
+| `GET` | `/api/products/product/{id}` | `Get product by its id` | `ALL` |
+| `GET` | `/api/products/getByCategoryId` | `Get page of products by id` | `ALL` | 
+| `GET` | `/api/products/name` | `Get page of products by name` | `ALL` |
 | `POST` | `/api/products/` | `Add a new product` | `ADMIN` |
 | `PUT` | `/api/products/` | `Update a product` | `ADMIN` |
 | `DELETE` | `/api/products/{id}` | `Delete chosen product` | `ADMIN` |
@@ -63,14 +63,14 @@ size: 8
 ### Product Category Controller
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
-| `GET` | `/api/product_category` | `Get a list of product categories` | `*` |
+| `GET` | `/api/product_category` | `Get a list of product categories` | `*ALL |
 
 ### Order Controller
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
 | `GET` | `/api/order` | `Get a page of orders with customer data` | `ADMIN` |
-| `GET` | `/api/order/{id}` | `Get order by id. No customer data.` | `*` |
-| `POST` | `/api/order` | `Post order/ send order of purchase` | `*` |
+| `GET` | `/api/order/{id}` | `Get order by id. No customer data.` | `ALL` |
+| `POST` | `/api/order` | `Post order/ send order of purchase` | `ALL` |
 
 ##### More info
 ###### Security
