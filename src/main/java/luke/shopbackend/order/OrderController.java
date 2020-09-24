@@ -26,21 +26,16 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
-    public ResponseEntity<CustomerOrder> saveOrder(@Valid @RequestBody CustomerOrderRequest orderRequest){
-        CustomerOrder order = orderService.addOrder(orderRequest);
-
-        if(order.getTotalPrice().equals(BigDecimal.valueOf(0)) && order.getTotalQuantity() == 0)
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT,
-                    "Nie ma już przedmiotu/przedmiotów umieszczonych w koszyku");
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(order.getOrderId())
-                .toUri();
-
-        return ResponseEntity.created(uri).body(order);
+    /**
+     * Only for ROLE_ADMIN.
+     */
+    @GetMapping
+    public ResponseEntity<Page<CustomerOrder>> getAll(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerOrder> customerOrderPage = orderService.getAllPageable(pageable);
+        return ResponseEntity.ok().body(customerOrderPage);
     }
 
     @GetMapping("/{id}")
@@ -50,12 +45,16 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<CustomerOrder>> getAll(
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "20") int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<CustomerOrder> customerOrderPage = orderService.getAllPageable(pageable);
-        return ResponseEntity.ok().body(customerOrderPage);
+    @PostMapping
+    public ResponseEntity<CustomerOrder> saveOrder(@Valid @RequestBody CustomerOrderRequest orderRequest){
+        CustomerOrder order = orderService.addOrder(orderRequest);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(order.getOrderId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(order);
     }
 }

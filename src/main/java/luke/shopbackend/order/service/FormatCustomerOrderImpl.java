@@ -25,6 +25,10 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Maps the CartItemValidateDto class from CustomerOrderRequest to CartItem. Class composed to CustomerOrder
+     * during persisting data.
+     */
     public List<CartItem> getCartItems(CustomerOrderRequest orderRequest) {
         List<CartItem> items = new LinkedList<>();
         Arrays.stream(orderRequest.getItems())
@@ -33,6 +37,10 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         return items;
     }
 
+    /**
+     * This two methods map customer data to Customer and Address class. Address class is an embeddable of
+     * Customer class. After this the entity Customer is ready to be persisted.
+     */
     public Customer getCustomerObject(CustomerOrderRequest orderRequest) {
         return new Customer(
                 orderRequest.getCustomer().getFirstName(),
@@ -53,6 +61,12 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         );
     }
 
+    /**
+     * This first refactores the items in the cart, and decrements the database stock
+     *                                                -> refactorCartItems(List<CartItem> cartItems).
+     * Then it creates CustomerOrder. If the cart has been refactored, the total price and quantity is recounted.
+     * After these operations CustomerOrder is ready to be persisted
+     */
     public CustomerOrder getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest) {
         boolean isRefactored = refactorCartItems(items);
         CustomerOrder order = new CustomerOrder(items, orderRequest);
@@ -63,6 +77,12 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         return order;
     }
 
+    /**
+     * If the number of a purchase item is higher than items available = decrement the items.
+     * If quantity to buy = 10, unitsInStock = 4. Then 10 - 4 = 6.
+     * Then quantity to buy = 10 - 6 = 4.  So we then buy 4, so as in stock is only 4.
+     * After that we decrement the database item count.
+     */
     private synchronized boolean refactorCartItems(List<CartItem> cartItems) {
         boolean isRefactored = false;
 
@@ -72,8 +92,8 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
             int quantityToBuy = item.getQuantity();
 
             if (quantityToBuy > inStock) {
-                int toRemove = inStock - quantityToBuy;
-                quantityToBuy += toRemove;
+                int toRemove = quantityToBuy - inStock;
+                quantityToBuy -= toRemove;
                 isRefactored = true;
 
                 item.setQuantity(quantityToBuy);
@@ -84,6 +104,10 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         return isRefactored;
     }
 
+    /**
+     * If we bought 5 items of a product we then decrease the items in the stock by 5.
+     * If items in stock are set to 0, we set the product inactive.
+     */
     private void setUnitsInStock(Product product, int itemsBought){
         product.setUnitsInStock(product.getUnitsInStock() - itemsBought);
         if (product.getUnitsInStock() < 1)
@@ -92,6 +116,9 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
         productRepository.save(product);
     }
 
+    /**
+     * After cart refactoring if the cart item quantity we have to count again total price and quantity.
+     */
     private void recountPriceAndQuantity(CustomerOrder order) {
         int totalQuantity = 0;
         BigDecimal totalPrice = BigDecimal.valueOf(0);
