@@ -15,10 +15,22 @@ Project by Łukasz Jankowski.
 - IntelliJ IDEA 2020.1 Ultimate Edition
 
 This is the back end of the application. The other part -> [Shop - FrontEnd part!](https://github.com/Lukas-max/shop-frontend).
-Data loading is done by Class implementing CommandLineRunner to postgreSQL database. `So if you have postgre you just connect those those and it's ready to go`
+Data loading is done by Class implementing CommandLineRunner to postgreSQL database.
 
 ## RUN
-Copy/download, run on compiler. Only one thing to configure is you database connection. Whole configuration is in Spring application.properties.
+To run this part of the app you need to:
+- [x] Go to security package CorsConfig.java and when you want to run it on Angular set allowed origins to: `http://localhost:4200`, other origin you desire or all: `*`
+- [x] Go to application.properties and set spring.datasource.initialization-mode to always for database colonization with product, role and user data.
+- [x] In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
+- [x] Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will set up your database with data during application start.
+- [x] When running from a compiler, go to configuration and set Environment variables for:
+1. spring.datasource.username=
+2. spring.datasource.password=
+3. Shop.admin.username=
+4. Shop.admin.password=
+5. Shop.token=  (this is the secret key for JSON Web Token hashing)
+or just paste them to command line when creating a maven package.
+Hope I didn't forgot something.
 
 ### Features
 - Loading data to database - products, categories and users (with one admin account).
