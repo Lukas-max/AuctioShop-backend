@@ -3,6 +3,7 @@ package luke.shopbackend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,9 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private final String SECRET = "secret";
+
+    @Value("${Shop.token}")
+    private String SECRET_KEY;
 
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
@@ -26,7 +29,7 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 
@@ -39,7 +42,7 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        final Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
         return claimsResolver.apply(claims);
     }
 

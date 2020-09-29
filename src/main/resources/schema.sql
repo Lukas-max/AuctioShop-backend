@@ -29,7 +29,7 @@ category_id BIGINT REFERENCES product_category(category_id)
 
 CREATE TABLE IF NOT EXISTS users (
 user_id BIGSERIAL PRIMARY KEY ,
-username VARCHAR(25),
+username VARCHAR(45),
 password VARCHAR(250),
 email VARCHAR(255)
 );

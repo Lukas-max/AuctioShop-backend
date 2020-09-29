@@ -8,22 +8,28 @@ import luke.shopbackend.user.enums.ShopRole;
 import luke.shopbackend.product_category.repository.ProductCategoryRepository;
 import luke.shopbackend.user.repository.RoleRepository;
 import luke.shopbackend.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Component
+//@Component
 public class LoadDatabase implements CommandLineRunner {
     private final ProductCategoryRepository productCategoryRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${Shop.admin.username}")
+    private String adminUsername;
+
+    @Value("${Shop.admin.password}")
+    private String adminPassword;
     private static final String PATH = "static/";
 
     public LoadDatabase(ProductCategoryRepository productCategoryRepository,
@@ -295,19 +301,20 @@ public class LoadDatabase implements CommandLineRunner {
         userRole1.setRole(ShopRole.ROLE_USER);
         roleRepository.save(userRole1);
 
-        User adminUser = new User();
-        adminUser.setUsername("admin");
-        adminUser.setPassword(passwordEncoder.encode("MyAdmin"));
-        adminUser.setEmail("abc@o2.pl");
-        adminUser.getRoles().add(adminRole);
-        userRepository.save(adminUser);
-
         User user = new User();
         user.setUsername("jurek");
         user.setPassword(passwordEncoder.encode("user"));
         user.setEmail("jurek@interia.pl");
         user.getRoles().add(userRole1);
         userRepository.save(user);
+
+        User adminUser = new User();
+        adminUser.setUsername(adminUsername);
+        adminUser.setPassword(passwordEncoder.encode(adminPassword));
+        adminUser.setEmail("abc@o2.pl");
+        adminUser.getRoles().add(adminRole);
+        userRepository.save(adminUser);
+
     }
 
     private byte[] getImage(String path) throws IOException {
