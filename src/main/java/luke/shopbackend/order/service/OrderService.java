@@ -3,6 +3,7 @@ package luke.shopbackend.order.service;
 
 import luke.shopbackend.exception.OrderNotFoundException;
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
+import luke.shopbackend.order.model.embeddable.Address;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
@@ -70,5 +71,11 @@ public class OrderService {
      */
     public Page<CustomerOrder> getAllPageable(Pageable pageable) {
         return customerOrderRepository.findAll(pageable);
+    }
+
+    public Customer getFakeCustomerData(){
+        return new Customer("RODO", "RODO", 0L, "RODO", new Address(
+                "RODO", 0,0, "RODO", "RODO" )
+        );
     }
 }

@@ -41,7 +41,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerOrder> getOrderById(@PathVariable Long id){
         CustomerOrder order = orderService.getOrder(id);
-        order.setCustomer(new Customer());
+        order.setCustomer(orderService.getFakeCustomerData());
         return ResponseEntity.ok().body(order);
     }
 
