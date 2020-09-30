@@ -78,9 +78,9 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
     }
 
     /**
-     * If the number of a purchase item is higher than items available = decrement the items.
-     * If quantity to buy = 10, unitsInStock = 4. Then 10 - 4 = 6.
-     * Then quantity to buy = 10 - 6 = 4.  So we then buy 4, so as in stock is only 4.
+     * If the number of a purchase item is higher than items available, then decrement the items by setting
+     * the quantityToBuy equal with the quantity of items in stock.
+     * So if only 2 items in database. QuantityToBuy = 2.
      * After that we decrement the database item count.
      */
     private synchronized boolean refactorCartItems(List<CartItem> cartItems) {
@@ -88,12 +88,11 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
 
         for (CartItem item : cartItems) {
             Product product = getProductById(item.getProductId());
-            int inStock = product.getUnitsInStock();
             int quantityToBuy = item.getQuantity();
+            int inStock = product.getUnitsInStock();
 
             if (quantityToBuy > inStock) {
-                int toRemove = quantityToBuy - inStock;
-                quantityToBuy -= toRemove;
+                quantityToBuy = inStock;
                 isRefactored = true;
 
                 item.setQuantity(quantityToBuy);
