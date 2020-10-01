@@ -12,6 +12,7 @@ Project by Łukasz Jankowski.
 - PostgreSQL
 - Spring Security and JWT
 - Spring Validation
+- JUnit 5, Mockito, Hamcrest
 - IntelliJ IDEA 2020.1 Ultimate Edition
 
 This is the back end of the application. The other part -> [Shop - FrontEnd part!](https://github.com/Lukas-max/shop-frontend).
