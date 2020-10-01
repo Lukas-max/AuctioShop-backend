@@ -1,4 +1,4 @@
-package luke.shopbackend.controller.product;
+package luke.shopbackend.product_category;
 
 import luke.shopbackend.product_category.model.ProductCategory;
 import luke.shopbackend.product_category.repository.ProductCategoryRepository;

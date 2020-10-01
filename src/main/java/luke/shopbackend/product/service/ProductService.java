@@ -18,12 +18,10 @@ import java.util.Base64;
 public class ProductService {
 
     private final ProductCategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
 
 
-    public ProductService(ProductCategoryRepository categoryRepository, ProductRepository productRepository) {
+    public ProductService(ProductCategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
     }
 
     /**
