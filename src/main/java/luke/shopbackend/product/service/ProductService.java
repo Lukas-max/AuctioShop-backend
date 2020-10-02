@@ -1,6 +1,5 @@
 package luke.shopbackend.product.service;
 
-import luke.shopbackend.product.repository.ProductRepository;
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.product_category.model.ProductCategory;
 import luke.shopbackend.product.model.ProductRequest;
@@ -92,8 +91,9 @@ public class ProductService {
      *
      * @return standard image from folder.
      * It's works when user didn't send and an image when adding a product.
+     * And it's set to protected for usability in ProductServiceTest.class.
      */
-    private byte[] getStandardImage() throws IOException {
+    protected byte[] getStandardImage() throws IOException {
         String PATH = "src/main/resources/static/empty.jpg";
         File file = new File(PATH);
         return Files.readAllBytes(file.toPath());

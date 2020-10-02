@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
+
 class ProductServiceTest {
 
     @Mock
@@ -37,6 +38,10 @@ class ProductServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * This tests the ProductService().formatProduct method with an argument of ProductRequest containing
+     * an image send from the client.
+     */
     @Test
     void formatProductWithAddedImage() throws IOException {
         //given
@@ -45,6 +50,7 @@ class ProductServiceTest {
 
         //when
         Product product = productService.formatProduct(productRequest);
+        byte[] imageInBytes = productService.getStandardImage();
 
         //then
         assertAll(
@@ -63,10 +69,14 @@ class ProductServiceTest {
                 () -> assertThat(product.getDateTimeUpdated(), is(nullValue())),
                 () -> assertThat(product.isActive(), is(equalTo(true))),
                 () -> assertThat(product.getProductImage(), is(notNullValue())),
-                () -> assertThat(product.getProductImage(), is(not(equalTo(getStandardImage()))))
+                () -> assertThat(product.getProductImage(), is(not(equalTo(imageInBytes))))
         );
     }
 
+    /**
+     * This tests the ProductService().formatProduct method with an argument of ProductRequest not containing
+     * an image send from the client. And also tests if the standard image was attached.
+     */
     @Test
     void formatProductWithoutImage() throws IOException {
         //given
@@ -75,6 +85,7 @@ class ProductServiceTest {
 
         //when
         Product product = productService.formatProduct(productRequest);
+        byte[] imageInBytes = productService.getStandardImage();
 
         //then
         assertAll(
@@ -93,7 +104,7 @@ class ProductServiceTest {
                 () -> assertThat(product.getDateTimeUpdated(), is(nullValue())),
                 () -> assertThat(product.isActive(), is(equalTo(true))),
                 () -> assertThat(product.getProductImage(), is(notNullValue())),
-                () -> assertThat(product.getProductImage(), equalTo(getStandardImage()))
+                () -> assertThat(product.getProductImage(), equalTo(imageInBytes))
         );
     }
 
@@ -105,7 +116,10 @@ class ProductServiceTest {
 
     /**
      * Below are the helper methods for creating a false ProductRequest. That is a product send in post request
-     * to create save it in database.
+     * to save it in database.
+     *
+     *
+     * The first method simulates user adding product with attached image.
      */
     private ProductRequest getProductRequestWithImage() throws IOException {
         ProductRequest productRequest = new ProductRequest();
@@ -120,6 +134,10 @@ class ProductServiceTest {
         return productRequest;
     }
 
+    /**
+     * This method simulates user adding product without attached image. Then the servers-side add the standard
+     * image.
+     */
     private ProductRequest getProductRequestWithoutUserAddedImage() throws IOException {
         ProductRequest productRequest = new ProductRequest();
         productRequest.setSku("111");
@@ -132,23 +150,24 @@ class ProductServiceTest {
         return productRequest;
     }
 
+    /**
+     * This method simulates returning ProductCategory from the database.
+     */
     private Optional<ProductCategory> getGamesCategory(){
         ProductCategory categoryGames = new ProductCategory();
         categoryGames.setCategoryName("Gry");
         return Optional.of(categoryGames);
     }
 
+    /**
+     * This method encodes an image to Base64 data and attaches a prefix with ','
+     * This will simulate a product image encoded to String that comes from the client side while adding
+     * a product with selected image.
+     */
     private String getImageEncodedInString() throws IOException {
         Resource resource = new ClassPathResource("static/gow2.jpg");
         byte[] bytes = resource.getInputStream().readAllBytes();
         String str1 = Base64.getEncoder().encodeToString(bytes);
         return "Base64Data,".concat(str1);
     }
-
-    private byte[] getStandardImage() throws IOException {
-        String PATH = "src/main/resources/static/empty.jpg";
-        File file = new File(PATH);
-        return Files.readAllBytes(file.toPath());
-    }
-
 }
