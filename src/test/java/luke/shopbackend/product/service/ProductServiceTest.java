@@ -74,9 +74,11 @@ class ProductServiceTest {
         );
     }
 
+
     /**
      * This tests the ProductService().formatProduct method with an argument of ProductRequest not containing
      * an image send from the client. And also tests if the standard image was attached.
+     * The second thing it checks if the isActive field is null, due to unitsInStock set to zero in ProductRequest.
      */
     @Test
     void formatProductWithoutImage() throws IOException {
@@ -104,7 +106,7 @@ class ProductServiceTest {
         assertAll(
                 () -> assertThat(product.getProductId(), is(nullValue())),
                 () -> assertThat(product.getDateTimeUpdated(), is(nullValue())),
-                () -> assertThat(product.isActive(), is(equalTo(true))),
+                () -> assertThat(product.isActive(), is(equalTo(false))),
                 () -> assertThat(product.getProductImage(), is(notNullValue())),
                 () -> assertThat(product.getProductImage(), equalTo(imageInBytes))
         );
@@ -112,47 +114,12 @@ class ProductServiceTest {
 
     /**
      * This tests ProductService().formatProductForUpdate(ProductRequest request, boolean isImageChanged)
-     * without user adding a new image and units in stock set to > 0.
+     * without user adding a new image and units in stock set to 0.
      */
     @Test
     void formatProductForUpdate_withNoNewImage() throws IOException {
         //given
         ProductRequest productRequest = getProductRequestForUpdateWithoutNewImage();
-        given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
-        boolean isImageChanged = false;
-
-        //when
-        Product product = productService.formatProductForUpdate(productRequest, isImageChanged);
-
-        //then
-        assertAll(
-                () -> assertThat(product.getProductId(), is(productRequest.getProductId())),
-                () -> assertThat(product.getSku(), is(equalTo(productRequest.getSku()))),
-                () -> assertThat(product.getName(), equalTo(productRequest.getName())),
-                () -> assertThat(product.getDescription(), equalTo(productRequest.getDescription())),
-                () -> assertThat(product.getUnitPrice(), equalTo(productRequest.getUnitPrice())),
-                () -> assertThat(product.getUnitsInStock(), is(equalTo(productRequest.getUnitsInStock()))),
-                () -> assertThat(product.getDateTimeCreated(), is(equalTo(productRequest.getDateTimeCreated()))),
-                () -> assertThat(product.getProductCategory().getCategoryName(), equalTo("Gry")),
-                () -> assertThat(product.getProductCategory().getCategoryName(), not(equalTo("Elektronika"))),
-                () -> assertThat(product.getProductCategory().getProductCategoryId(), equalTo(1L))
-        );
-
-        assertAll(
-                () -> assertThat(product.isActive(), is(true)),
-                () -> assertThat(product.getDateTimeUpdated(), is(greaterThan(productRequest.getDateTimeCreated()))),
-                () -> assertThat(product.getProductImage(), is(nullValue()))
-        );
-    }
-
-    /**
-     * This tests ProductService().formatProductForUpdate(ProductRequest request, boolean isImageChanged)
-     * with user setting the Product.unitsInStock to 0. It makes sure that Product.isActive will be set to false.
-     */
-    @Test
-    void formatProductForUpdate_WithZeroUnitsInStock() throws IOException {
-        //given
-        ProductRequest productRequest = getProductRequestForUpdateWithZeroUnitsInStock();
         given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
         boolean isImageChanged = false;
 
@@ -182,7 +149,7 @@ class ProductServiceTest {
 
     /**
      * This tests ProductService().formatProductForUpdate(ProductRequest request, boolean isImageChanged)
-     * with user adding an image.
+     * with user adding an image, and unistInStock > 0.
      */
     @Test
     void formatProductForUpdate_withUpdatedImage() throws IOException {
@@ -240,7 +207,7 @@ class ProductServiceTest {
 
     /**
      * This method simulates user adding product without attached image. Then the servers-side add the standard
-     * image.
+     * image. Also unitsInStock are set to zero. That check setting the isActive field to false.
      */
     private ProductRequest getProductRequestWithoutUserAddedImage() {
         ProductRequest productRequest = new ProductRequest();
@@ -248,7 +215,7 @@ class ProductServiceTest {
         productRequest.setName("God of War 4");
         productRequest.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
         productRequest.setUnitPrice(new BigDecimal("49.99"));
-        productRequest.setUnitsInStock(5);
+        productRequest.setUnitsInStock(0);
         productRequest.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         productRequest.setProductCategoryId(1L);
         return productRequest;
@@ -256,7 +223,8 @@ class ProductServiceTest {
 
     /**
      * This method simulates user updating a product without changing the image. So The ProductImage is null.
-     * Also DateTimeUpdated must be greater than DateTimeCreated.
+     * Also DateTimeUpdated must be greater than DateTimeCreated. Then also unitsInStock are set to one.
+     * This will check setting the isActive field to false.
      */
     private ProductRequest getProductRequestForUpdateWithoutNewImage(){
         ProductRequest productRequest = new ProductRequest();
@@ -265,7 +233,7 @@ class ProductServiceTest {
         productRequest.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
         productRequest.setUnitPrice(new BigDecimal("49.99"));
         productRequest.setProductImage(null);
-        productRequest.setUnitsInStock(5);
+        productRequest.setUnitsInStock(0);
         productRequest.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         productRequest.setDateTimeUpdated(new Timestamp(System.currentTimeMillis() + 10_000));
         productRequest.setProductCategoryId(1L);
@@ -284,24 +252,6 @@ class ProductServiceTest {
         productRequest.setUnitPrice(new BigDecimal("49.99"));
         productRequest.setProductImage(getImageEncodedInString());
         productRequest.setUnitsInStock(5);
-        productRequest.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
-        productRequest.setDateTimeUpdated(new Timestamp(System.currentTimeMillis() + 10_000));
-        productRequest.setProductCategoryId(1L);
-        return productRequest;
-    }
-
-    /**
-     * With this we simulate a ProductRequest wits unitsInStock set to 0. That will further allow us to test setting
-     * the Product.active field to false.
-     */
-    private ProductRequest getProductRequestForUpdateWithZeroUnitsInStock(){
-        ProductRequest productRequest = new ProductRequest();
-        productRequest.setSku("111");
-        productRequest.setName("God of War 4");
-        productRequest.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
-        productRequest.setUnitPrice(new BigDecimal("49.99"));
-        productRequest.setProductImage(null);
-        productRequest.setUnitsInStock(0);
         productRequest.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         productRequest.setDateTimeUpdated(new Timestamp(System.currentTimeMillis() + 10_000));
         productRequest.setProductCategoryId(1L);
