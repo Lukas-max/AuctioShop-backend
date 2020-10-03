@@ -3,7 +3,7 @@
 Project by Łukasz Jankowski.
 
 ### Prerequisites
-- JDK 14
+- JDK 11
 - Maven
 - PostgreSQL database
 ### Build in:
