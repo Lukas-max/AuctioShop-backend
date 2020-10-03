@@ -28,7 +28,6 @@ public class CustomerOrder implements Serializable {
     private Integer totalQuantity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JsonBackReference
     @JoinColumn(name = "customer_id")
     private Customer customer;
 

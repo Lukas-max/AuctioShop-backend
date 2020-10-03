@@ -21,7 +21,7 @@ public class ProductRequest {
     private String productImage;
     private boolean active;
     @NotNull(message = "Pole ilość produktów musi być wypełnione")
-    @Min(value = 1, message = "Musi być dodana przynajmniej jedna sztuka produktu")
+    @Min(value = 0, message = "Najmniejsza ilość przedmiotów wynosi 0")
     private int unitsInStock;
     @NotNull(message = "Nie przesłano czasu stworzenia produktu")
     private Timestamp dateTimeCreated;

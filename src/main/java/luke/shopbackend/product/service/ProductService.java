@@ -35,7 +35,7 @@ public class ProductService {
                 .buildDescription(request.getDescription())
                 .buildUnitPrice(request.getUnitPrice())
                 .buildProductImage(getByteArray(request.getProductImage(), true))
-                .buildActive(true)
+                .buildActive(isActive(request.getUnitsInStock()))
                 .buildUnitsInStock(request.getUnitsInStock())
                 .buildDateTimeCreated(request.getDateTimeCreated())
                 .buildDateTimeUpdated(null)
@@ -56,7 +56,7 @@ public class ProductService {
                 .buildDescription(request.getDescription())
                 .buildUnitPrice(request.getUnitPrice())
                 .buildProductImage(getByteArray(request.getProductImage(), isImageChanged))
-                .buildActive(request.isActive())
+                .buildActive(isActive(request.getUnitsInStock()))
                 .buildUnitsInStock(request.getUnitsInStock())
                 .buildDateTimeCreated(request.getDateTimeCreated())
                 .buildDateTimeUpdated(request.getDateTimeUpdated())
@@ -68,6 +68,13 @@ public class ProductService {
         return categoryRepository.findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch product category from database."));
+    }
+
+    /**
+     * If unitsInStock = 0. Product.active = false;
+     */
+    private boolean isActive(int unitsInStock){
+        return unitsInStock > 0;
     }
 
     /**

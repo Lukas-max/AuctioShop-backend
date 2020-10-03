@@ -33,7 +33,6 @@ public class Customer implements Serializable {
     private Address address;
 
     @OneToMany(mappedBy = "customer")
-//    @JsonManagedReference
     @JsonIgnore
     private List<CustomerOrder> orderList = new ArrayList<>();
 
