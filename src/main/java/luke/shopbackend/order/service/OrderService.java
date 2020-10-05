@@ -44,8 +44,8 @@ public class OrderService {
      */
     public CustomerOrder addOrder(CustomerOrderRequest orderRequest) {
         List<CartItem> cartItems = format.getCartItems(orderRequest);
-        CustomerOrder customerOrder = format.getCustomerOrder(cartItems, orderRequest);
         Customer customer = format.getCustomerObject(orderRequest);
+        CustomerOrder customerOrder = format.getCustomerOrder(cartItems, orderRequest);
 
         customer.getOrderList().add(customerOrder);
         customerOrder.setCustomer(customer);

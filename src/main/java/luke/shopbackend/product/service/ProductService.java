@@ -1,9 +1,9 @@
 package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
-import luke.shopbackend.product_category.model.ProductCategory;
+import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.product.model.ProductRequest;
-import luke.shopbackend.product_category.repository.ProductCategoryRepository;
+import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

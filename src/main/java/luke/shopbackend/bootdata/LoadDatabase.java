@@ -1,11 +1,11 @@
 package luke.shopbackend.bootdata;
 
 import luke.shopbackend.product.model.Product;
-import luke.shopbackend.product_category.model.ProductCategory;
+import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.enums.ShopRole;
-import luke.shopbackend.product_category.repository.ProductCategoryRepository;
+import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
 import luke.shopbackend.user.repository.RoleRepository;
 import luke.shopbackend.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;

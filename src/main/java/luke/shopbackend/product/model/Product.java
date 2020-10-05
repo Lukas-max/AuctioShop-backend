@@ -1,7 +1,7 @@
 package luke.shopbackend.product.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import luke.shopbackend.product_category.model.ProductCategory;
+import luke.shopbackend.productCategory.model.ProductCategory;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

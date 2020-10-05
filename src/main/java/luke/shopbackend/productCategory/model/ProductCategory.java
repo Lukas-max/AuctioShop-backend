@@ -1,4 +1,4 @@
-package luke.shopbackend.product_category.model;
+package luke.shopbackend.productCategory.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import luke.shopbackend.product.model.Product;

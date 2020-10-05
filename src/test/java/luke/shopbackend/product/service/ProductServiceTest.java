@@ -2,8 +2,8 @@ package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.product.model.ProductRequest;
-import luke.shopbackend.product_category.model.ProductCategory;
-import luke.shopbackend.product_category.repository.ProductCategoryRepository;
+import luke.shopbackend.productCategory.model.ProductCategory;
+import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -53,6 +53,7 @@ class ProductServiceTest {
 
         //then
         assertAll(
+                () -> assertThat(product, not(sameInstance(productRequest))),
                 () -> assertThat(product.getSku(), is(equalTo(productRequest.getSku()))),
                 () -> assertThat(product.getName(), equalTo(productRequest.getName())),
                 () -> assertThat(product.getDescription(), equalTo(productRequest.getDescription())),
@@ -92,6 +93,7 @@ class ProductServiceTest {
 
         //then
         assertAll(
+                () -> assertThat(product, not(sameInstance(productRequest))),
                 () -> assertThat(product.getSku(), is(equalTo(productRequest.getSku()))),
                 () -> assertThat(product.getName(), equalTo(productRequest.getName())),
                 () -> assertThat(product.getDescription(), equalTo(productRequest.getDescription())),
@@ -128,6 +130,7 @@ class ProductServiceTest {
 
         //then
         assertAll(
+                () -> assertThat(product, not(sameInstance(productRequest))),
                 () -> assertThat(product.getProductId(), is(productRequest.getProductId())),
                 () -> assertThat(product.getSku(), is(equalTo(productRequest.getSku()))),
                 () -> assertThat(product.getName(), equalTo(productRequest.getName())),
@@ -163,6 +166,7 @@ class ProductServiceTest {
 
         //then
         assertAll(
+                () -> assertThat(product, not(sameInstance(productRequest))),
                 () -> assertThat(product.getProductId(), is(productRequest.getProductId())),
                 () -> assertThat(product.getSku(), is(equalTo(productRequest.getSku()))),
                 () -> assertThat(product.getName(), equalTo(productRequest.getName())),

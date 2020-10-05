@@ -10,14 +10,14 @@ public class CustomerDto {
     private String firstName;
     @NotEmpty(message = "Pole nazwisko nie może być puste.")
     private String lastName;
-    private long telephone;
+    private Long telephone;
     @NotEmpty(message = "Pole email nie może być puste")
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Musisz podać poprawny email.")
     private String email;
     private String country;
     @Min(value = 1, message = "Numer domu to przynajmniej 1.")
-    private int houseNumber;
-    private int apartmentNumber;
+    private Integer houseNumber;
+    private Integer apartmentNumber;
     @NotEmpty(message = "Musisz podać kod pocztowy.")
     private String postalCode;
     @NotEmpty(message = "Musisz podać miasto.")
@@ -40,11 +40,11 @@ public class CustomerDto {
         this.lastName = lastName;
     }
 
-    public long getTelephone() {
+    public Long getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(long telephone) {
+    public void setTelephone(Long telephone) {
         this.telephone = telephone;
     }
 
@@ -64,19 +64,19 @@ public class CustomerDto {
         this.country = country;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getApartmentNumber() {
+    public Integer getApartmentNumber() {
         return apartmentNumber;
     }
 
-    public void setApartmentNumber(int apartmentNumber) {
+    public void setApartmentNumber(Integer apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
     }
 
