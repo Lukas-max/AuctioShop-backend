@@ -83,7 +83,7 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
      * So if only 2 items in database. QuantityToBuy = 2.
      * After that we decrement the database item count.
      */
-    private synchronized boolean refactorCartItems(List<CartItem> cartItems) {
+    protected synchronized boolean refactorCartItems(List<CartItem> cartItems) {
         boolean isRefactored = false;
 
         for (CartItem item : cartItems) {
