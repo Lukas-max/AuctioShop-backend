@@ -39,6 +39,12 @@ class FormatCustomerOrderImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
+
+    /**
+     *Testing FormatCustomerOrderImpl.getCartItems(CustomerOrderRequest orderRequest).
+     *
+     * Formatting DTO to CartItem entity object.
+     */
     @Test
     void getCartItemsShouldReturnNotEmptyCartItemList(){
         //given
@@ -62,6 +68,11 @@ class FormatCustomerOrderImplTest {
         );
     }
 
+    /**
+     *Testing FormatCustomerOrderImpl.getCustomerObject(CustomerOrderRequest orderRequest).
+     *
+     * Formatting CustomerDto to Customer entity.
+     */
     @Test
     void getCustomerObjectShouldReturnAValidCustomer(){
         //given
@@ -84,7 +95,7 @@ class FormatCustomerOrderImplTest {
                 () -> assertThat(customer.getAddress().getCity(), equalTo(orderRequest.getCustomer().getCity()))
         );
 
-        //telephone and address were not set
+        //telephone and address were not set by the "customer"
         assertAll(
                 () -> assertThat(customer.getTelephone(), is(nullValue())),
                 () -> assertThat(customer.getAddress().getApartmentNumber(), is(nullValue())),
@@ -93,6 +104,13 @@ class FormatCustomerOrderImplTest {
         );
     }
 
+    /**
+     * Testing FormatCustomerOrderImpl.refactorCartItems(List<CartItem> cartItems).
+     *
+     * Items in cart should not drop if stock levels are higher than purchase. They should stay the same.
+     * So there should be no refactoring of the Cart.
+     * Also stock should be decrement by the items bought.
+     */
     @Test
     void refactorCartItemsShouldNotRefactorItemsWhenStockIsHigh(){
         //given cart items quantity 4 and 6
@@ -123,6 +141,14 @@ class FormatCustomerOrderImplTest {
         );
     }
 
+    /**
+     * Testing FormatCustomerOrderImpl.refactorCartItems(List<CartItem> cartItems).
+     *
+     * Items in cart should drop to the levels equal to stock level. You can't buy more that in stock.
+     * So there should be refactoring of the Cart.
+     * Also stock should be decrement by the items bought and if item in stock drops to 0, it should be set to
+     * not active.
+     */
     @Test
     void refactorCartItemsShouldRefactorAndDecreaseItemsWhenStockToLow(){
         //given cart items quantity 4 and 6
@@ -154,9 +180,67 @@ class FormatCustomerOrderImplTest {
         );
     }
 
+    /**
+     * Testing FormatCustomerOrderImpl.getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest).
+     *
+     * If there was no refactoring of the Cart and items stay at the same level, also total quantity and price
+     * should not change either.
+     */
+    @Test
+    void getCustomerOrderShouldNotRecountPriceAndQuantityIfNotRefactored(){
+        //given
+        CustomerOrderRequest orderRequest = getCustomerOrderRequest();
+        List<CartItem> cartItems = formatCustomerOrder.getCartItems(orderRequest);
+        given(productRepository.findById(1L)).willReturn(Optional.of(getProductOneWithAboveStockCount()));
+        given(productRepository.findById(2L)).willReturn(Optional.of(getProductTwoWithAboveStockCount()));
+
+        //when
+        CustomerOrder order = formatCustomerOrder.getCustomerOrder(cartItems, orderRequest);
+
+        //then
+        assertAll(
+                () -> assertThat(order.getTotalPrice(), equalTo(orderRequest.getTotalPrice())),
+                () -> assertThat(order.getTotalQuantity(), equalTo(orderRequest.getTotalQuantity())),
+                () -> assertThat(order.getCartItems().size(), equalTo(orderRequest.getItems().length))
+        );
+    }
+
+    /**
+     * Testing FormatCustomerOrderImpl.getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest).
+     *
+     * If the Cart was refactored so should total quantity and price be recounted and drop lower. Item count
+     * should drop to the level of item that was in stock.
+     */
+    @Test
+    void getCustomerOrderShouldRecountPriceAndQuantityIfRefactored(){
+        //given
+        CustomerOrderRequest orderRequest = getCustomerOrderRequestWithTooManyProductsBought();
+        List<CartItem> cartItems = formatCustomerOrder.getCartItems(orderRequest);
+        given(productRepository.findById(1L)).willReturn(Optional.of(getProductOneWithUnderStockCount()));
+        given(productRepository.findById(2L)).willReturn(Optional.of(getProductTwoWithUnderStockCount()));
+
+        //when
+        CustomerOrder order = formatCustomerOrder.getCustomerOrder(cartItems, orderRequest);
+
+        //then
+        assertAll(
+                () -> assertThat(order.getTotalPrice(), lessThan(orderRequest.getTotalPrice())),
+                () -> assertThat(order.getTotalQuantity(), lessThan(orderRequest.getTotalQuantity())),
+                () -> assertThat(order.getCartItems().get(0).getQuantity(), equalTo(1)),
+                () -> assertThat(order.getCartItems().get(1).getQuantity(), equalTo(2)),
+                () -> assertThat(order.getTotalQuantity(), equalTo(3)),
+                () -> assertThat(order.getTotalPrice(), equalTo(BigDecimal.valueOf(449.97)))
+        );
+    }
+
+
+
+
 
     /**
      * Helper methods for creating fake order from customer.
+     *
+     * First five methods create Dto objects.
      */
     private CustomerOrderRequest getCustomerOrderRequest(){
         CustomerOrderRequest request = new CustomerOrderRequest();
@@ -164,6 +248,15 @@ class FormatCustomerOrderImplTest {
         request.setItems(getCartItemValidateDtoArray());
         request.setTotalQuantity(3);
         request.setTotalPrice(BigDecimal.valueOf(449.97));
+        return request;
+    }
+
+    private CustomerOrderRequest getCustomerOrderRequestWithTooManyProductsBought(){
+        CustomerOrderRequest request = new CustomerOrderRequest();
+        request.setCustomer(getCustomerDto());
+        request.setItems(getCartItemValidateDtoArrayWithToManyProducts());
+        request.setTotalQuantity(30);
+        request.setTotalPrice(BigDecimal.valueOf(3749.7));
         return request;
     }
 
@@ -195,6 +288,22 @@ class FormatCustomerOrderImplTest {
         return new CartItemValidateDto[]{item1, item2};
     }
 
+    private CartItemValidateDto[] getCartItemValidateDtoArrayWithToManyProducts(){
+        CartItemValidateDto item1 = new CartItemValidateDto();
+        item1.setProductId(1L);
+        item1.setName("God of War 4");
+        item1.setUnitPrice(BigDecimal.valueOf(49.99));
+        item1.setQuantity(15);
+
+        CartItemValidateDto item2 = new CartItemValidateDto();
+        item2.setProductId(2L);
+        item2.setName("Final Fantasy VII Remake");
+        item2.setUnitPrice(BigDecimal.valueOf(199.99));
+        item2.setQuantity(15);
+
+        return new CartItemValidateDto[]{item1, item2};
+    }
+
     private List<CartItem> getCartItems(){
         CartItem cartItem1 = new CartItem();
         cartItem1.setProductId(1L);
@@ -211,6 +320,10 @@ class FormatCustomerOrderImplTest {
         return new ArrayList<>(List.of(cartItem1,cartItem2));
     }
 
+    /**
+     * This two methods are for mock response. They simulate the database return of products, when the database/stock
+     * item count is higher than customer order quantity.
+     */
     private Product getProductOneWithAboveStockCount(){
         Product product1 = new Product();
         product1.setProductId(1L);
@@ -227,6 +340,10 @@ class FormatCustomerOrderImplTest {
         return product2;
     }
 
+    /**
+     * This two methods are for mock response. They simulate the database return of products, when the database/stock
+     * item count is lower than customer order quantity.
+     */
     private Product getProductOneWithUnderStockCount(){
         Product product1 = new Product();
         product1.setProductId(1L);
