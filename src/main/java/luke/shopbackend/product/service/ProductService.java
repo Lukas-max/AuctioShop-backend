@@ -4,13 +4,13 @@ import luke.shopbackend.product.model.Product;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.product.model.ProductRequest;
 import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Base64;
 
 @Service
@@ -101,8 +101,7 @@ public class ProductService {
      * And it's set to protected for usability in ProductServiceTest.class.
      */
     protected byte[] getStandardImage() throws IOException {
-        String PATH = "src/main/resources/static/empty.jpg";
-        File file = new File(PATH);
-        return Files.readAllBytes(file.toPath());
+        Resource resource = new ClassPathResource("/static/empty.jpg");
+        return resource.getInputStream().readAllBytes();
     }
 }
