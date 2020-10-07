@@ -110,6 +110,5 @@ It's mainly for registering new users. The user data validation is on the front 
 Localy we use ResponseStatusException, and besides that for validation we have our own custom ResponseEntityExceptionHandler, that overrides handleMethodArgumentNotValid with custom exception message. And OrderNotFound exception when asking for order that does not yet exist.
 
 ### Security
-Although Basic auth was first implemented now the class is moved outside the component scan and JWT took it's place.
 JwtAuthenticationController takes the credentials through AuthenticationRequest object and authenticates against Springs Authentication Manager. We have our own custom implementation of UserDetailsService so it validates data against our own database and if correct sends UserDetails. We then again loadTheUserByUsername and by it we create Json web token which we send to the client with some other added data for now.
 
