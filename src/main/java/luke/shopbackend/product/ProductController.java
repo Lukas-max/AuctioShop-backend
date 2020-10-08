@@ -73,8 +73,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductRequest productRequest)
             throws IOException {
-        Product product = productService.formatProduct(productRequest);
-        productRepository.save(product);
+        Product product = productService.persistProduct(productRequest);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -88,37 +87,17 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductRequest productRequest)
             throws IOException {
-        boolean isImageChanged = productRequest.getProductImage() != null;
-        Product product = productService.formatProductForUpdate(productRequest, isImageChanged);
 
-        if (isImageChanged){
-            productRepository.save(product);
-        }else{
-            productRepository.saveProductWithoutImage(
-                    product.getProductId(),
-                    product.getSku(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getUnitPrice(),
-                    product.isActive(),
-                    product.getUnitsInStock(),
-                    product.getDateTimeCreated(),
-                    product.getDateTimeUpdated(),
-                    product.getProductCategory());
-        }
-
+        Product product = productService.updateProduct(productRequest);
         return ResponseEntity.accepted().body(product);
     }
 
     @DeleteMapping(path = "/product/{id}")
     public void deleteById(@PathVariable Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isPresent()) {
-            productRepository.deleteById(id);
-        } else {
+        if (optionalProduct.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product with id: " + id);
-        }
+
+            productRepository.deleteById(id);
     }
-
-
 }

@@ -2,10 +2,12 @@ package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.product.model.ProductRequest;
+import luke.shopbackend.product.repository.ProductRepository;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,6 +17,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Optional;
@@ -23,18 +26,109 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 
 class ProductServiceTest {
 
     @Mock
     private ProductCategoryRepository categoryRepository;
+    @Mock
+    private ProductRepository productRepository;
     @InjectMocks
     private ProductService productService;
 
     @BeforeEach
     public void setupMocks(){
         MockitoAnnotations.initMocks(this);
+    }
+
+    /**
+     * ProductService().updateProduct should save whole Product if image is added. (not null).
+     */
+    @Test
+    void updateProductShouldPersistWholeProductObjectIfImageAdded() throws IOException {
+        //given
+        ProductRequest productRequest = getProductRequestForUpdateWithNewImage();
+        given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
+        ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
+
+        //when
+        Product product = productService.updateProduct(productRequest);
+
+        //then
+        then(productRepository).should(times(1)).save(productCaptor.capture());
+
+        assertNotNull(productRequest.getProductImage());
+        assertNotNull(product.getProductImage());
+
+        assertAll(
+                () -> assertThat(productCaptor.getValue().getProductId(), equalTo(productRequest.getProductId())),
+                () -> assertThat(productCaptor.getValue().getSku(), equalTo(productRequest.getSku())),
+                () -> assertThat(productCaptor.getValue().getName(), equalTo(productRequest.getName())),
+                () -> assertThat(productCaptor.getValue().getDescription(), equalTo(productRequest.getDescription())),
+                () -> assertThat(productCaptor.getValue().getUnitPrice(), equalTo(productRequest.getUnitPrice())),
+                () -> assertThat(productCaptor.getValue().getUnitsInStock(), is(equalTo(productRequest.getUnitsInStock()))),
+                () -> assertThat(productCaptor.getValue().getDateTimeCreated(), is(equalTo(productRequest.getDateTimeCreated()))),
+                () -> assertThat(productCaptor.getValue().getProductCategory().getCategoryName(), is(equalTo("Gry"))),
+                () -> assertThat(productCaptor.getValue().getProductCategory().getCategoryName(), is(not(equalTo("Elektronika"))))
+        );
+    }
+
+    /**
+     * ProductService().updateProduct should save the object without image if no image is added.
+     */
+    @Test
+    void updateProductShouldPersistObjectWithoutImageIfImageWasNotAdded() throws IOException {
+        //given
+        ProductRequest productRequest = getProductRequestForUpdateWithoutNewImage();
+        given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
+
+        ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> skuCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> nameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> descriptionCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<BigDecimal> unitPriceCaptor = ArgumentCaptor.forClass(BigDecimal.class);
+        ArgumentCaptor<Boolean> isActiveCaptor = ArgumentCaptor.forClass(Boolean.class);
+        ArgumentCaptor<Integer> inStockCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<Timestamp> dateTimeCreatedCaptor = ArgumentCaptor.forClass(Timestamp.class);
+        ArgumentCaptor<Timestamp> dateTimeUpdatedCaptor = ArgumentCaptor.forClass(Timestamp.class);
+        ArgumentCaptor<ProductCategory> productCategoryCaptor = ArgumentCaptor.forClass(ProductCategory.class);
+
+        //when
+        Product product = productService.updateProduct(productRequest);
+
+        //then
+        then(productRepository).should(never()).save(product);
+        then(productRepository).should(times(1)).saveProductWithoutImage(
+                productIdCaptor.capture(),
+                skuCaptor.capture(),
+                nameCaptor.capture(),
+                descriptionCaptor.capture(),
+                unitPriceCaptor.capture(),
+                isActiveCaptor.capture(),
+                inStockCaptor.capture(),
+                dateTimeCreatedCaptor.capture(),
+                dateTimeUpdatedCaptor.capture(),
+                productCategoryCaptor.capture()
+        );
+
+        assertNull(productRequest.getProductImage());
+        assertNull(product.getProductImage());
+
+        assertAll(
+                () -> assertThat(productIdCaptor.getValue(), equalTo(productRequest.getProductId())),
+                () -> assertThat(skuCaptor.getValue(), equalTo(productRequest.getSku())),
+                () -> assertThat(nameCaptor.getValue(), equalTo(productRequest.getName())),
+                () -> assertThat(descriptionCaptor.getValue(), equalTo(productRequest.getDescription())),
+                () -> assertThat(unitPriceCaptor.getValue(), equalTo(productRequest.getUnitPrice())),
+                () -> assertThat(inStockCaptor.getValue(), is(equalTo(productRequest.getUnitsInStock()))),
+                () -> assertThat(dateTimeCreatedCaptor.getValue(), is(equalTo(productRequest.getDateTimeCreated()))),
+                () -> assertThat(productCategoryCaptor.getValue().getCategoryName(), is(equalTo("Gry"))),
+                () -> assertThat(productCategoryCaptor.getValue().getCategoryName(), is(not(equalTo("Elektronika"))))
+        );
     }
 
     /**
@@ -119,7 +213,7 @@ class ProductServiceTest {
      * without user adding a new image and units in stock set to 0.
      */
     @Test
-    void formatProductForUpdate_withNoNewImage() throws IOException {
+    void formatProductForUpdateWithNoNewImage() throws IOException {
         //given
         ProductRequest productRequest = getProductRequestForUpdateWithoutNewImage();
         given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
@@ -155,7 +249,7 @@ class ProductServiceTest {
      * with user adding an image, and unistInStock > 0.
      */
     @Test
-    void formatProductForUpdate_withUpdatedImage() throws IOException {
+    void formatProductForUpdateWithUpdatedImage() throws IOException {
         //given
         ProductRequest productRequest = getProductRequestForUpdateWithNewImage();
         given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
@@ -232,6 +326,7 @@ class ProductServiceTest {
      */
     private ProductRequest getProductRequestForUpdateWithoutNewImage(){
         ProductRequest productRequest = new ProductRequest();
+        productRequest.setProductId(1L);
         productRequest.setSku("111");
         productRequest.setName("God of War 4");
         productRequest.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");
@@ -250,6 +345,7 @@ class ProductServiceTest {
      */
     private ProductRequest getProductRequestForUpdateWithNewImage() throws IOException {
         ProductRequest productRequest = new ProductRequest();
+        productRequest.setProductId(1L);
         productRequest.setSku("111");
         productRequest.setName("God of War 4");
         productRequest.setDescription("To jest test opisu gry. To jest test opisu gry. To jest test opisu gry. ");

@@ -1,6 +1,7 @@
 package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
+import luke.shopbackend.product.repository.ProductRepository;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.product.model.ProductRequest;
 import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
@@ -17,10 +18,44 @@ import java.util.Base64;
 public class ProductService {
 
     private final ProductCategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
 
-    public ProductService(ProductCategoryRepository categoryRepository) {
+    public ProductService(ProductCategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
+    }
+
+    public Product persistProduct(ProductRequest productRequest) throws IOException {
+        Product product = formatProduct(productRequest);
+        return productRepository.save(product);
+    }
+
+    /**
+     * This will format ProductRequest (Dto) to Product using method below. Then, if added new image it will
+     * save it with the image, or if the image is null, it will persist the object without
+     * persisting the image field.
+     */
+    public Product updateProduct(ProductRequest productRequest) throws IOException {
+        boolean isImageChanged = productRequest.getProductImage() != null;
+        Product product = formatProductForUpdate(productRequest, isImageChanged);
+
+        if (isImageChanged){
+            productRepository.save(product);
+        }else{
+            productRepository.saveProductWithoutImage(
+                    product.getProductId(),
+                    product.getSku(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getUnitPrice(),
+                    product.isActive(),
+                    product.getUnitsInStock(),
+                    product.getDateTimeCreated(),
+                    product.getDateTimeUpdated(),
+                    product.getProductCategory());
+        }
+        return product;
     }
 
     /**
@@ -28,7 +63,7 @@ public class ProductService {
      * @return Product.class from formatting ProductRequest. Product has an image wrapped in byte[].
      * Whereas ProductRequest has base64 data String in its place, that we must split and decode.
      */
-    public Product formatProduct(ProductRequest request) throws IOException {
+    protected Product formatProduct(ProductRequest request) throws IOException {
         return new Product.ProductBuilder()
                 .buildSku(request.getSku())
                 .buildName(request.getName())
@@ -47,7 +82,7 @@ public class ProductService {
      * Method similar to that above. Just meant to work with updating a product.
      *  -> Product.isActive is set on the client side depending on the number of products.
      */
-    public Product formatProductForUpdate(ProductRequest request, boolean isImageChanged)
+    protected Product formatProductForUpdate(ProductRequest request, boolean isImageChanged)
             throws IOException{
         return new Product.ProductBuilder()
                 .buildId(request.getProductId())
