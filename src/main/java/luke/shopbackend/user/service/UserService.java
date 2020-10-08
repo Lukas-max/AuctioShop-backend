@@ -64,7 +64,7 @@ public class UserService {
      * b) username already exists in database
      * c) email already exists in database
      */
-    private void validateRegisterData(UserRequest request) {
+    protected void validateRegisterData(UserRequest request) {
         if (request.getId() != null)
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
                     "Użytkownik z ustawionym ID nie może być zapisany w bazie.");
