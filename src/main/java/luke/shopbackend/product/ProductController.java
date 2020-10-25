@@ -31,7 +31,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<Product>> getAllProducts(
-            @RequestParam(name = "page", defaultValue = "1") int pageNo,
+            @RequestParam(name = "page", defaultValue = "0") int pageNo,
             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
         Page<Product> products = productRepository.findAll(page);
@@ -50,7 +50,7 @@ public class ProductController {
     @GetMapping(path = "/getByCategoryId")
     public ResponseEntity<Page<Product>> getProductsByCategoryId(
             @RequestParam(name = "categoryId") Long categoryId,
-            @RequestParam(name = "page", defaultValue = "1") int pageNo,
+            @RequestParam(name = "page", defaultValue = "0") int pageNo,
             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
         Page<Product> productsByCategoryId = productRepository
@@ -62,7 +62,7 @@ public class ProductController {
     @GetMapping(path = "/name")
     public ResponseEntity<Page<Product>> getProductsByName
             (@RequestParam(name = "keyWord") String name,
-             @RequestParam(name = "page", defaultValue = "1") int pageNo,
+             @RequestParam(name = "page", defaultValue = "0") int pageNo,
              @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
         Page<Product> products = productRepository.findByNameContainsIgnoreCase(name, page);

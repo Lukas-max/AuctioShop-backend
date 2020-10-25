@@ -1,10 +1,14 @@
 package luke.shopbackend.user.service;
 
+import luke.shopbackend.order.model.entity.CustomerOrder;
+import luke.shopbackend.order.repository.CustomerOrderRepository;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
 import luke.shopbackend.user.repository.RoleRepository;
 import luke.shopbackend.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,14 +23,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerOrderRepository orderRepository;
 
     public UserService(
             UserRepository userRepository,
             RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            CustomerOrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.orderRepository = orderRepository;
     }
 
     /**
@@ -36,6 +43,25 @@ public class UserService {
         List<User> allUsers = new ArrayList<>();
         userRepository.findAll().forEach(allUsers::add);
         return allUsers;
+    }
+
+    /**
+     * Returns the page of User data with order and address.
+     */
+    public Page<CustomerOrder> findUserWithDataById(Long id, Pageable pageable){
+        return orderRepository.getUserWithOrderData(id, pageable);
+    }
+
+    /**
+     * @return User from database. Find by injected username.
+     */
+    public User getUserByUsername(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Nie znaleziono w bazie użytkownika o nazwie: " + username);
+
+        return userOptional.get();
     }
 
     /**

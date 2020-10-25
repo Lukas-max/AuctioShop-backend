@@ -1,6 +1,7 @@
 package luke.shopbackend.order.model.entity;
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
 import luke.shopbackend.order.model.embeddable.CartItem;
+import luke.shopbackend.user.model.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "customer_order")
+@NamedQueries({
+        @NamedQuery(name = "CustomerOrder.getUserWithOrderData",
+                query = "Select o from CustomerOrder o where o.user.id = ?1")
+})
 public class CustomerOrder implements Serializable {
 
     @Id
@@ -30,6 +35,10 @@ public class CustomerOrder implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public CustomerOrder() {
     }
@@ -79,6 +88,16 @@ public class CustomerOrder implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
 
     @Override
     public String toString() {

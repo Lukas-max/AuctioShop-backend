@@ -47,11 +47,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return handleExceptionInternal(ex, response, headers, response.getStatus(), request);
     }
 
-    /**
-     *
-     * Second implementation of handleMethodArgumentNotValid. Done and left here for training
-     * purpose.
-     */
+   // Second implementation of handleMethodArgumentNotValid. Done and left here for training purpose.
 //    @Override
 //    protected ResponseEntity<Object> handleMethodArgumentNotValid(
 //            MethodArgumentNotValidException ex,

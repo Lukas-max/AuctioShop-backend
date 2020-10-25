@@ -8,6 +8,8 @@ import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.order.repository.CustomerOrderRepository;
+import luke.shopbackend.user.model.User;
+import luke.shopbackend.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,14 +23,16 @@ import java.util.List;
 public class OrderService {
     private final CustomerOrderRepository customerOrderRepository;
     private final FormatCustomerOrder format;
+    private final UserService userService;
 
 
     public OrderService(
             CustomerOrderRepository customerOrderRepository,
-            FormatCustomerOrder formatCustomerOrder) {
-        ;
+            FormatCustomerOrder formatCustomerOrder,
+            UserService userService) {
         this.customerOrderRepository = customerOrderRepository;
         this.format = formatCustomerOrder;
+        this.userService = userService;
     }
 
     /**
@@ -54,7 +58,25 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT,
                     "Nie ma już przedmiotu/przedmiotów umieszczonych w koszyku");
         else
-            return customerOrderRepository.save(customerOrder);
+            return orderRequest.getUsername() != null ?
+                    saveOrderRegisteredUser(customerOrder, orderRequest.getUsername())
+                    : saveOrderForeignUser(customerOrder);
+    }
+
+    /**
+     * Saves order of unregisterd user.
+     */
+    protected CustomerOrder saveOrderForeignUser(CustomerOrder customerOrder){
+        return customerOrderRepository.save(customerOrder);
+    }
+
+    /**
+     * Saves order of registered user.
+     */
+    protected CustomerOrder saveOrderRegisteredUser(CustomerOrder customerOrder, String username){
+        User user = userService.getUserByUsername(username);
+        customerOrder.setUser(user);
+        return customerOrderRepository.save(customerOrder);
     }
 
     /**

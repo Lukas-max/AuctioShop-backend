@@ -12,7 +12,7 @@ public class UserRequest {
     private Long id;
 
     @NotEmpty(message = "Pole nazwa użytkownika musi zawierać wartość.")
-    @Size(min = 3, max = 45, message = "Nazwa użytkownika nie może mieć mniej niż 3 znaki, a więcej niż 25 znaków")
+    @Size(min = 3, max = 45, message = "Nazwa użytkownika nie może mieć mniej niż 3 znaki i więcej niż 45 znaków")
     private String username;
 
     @NotEmpty(message = "Pole nazwa użytkownika musi zawierać wartość.")

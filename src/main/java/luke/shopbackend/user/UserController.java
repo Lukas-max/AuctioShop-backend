@@ -1,9 +1,13 @@
 package luke.shopbackend.user;
 
 
+import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.user.service.UserService;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +38,17 @@ public class UserController {
             return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
         else
             return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Page<CustomerOrder>> getUserWithAllDataById(
+            @PathVariable Long id,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size){
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerOrder> orders = userService.findUserWithDataById(id, pageable);
+        return ResponseEntity.ok(orders);
     }
 
     @PostMapping(path = "/register")

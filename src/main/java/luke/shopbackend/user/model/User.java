@@ -1,9 +1,11 @@
 package luke.shopbackend.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import luke.shopbackend.order.model.entity.CustomerOrder;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +24,10 @@ public class User implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CustomerOrder> orders = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -77,6 +83,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public List<CustomerOrder> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<CustomerOrder> orders) {
+        this.orders = orders;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -85,6 +99,8 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -92,6 +108,7 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", orders=" + orders +
                 ", roles=" + roles +
                 '}';
     }

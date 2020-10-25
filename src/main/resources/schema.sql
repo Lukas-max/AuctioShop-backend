@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS customer_order (
 order_id BIGSERIAL PRIMARY KEY,
 total_price NUMERIC(19,2),
 total_quantity INTEGER,
-customer_id BIGINT REFERENCES customer(customer_id)
+customer_id BIGINT REFERENCES customer(customer_id),
+user_id BIGINT REFERENCES users(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS cart_items (

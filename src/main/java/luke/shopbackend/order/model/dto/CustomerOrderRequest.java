@@ -3,11 +3,11 @@ package luke.shopbackend.order.model.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class CustomerOrderRequest {
-    private Long clientId;
     @NotNull(message = "Brak danych klienta.")
     private CustomerDto customer;
     @NotNull(message = "Brak koszyka z zakupami.")
@@ -16,14 +16,9 @@ public class CustomerOrderRequest {
     private BigDecimal totalPrice;
     @Min(value = 1, message = "Niepoprawna ilość przedmiotów w koszyku.")
     private int totalQuantity;
+    @Size(min = 3, max = 45, message = "Nazwa użytkownika nie może mieć mniej niż 3 znaki i więcej niż 45 znaków")
+    private String username;
 
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
 
     public CustomerDto getCustomer() {
         return customer;
@@ -57,14 +52,22 @@ public class CustomerOrderRequest {
         this.totalQuantity = totalQuantity;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
-        return "ClientOrderRequest{" +
-                "clientId=" + clientId +
-                ", customer=" + customer +
+        return "CustomerOrderRequest{" +
+                "customer=" + customer +
                 ", items=" + Arrays.toString(items) +
                 ", totalPrice=" + totalPrice +
                 ", totalQuantity=" + totalQuantity +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

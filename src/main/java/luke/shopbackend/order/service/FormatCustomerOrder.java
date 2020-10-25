@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface FormatCustomerOrder {
 
-    CustomerOrder getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest);
+    List<CartItem> getCartItems(CustomerOrderRequest orderRequest);
     Customer getCustomerObject(CustomerOrderRequest orderRequest);
     Address getAddress(CustomerOrderRequest orderRequest);
-    List<CartItem> getCartItems(CustomerOrderRequest orderRequest);
+    CustomerOrder getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest);
 }
