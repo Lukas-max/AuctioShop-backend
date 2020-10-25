@@ -1,12 +1,9 @@
 package luke.shopbackend.order.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import luke.shopbackend.order.model.embeddable.Address;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -31,11 +28,6 @@ public class Customer implements Serializable {
 
     @Embedded
     private Address address;
-
-    @OneToMany(mappedBy = "customer")
-    @JsonIgnore
-    private List<CustomerOrder> orderList = new ArrayList<>();
-
 
     public Customer() {
     }
@@ -96,14 +88,6 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
-    public List<CustomerOrder> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<CustomerOrder> orderList) {
-        this.orderList = orderList;
-    }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -113,7 +97,6 @@ public class Customer implements Serializable {
                 ", telephone=" + telephone +
                 ", email='" + email + '\'' +
                 ", address=" + address +
-                ", orderList=" + orderList +
                 '}';
     }
 }

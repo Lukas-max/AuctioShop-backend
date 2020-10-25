@@ -98,9 +98,7 @@ class FormatCustomerOrderImplTest {
         //telephone and address were not set by the "customer"
         assertAll(
                 () -> assertThat(customer.getTelephone(), is(nullValue())),
-                () -> assertThat(customer.getAddress().getApartmentNumber(), is(nullValue())),
-                () -> assertThat(customer.getOrderList().size(), equalTo(0)),
-                () -> assertThat(customer.getOrderList(), emptyCollectionOf(CustomerOrder.class))
+                () -> assertThat(customer.getAddress().getApartmentNumber(), is(nullValue()))
         );
     }
 

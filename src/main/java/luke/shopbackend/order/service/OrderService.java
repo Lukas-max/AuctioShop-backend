@@ -13,6 +13,7 @@ import luke.shopbackend.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,7 +52,6 @@ public class OrderService {
         Customer customer = format.getCustomerObject(orderRequest);
         CustomerOrder customerOrder = format.getCustomerOrder(cartItems, orderRequest);
 
-        customer.getOrderList().add(customerOrder);
         customerOrder.setCustomer(customer);
 
         if (customerOrder.getTotalPrice().equals(BigDecimal.valueOf(0)) && customerOrder.getTotalQuantity() == 0)
@@ -75,6 +75,9 @@ public class OrderService {
      */
     protected CustomerOrder saveOrderRegisteredUser(CustomerOrder customerOrder, String username){
         User user = userService.getUserByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Nie znaleziono użytkownika o nazwie: " + username);
+
         customerOrder.setUser(user);
         return customerOrderRepository.save(customerOrder);
     }
