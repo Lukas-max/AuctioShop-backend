@@ -25,13 +25,9 @@ To run this part of the app you need to:
 - [x] In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
 - [x] Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will set up your database with data during application start.
 - [x] When running from a compiler, go to configuration and set Environment variables for:
-1. spring.datasource.username=
-2. spring.datasource.password=
-3. Shop.admin.username=
-4. Shop.admin.password=
-5. Shop.token=  (this is the secret key for JSON Web Token hashing)
+Shop.admin.username=HERE;Shop.admin.password=HERE;Shop.token=HERE;spring.datasource.password=HERE;spring.datasource.username=HERE
 or just paste them to command line when creating a maven package.
-Hope I didn't forgot something.
+Shop.token is the secret key for JSON Web Token authentication.
 
 ### Features
 - Loading data to database - products, categories and users (with one admin account).
@@ -50,18 +46,18 @@ Hope I didn't forgot something.
 | Method | URI | Action | Active |
 |--------|-----|--------|--------|
 | `POST` | `/user` | `JWT - generate Token` | `ON` |
-| `GET` | `/user` | `BASIC - send credentials` | `OFF` |
 
 ### User Controller
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
-| `GET` | `/api/users` | `Get a list of users` | `ADMIN` | 
+| `GET` | `/api/users` | `Get a page of users` | `ADMIN` | 
+| `GET` | `/api/users/{id}` | `Get a page of orders` | `ADMIN` |
 | `POST` | `/api/users/register` | `Resgister user with  ROLE_USER` | `ALL` |
 
 ### Product Controller
 Paging defaults refer to the values in front end. If change, change both sides of the app.
 Defaults:
-page: 1
+page: 0
 size: 8
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
@@ -105,6 +101,7 @@ Also if we ran out of the items that a client wants to purchase, we send him a R
 
 ### User Controller
 It's mainly for registering new users. The user data validation is on the front end side and here. Before adding a user we check if the user has set id or the username and email are in the database. If so we throw a exception that is visible on the front end side.
+We can also get all users or all customer orders.
 
 ### Exception handling
 Localy we use ResponseStatusException, and besides that for validation we have our own custom ResponseEntityExceptionHandler, that overrides handleMethodArgumentNotValid with custom exception message. And OrderNotFound exception when asking for order that does not yet exist.
