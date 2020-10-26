@@ -29,22 +29,21 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<Page<User>> getUsers(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size
+    ) {
 
-        if (users == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not fetch users from database");
-        else if (users.isEmpty())
-            return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
-        else
-            return ResponseEntity.status(HttpStatus.OK).body(users);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> users = userService.getAllUsers(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Page<CustomerOrder>> getUserWithAllDataById(
             @PathVariable Long id,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "20") int size){
+            @RequestParam(name = "size", defaultValue = "20") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<CustomerOrder> orders = userService.findUserWithDataById(id, pageable);

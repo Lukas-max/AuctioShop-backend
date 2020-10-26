@@ -39,10 +39,12 @@ public class UserService {
     /**
      * @return All users in database. Data without password.
      */
-    public List<User> getAllUsers() {
-        List<User> allUsers = new ArrayList<>();
-        userRepository.findAll().forEach(allUsers::add);
-        return allUsers;
+    public Page<User> getAllUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        if (users.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie ma użytkowników w bazie danych");
+
+        return  users;
     }
 
     /**
