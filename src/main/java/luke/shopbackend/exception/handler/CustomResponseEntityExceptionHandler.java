@@ -1,7 +1,6 @@
 package luke.shopbackend.exception.handler;
 
 import luke.shopbackend.exception.OrderNotFoundException;
-import luke.shopbackend.exception.UserNotFoundException;
 import luke.shopbackend.exception.model.ErrorValidationResponse;
 import luke.shopbackend.exception.model.ExceptionMessage;
 import org.springframework.http.HttpHeaders;
@@ -78,16 +77,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
      */
     @ExceptionHandler
     public ResponseEntity<ExceptionMessage> handleOrderNotFoundException(OrderNotFoundException ex){
-        ExceptionMessage message = new ExceptionMessage();
-        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        message.setStatus(404);
-        message.setMessage(ex.getMessage());
-
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ExceptionMessage> handleUserNotFoundException(UserNotFoundException ex){
         ExceptionMessage message = new ExceptionMessage();
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));
         message.setStatus(404);

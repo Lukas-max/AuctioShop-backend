@@ -75,9 +75,6 @@ public class OrderService {
      */
     protected CustomerOrder saveOrderRegisteredUser(CustomerOrder customerOrder, String username){
         User user = userService.getUserByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException("Nie znaleziono użytkownika o nazwie: " + username);
-
         customerOrder.setUser(user);
         return customerOrderRepository.save(customerOrder);
     }
