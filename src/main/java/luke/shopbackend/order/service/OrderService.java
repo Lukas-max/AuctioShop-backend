@@ -97,7 +97,7 @@ public class OrderService {
 
     public Customer getFakeCustomerData(){
         return new Customer("RODO", "RODO", 0L, "RODO", new Address(
-                "RODO", 0,0, "RODO", "RODO" )
+                "RODO","RODO", 0,0, "RODO", "RODO" )
         );
     }
 }

@@ -15,6 +15,8 @@ public class CustomerDto {
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Musisz podać poprawny email.")
     private String email;
     private String country;
+    @NotEmpty(message = "Pole ulica nie może być puste.")
+    private String street;
     @Min(value = 1, message = "Numer domu to przynajmniej 1.")
     private Integer houseNumber;
     private Integer apartmentNumber;
@@ -64,6 +66,14 @@ public class CustomerDto {
         this.country = country;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public Integer getHouseNumber() {
         return houseNumber;
     }
@@ -104,6 +114,7 @@ public class CustomerDto {
                 ", telephone=" + telephone +
                 ", email='" + email + '\'' +
                 ", country='" + country + '\'' +
+                ", street='" + street + '\'' +
                 ", houseNumber=" + houseNumber +
                 ", apartmentNumber=" + apartmentNumber +
                 ", postalCode='" + postalCode + '\'' +

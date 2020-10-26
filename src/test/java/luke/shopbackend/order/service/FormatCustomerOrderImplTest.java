@@ -14,8 +14,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -92,6 +90,7 @@ class FormatCustomerOrderImplTest {
                 () -> assertThat(customer.getTelephone(), equalTo(orderRequest.getCustomer().getTelephone())),
                 () -> assertThat(customer.getEmail(), equalTo(orderRequest.getCustomer().getEmail())),
                 () -> assertThat(customer.getAddress().getCountry(), equalTo(orderRequest.getCustomer().getCountry())),
+                () -> assertThat(customer.getAddress().getStreet(), equalTo(orderRequest.getCustomer().getStreet())),
                 () -> assertThat(customer.getAddress().getHouseNumber(), equalTo(orderRequest.getCustomer().getHouseNumber())),
                 () -> assertThat(customer.getAddress().getApartmentNumber(), equalTo(orderRequest.getCustomer().getApartmentNumber())),
                 () -> assertThat(customer.getAddress().getPostalCode(), equalTo(orderRequest.getCustomer().getPostalCode())),

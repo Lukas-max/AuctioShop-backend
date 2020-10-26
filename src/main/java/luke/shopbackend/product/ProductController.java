@@ -39,7 +39,7 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
-    @GetMapping(path = "/product/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
         return productRepository.findById(id)
                 .map(ResponseEntity::ok)

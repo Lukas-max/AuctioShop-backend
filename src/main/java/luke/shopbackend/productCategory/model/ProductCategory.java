@@ -1,12 +1,7 @@
 package luke.shopbackend.productCategory.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import luke.shopbackend.product.model.Product;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "product_category")
@@ -19,10 +14,6 @@ public class ProductCategory implements Serializable {
 
     @Column(name = "category_name")
     private String categoryName;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productCategory")
-    @JsonManagedReference
-    private Set<Product> products = new HashSet<>();
 
     public Long getProductCategoryId() {
         return productCategoryId;
@@ -38,14 +29,6 @@ public class ProductCategory implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
 }

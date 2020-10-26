@@ -54,6 +54,7 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
     public Address getAddress(CustomerOrderRequest orderRequest) {
         return new Address(
                 orderRequest.getCustomer().getCountry(),
+                orderRequest.getCustomer().getStreet(),
                 orderRequest.getCustomer().getHouseNumber(),
                 orderRequest.getCustomer().getApartmentNumber(),
                 orderRequest.getCustomer().getPostalCode(),

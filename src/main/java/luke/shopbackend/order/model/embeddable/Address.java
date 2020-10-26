@@ -9,6 +9,9 @@ public class Address {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "street")
+    private String street;
+
     @Column(name = "house_number")
     private Integer houseNumber;
 
@@ -24,8 +27,10 @@ public class Address {
     public Address() {
     }
 
-    public Address(String country, Integer houseNumber, Integer apartmentNumber, String postalCode, String city) {
+    public Address(String country, String street, Integer houseNumber, Integer apartmentNumber,
+            String postalCode, String city) {
         this.country = country;
+        this.street = street;
         this.houseNumber = houseNumber;
         this.apartmentNumber = apartmentNumber;
         this.postalCode = postalCode;
@@ -34,6 +39,7 @@ public class Address {
 
     public Address(Address address) {
         this.country = address.country;
+        this.street = address.street;
         this.houseNumber = address.houseNumber;
         this.apartmentNumber = address.apartmentNumber;
         this.postalCode = address.postalCode;
@@ -46,6 +52,14 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public Integer getHouseNumber() {
@@ -84,6 +98,7 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "country='" + country + '\'' +
+                ", street='" + street + '\'' +
                 ", houseNumber=" + houseNumber +
                 ", apartmentNumber=" + apartmentNumber +
                 ", postalCode='" + postalCode + '\'' +

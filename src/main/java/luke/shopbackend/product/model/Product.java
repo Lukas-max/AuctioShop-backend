@@ -1,6 +1,5 @@
 package luke.shopbackend.product.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import org.hibernate.annotations.Type;
 
@@ -58,17 +57,13 @@ public class Product implements Serializable {
     private int unitsInStock;
 
     @Column(name = "date_time_created")
-//    @CreationTimestamp
     private Timestamp dateTimeCreated;
 
     @Column(name = "date_time_updated")
-//    @UpdateTimestamp
     private Timestamp dateTimeUpdated;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",
-            nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory productCategory;
 
     public Product() {
