@@ -97,8 +97,6 @@ public class CustomerOrder implements Serializable {
         this.user = user;
     }
 
-
-
     @Override
     public String toString() {
         return "CustomerOrder{" +
@@ -106,7 +104,8 @@ public class CustomerOrder implements Serializable {
                 ", cartItems=" + cartItems +
                 ", totalPrice=" + totalPrice +
                 ", totalQuantity=" + totalQuantity +
-                ", customerId=" + customer.getCustomerId() +
+                ", customer=" + customer +
+                ", user=" + user +
                 '}';
     }
 }

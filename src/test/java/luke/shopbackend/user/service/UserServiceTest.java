@@ -13,6 +13,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -69,6 +71,24 @@ class UserServiceTest {
                 () -> assertThat(userRequest.getPassword(), not(equalTo(userCaptor.getValue().getPassword()))),
                 () -> assertThat(userCaptor.getValue().getPassword(), is("Encoded:" + userRequest.getPassword()))
         );
+    }
+
+    /**
+     * For .getUserByUsername(String username) ->
+     */
+    @Test
+    void getUserByUsernameShouldThrowExceptionIfNoUserFound(){
+        //given
+        String username = "MyUser";
+        given(userRepository.findByUsername(username)).willReturn(Optional.empty());
+
+        //when
+        //then
+        ResponseStatusException e = assertThrows(ResponseStatusException.class,
+                () -> userService.getUserByUsername(username));
+
+        assertThat(e.getStatus(), is(HttpStatus.NOT_FOUND));
+        assertThat(e.getReason(), equalTo("Nie znaleziono w bazie użytkownika o nazwie: " + username));
     }
 
     /**
