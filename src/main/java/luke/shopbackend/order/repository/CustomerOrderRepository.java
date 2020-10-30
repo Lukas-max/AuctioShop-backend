@@ -7,10 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface CustomerOrderRepository extends PagingAndSortingRepository<CustomerOrder, Long> {
 
-    @Query(name = "CustomerOrder.getUserWithOrderData")
-    Page<CustomerOrder> getUserWithOrderData(Long id, Pageable pageable);
+    @Query(name = "CustomerOrder.getCustomerOrderByUserId")
+    Page<CustomerOrder> getCustomerOrderByUserId(Long id, Pageable pageable);
+
+    @Query(name = "CustomerOrder.getCustomerOrderByOrderId")
+    Optional<CustomerOrder> getCustomerOrderByOrderId(Long id);
 }

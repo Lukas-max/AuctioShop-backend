@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,8 +48,8 @@ public class UserService {
     /**
      * Returns the page of User data with order and address.
      */
-    public Page<CustomerOrder> findUserWithDataById(Long id, Pageable pageable){
-        return orderRepository.getUserWithOrderData(id, pageable);
+    public Page<CustomerOrder> findUserAndOrderWithDataByUserId(Long id, Pageable pageable){
+        return orderRepository.getCustomerOrderByUserId(id, pageable);
     }
 
     /**

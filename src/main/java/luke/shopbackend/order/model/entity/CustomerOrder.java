@@ -1,4 +1,5 @@
 package luke.shopbackend.order.model.entity;
+
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.user.model.User;
@@ -12,8 +13,10 @@ import java.util.List;
 @Entity
 @Table(name = "customer_order")
 @NamedQueries({
-        @NamedQuery(name = "CustomerOrder.getUserWithOrderData",
-                query = "Select o from CustomerOrder o where o.user.id = ?1")
+        @NamedQuery(name = "CustomerOrder.getCustomerOrderByUserId",
+                query = "Select o from CustomerOrder o where o.user.id = ?1"),
+        @NamedQuery(name = "CustomerOrder.getCustomerOrderByOrderId",
+                query = "Select o from CustomerOrder o where o.orderId = ?1")
 })
 public class CustomerOrder implements Serializable {
 
@@ -43,7 +46,7 @@ public class CustomerOrder implements Serializable {
     public CustomerOrder() {
     }
 
-    public CustomerOrder(List<CartItem> items , CustomerOrderRequest request) {
+    public CustomerOrder(List<CartItem> items, CustomerOrderRequest request) {
         this.cartItems = new LinkedList<>(items);
         this.totalPrice = request.getTotalPrice();
         this.totalQuantity = request.getTotalQuantity();

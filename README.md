@@ -45,7 +45,7 @@ Shop.token is the secret key for JSON Web Token authentication.
 ### Security 
 | Method | URI | Action | Active |
 |--------|-----|--------|--------|
-| `POST` | `/user` | `JWT - generate Token` | `ON` |
+| `POST` | `\user` | `JWT - generate Token` | `ON` |
 
 ### User Controller
 | Method | URI | Action | Security |

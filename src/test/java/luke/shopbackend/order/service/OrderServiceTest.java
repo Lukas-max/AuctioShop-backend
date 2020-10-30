@@ -118,7 +118,7 @@ class OrderServiceTest {
         CartItem cartItem = new CartItem();
         cartItem.setProductId(1L);
         cartItem.setName("God of War 4");
-        cartItem.setUnitPriceAtBought(BigDecimal.valueOf(49.99));
+        cartItem.setUnitPrice(BigDecimal.valueOf(49.99));
         cartItem.setQuantity(1);
 
         return new ArrayList<>(List.of(cartItem));
@@ -128,7 +128,7 @@ class OrderServiceTest {
         CartItem cartItem = new CartItem();
         cartItem.setProductId(1L);
         cartItem.setName("God of War 4");
-        cartItem.setUnitPriceAtBought(BigDecimal.valueOf(49.99));
+        cartItem.setUnitPrice(BigDecimal.valueOf(49.99));
         cartItem.setQuantity(0);
 
         return new ArrayList<>(List.of(cartItem));

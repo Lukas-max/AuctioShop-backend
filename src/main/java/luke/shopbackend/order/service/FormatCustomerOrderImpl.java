@@ -127,7 +127,7 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
             int quantity = i.getQuantity();
             totalQuantity += quantity;
             totalPrice = totalPrice.add(
-                    i.getUnitPriceAtBought()
+                    i.getUnitPrice()
                             .multiply(
                                     BigDecimal.valueOf(quantity)));
         }

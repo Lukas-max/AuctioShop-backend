@@ -44,7 +44,7 @@ public class UserController {
             @RequestParam(name = "size", defaultValue = "20") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<CustomerOrder> orders = userService.findUserWithDataById(id, pageable);
+        Page<CustomerOrder> orders = userService.findUserAndOrderWithDataByUserId(id, pageable);
         return ResponseEntity.ok(orders);
     }
 

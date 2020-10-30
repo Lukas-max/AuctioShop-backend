@@ -13,7 +13,6 @@ import luke.shopbackend.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,6 +33,22 @@ public class OrderService {
         this.customerOrderRepository = customerOrderRepository;
         this.format = formatCustomerOrder;
         this.userService = userService;
+    }
+
+    /**
+     * Only for ROLE_ADMIN.
+     */
+    public Page<CustomerOrder> getAllPageable(Pageable pageable) {
+        return customerOrderRepository.findAll(pageable);
+    }
+
+    /**
+     * @param id of CustomerOrder.
+     * @return one order of CustomerOrder entity.
+     */
+    public CustomerOrder getOrder(Long id) {
+        return customerOrderRepository.getCustomerOrderByOrderId(id).orElseThrow(
+                () -> new OrderNotFoundException("Nie znaleziono zamówienia o numerze: " + id));
     }
 
     /**
@@ -79,25 +94,9 @@ public class OrderService {
         return customerOrderRepository.save(customerOrder);
     }
 
-    /**
-     * @param id of CustomerOrder.
-     * @return one order of CustomerOrder entity.
-     */
-    public CustomerOrder getOrder(Long id) {
-        return customerOrderRepository.findById(id).orElseThrow(
-                () -> new OrderNotFoundException("Nie znaleziono zamówienia o numerze: " + id));
-    }
-
-    /**
-     * Only for ROLE_ADMIN.
-     */
-    public Page<CustomerOrder> getAllPageable(Pageable pageable) {
-        return customerOrderRepository.findAll(pageable);
-    }
-
-    public Customer getFakeCustomerData(){
-        return new Customer("RODO", "RODO", 0L, "RODO", new Address(
-                "RODO","RODO", 0,0, "RODO", "RODO" )
-        );
-    }
+//    public Customer getFakeCustomerData(){
+//        return new Customer("RODO", "RODO", 0L, "RODO", new Address(
+//                "RODO","RODO", 0,0, "RODO", "RODO" )
+//        );
+//    }
 }

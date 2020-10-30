@@ -4,6 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.security.core.userdetails.User;
+
+import luke.shopbackend.user.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,9 @@ public class JwtUtil {
     @Value("${Shop.token}")
     private String SECRET_KEY;
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(User user){
         Map<String, Object> claims = new HashMap<>();
-        userDetails.getAuthorities().forEach(d -> claims.put("Role", d.getAuthority()));
-        return createToken(claims, userDetails.getUsername());
+        return createToken(claims, user.getUsername());
     }
 
 //    claims to środkowa częśc tokena

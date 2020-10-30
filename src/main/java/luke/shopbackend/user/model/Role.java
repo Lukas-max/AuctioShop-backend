@@ -55,4 +55,12 @@ public class Role implements Serializable {
     public int hashCode() {
         return Objects.hash(id, role);
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", role=" + role +
+                '}';
+    }
 }

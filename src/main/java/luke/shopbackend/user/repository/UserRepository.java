@@ -1,7 +1,6 @@
 package luke.shopbackend.user.repository;
 
 import luke.shopbackend.user.model.User;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;

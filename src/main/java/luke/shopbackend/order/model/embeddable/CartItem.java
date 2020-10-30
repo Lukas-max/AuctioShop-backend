@@ -16,7 +16,7 @@ public class CartItem {
     private String name;
 
     @Column(name = "unit_price_at_bought")
-    private BigDecimal unitPriceAtBought;
+    private BigDecimal unitPrice;
 
     @Column(name = "quantity")
     private int quantity;
@@ -27,7 +27,7 @@ public class CartItem {
     public CartItem(CartItemValidateDto dto) {
         this.productId = dto.getProductId();
         this.name = dto.getName();
-        this.unitPriceAtBought = dto.getUnitPrice();
+        this.unitPrice = dto.getUnitPrice();
         this.quantity = dto.getQuantity();
     }
 
@@ -47,12 +47,12 @@ public class CartItem {
         this.name = name;
     }
 
-    public BigDecimal getUnitPriceAtBought() {
-        return unitPriceAtBought;
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setUnitPriceAtBought(BigDecimal unitPriceAtBought) {
-        this.unitPriceAtBought = unitPriceAtBought;
+    public void setUnitPrice(BigDecimal unitPriceAtBought) {
+        this.unitPrice = unitPriceAtBought;
     }
 
     public int getQuantity() {
@@ -68,7 +68,7 @@ public class CartItem {
         return "CartItem{" +
                 "productId=" + productId +
                 ", name='" + name + '\'' +
-                ", unitPriceAtBought=" + unitPriceAtBought +
+                ", unitPrice=" + unitPrice +
                 ", quantity=" + quantity +
                 '}';
     }

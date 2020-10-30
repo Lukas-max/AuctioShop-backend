@@ -61,11 +61,11 @@ class FormatCustomerOrderImplTest {
                 () -> assertThat(cartItems.get(0).getProductId(), equalTo(orderRequest.getItems()[0].getProductId())),
                 () -> assertThat(cartItems.get(0).getName(), equalTo(orderRequest.getItems()[0].getName())),
                 () -> assertThat(cartItems.get(0).getQuantity(), equalTo(orderRequest.getItems()[0].getQuantity())),
-                () -> assertThat(cartItems.get(0).getUnitPriceAtBought(), equalTo(orderRequest.getItems()[0].getUnitPrice())),
+                () -> assertThat(cartItems.get(0).getUnitPrice(), equalTo(orderRequest.getItems()[0].getUnitPrice())),
                 () -> assertThat(cartItems.get(1).getProductId(), equalTo(orderRequest.getItems()[1].getProductId())),
                 () -> assertThat(cartItems.get(1).getName(), equalTo(orderRequest.getItems()[1].getName())),
                 () -> assertThat(cartItems.get(1).getQuantity(), equalTo(orderRequest.getItems()[1].getQuantity())),
-                () -> assertThat(cartItems.get(1).getUnitPriceAtBought(), equalTo(orderRequest.getItems()[1].getUnitPrice()))
+                () -> assertThat(cartItems.get(1).getUnitPrice(), equalTo(orderRequest.getItems()[1].getUnitPrice()))
         );
     }
 
@@ -127,9 +127,9 @@ class FormatCustomerOrderImplTest {
 
         assertAll(
                 () -> assertThat(cartItems.get(0).getQuantity(), equalTo(4)),
-                () -> assertThat(cartItems.get(0).getUnitPriceAtBought(), equalTo(BigDecimal.valueOf(49.99))),
+                () -> assertThat(cartItems.get(0).getUnitPrice(), equalTo(BigDecimal.valueOf(49.99))),
                 () -> assertThat(cartItems.get(1).getQuantity(), equalTo(6)),
-                () -> assertThat(cartItems.get(1).getUnitPriceAtBought(), equalTo(BigDecimal.valueOf(199.99))),
+                () -> assertThat(cartItems.get(1).getUnitPrice(), equalTo(BigDecimal.valueOf(199.99))),
                 () -> assertThat(isRefactored, is(false))
         );
 
@@ -165,9 +165,9 @@ class FormatCustomerOrderImplTest {
 
         assertAll(
                 () -> assertThat(cartItems.get(0).getQuantity(), is(1)),
-                () -> assertThat(cartItems.get(0).getUnitPriceAtBought(), equalTo(BigDecimal.valueOf(49.99))),
+                () -> assertThat(cartItems.get(0).getUnitPrice(), equalTo(BigDecimal.valueOf(49.99))),
                 () -> assertThat(cartItems.get(1).getQuantity(), is(2)),
-                () -> assertThat(cartItems.get(1).getUnitPriceAtBought(), equalTo(BigDecimal.valueOf(199.99))),
+                () -> assertThat(cartItems.get(1).getUnitPrice(), equalTo(BigDecimal.valueOf(199.99))),
                 () -> assertThat(isRefactored, is(true))
         );
 
@@ -308,13 +308,13 @@ class FormatCustomerOrderImplTest {
         CartItem cartItem1 = new CartItem();
         cartItem1.setProductId(1L);
         cartItem1.setName("God of War 4");
-        cartItem1.setUnitPriceAtBought(BigDecimal.valueOf(49.99));
+        cartItem1.setUnitPrice(BigDecimal.valueOf(49.99));
         cartItem1.setQuantity(4);
 
         CartItem cartItem2 = new CartItem();
         cartItem2.setProductId(2L);
         cartItem2.setName("Final Fantasy VII Remake");
-        cartItem2.setUnitPriceAtBought(BigDecimal.valueOf(199.99));
+        cartItem2.setUnitPrice(BigDecimal.valueOf(199.99));
         cartItem2.setQuantity(6);
 
         return new ArrayList<>(List.of(cartItem1,cartItem2));
