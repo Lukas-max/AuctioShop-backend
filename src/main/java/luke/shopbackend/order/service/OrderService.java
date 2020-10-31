@@ -51,6 +51,14 @@ public class OrderService {
     }
 
     /**
+     * Calls out OrderService().getOrder(Long id) to check if the order exists, then deletes the CustomerOrder.
+     */
+    public void deleteCustomerOrderByOrderId(Long id){
+        CustomerOrder order = getOrder(id);
+        customerOrderRepository.delete(order);
+    }
+
+    /**
      * @param orderRequest -> it contains purchase total value and quantity, besides that dto classes like
      *                     CustomerDto - containing credentials and address.
      *                     CartItemValidateDto - containing items purchased.

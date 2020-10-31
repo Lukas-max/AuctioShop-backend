@@ -36,10 +36,14 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerOrder> getOrderById(@PathVariable Long id){
+    public ResponseEntity<CustomerOrder> getOrderByOrderId(@PathVariable Long id){
         CustomerOrder order = orderService.getOrder(id);
-        order.setCustomer(orderService.getFakeCustomerData());
         return ResponseEntity.ok().body(order);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteOrderByOrderId(@PathVariable Long id){
+        orderService.deleteCustomerOrderByOrderId(id);
     }
 
     @PostMapping
