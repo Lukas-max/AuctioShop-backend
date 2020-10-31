@@ -36,7 +36,7 @@ Shop.token is the secret key for JSON Web Token authentication.
  * Product categories endpoint  [ GET ]
  * Products endpoint [ GET, DELETE, POST, PUT ]
  * User endpoint. [ GET, POST ]
- * CustomerOrder endpoint [ GET, POST ]
+ * CustomerOrder endpoint [ GET, DELETE, POST ]
 - User registration and login.
 - Global validation of passed data.
 - Admin - adding, deleting, upgrading products.
@@ -79,6 +79,7 @@ size: 8
 |--------|-----|--------|----------|
 | `GET` | `/api/order` | `Get a page of orders with customer data` | `ADMIN` |
 | `GET` | `/api/order/{id}` | `Get order by id. No customer data.` | `ALL` |
+| `DELETE` | `/api/order/{id}` | `Delete Customer Order by it's id` | `ADMIN` |
 | `POST` | `/api/order` | `Post order/ send order of purchase` | `ALL` |
 
 ## More info
@@ -93,7 +94,7 @@ Also in the repository we have our own method to persist an object without persi
 This is used to dynamically populate the categories in sidebar-menu, and HTML option tag. (Like when adding a product or updating it). 
   
 ### Order Controller
-Has a method to get order by id, get all orders or persist a purchase order. Get all orders is only for administrator, cause it returns page of orders with customer address and credentials. Get order by id is for the client. It has set credentials and address to null, so the client can check his order by id, and no one will have the ability to check credentials of other orders.
+Has a method to get order by id, get all orders, delete order by order id, or persist a purchase order. Get all orders is only for administrator, cause it returns page of orders with customer address and credentials. Get order by id is for the client. Also delete option is only for admin.
 
 When posting the order we are doing validation of the order. It's mostly equal to front end validation, plus cors config should make that no bad data would be transferred.
 The service classes map dto objects to Customer and CustomerOrder class. The number of items bought are being decrement if the stock has ran to low and total price and quantity is recounted. Then the database stock is decremented. If the objects drops to 0 in stock it's set to non active.
