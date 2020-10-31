@@ -1,9 +1,8 @@
 package luke.shopbackend.order.model.entity;
 
-import luke.shopbackend.order.model.embeddable.Address;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer")
@@ -26,18 +25,39 @@ public class Customer implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Embedded
-    private Address address;
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "street")
+    private String street;
+
+    @Column(name = "house_number")
+    private Integer houseNumber;
+
+    @Column(name = "apartment_number")
+    private Integer apartmentNumber;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "city")
+    private String city;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, Long telephone, String email, Address address) {
+    public Customer(String firstName, String lastName, Long telephone, String email, String country,
+            String street ,Integer houseNumber, Integer apartmentNumber, String postalCode, String city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephone = telephone;
         this.email = email;
-        this.address = new Address(address);
+        this.country = country;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.apartmentNumber = apartmentNumber;
+        this.postalCode = postalCode;
+        this.city = city;
     }
 
     public Long getCustomerId() {
@@ -80,12 +100,75 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public Address getAddress() {
-        return address;
+    public String getCountry() {
+        return country;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public Integer getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public Integer getApartmentNumber() {
+        return apartmentNumber;
+    }
+
+    public void setApartmentNumber(Integer apartmentNumber) {
+        this.apartmentNumber = apartmentNumber;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(customerId, customer.customerId) &&
+                Objects.equals(firstName, customer.firstName) &&
+                Objects.equals(lastName, customer.lastName) &&
+                Objects.equals(telephone, customer.telephone) &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(country, customer.country) &&
+                Objects.equals(street, customer.street) &&
+                Objects.equals(houseNumber, customer.houseNumber) &&
+                Objects.equals(apartmentNumber, customer.apartmentNumber) &&
+                Objects.equals(postalCode, customer.postalCode) &&
+                Objects.equals(city, customer.city);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId, firstName, lastName, telephone, email, country, street, houseNumber, apartmentNumber, postalCode, city);
     }
 
     @Override
@@ -96,7 +179,12 @@ public class Customer implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", telephone=" + telephone +
                 ", email='" + email + '\'' +
-                ", address=" + address +
+                ", country='" + country + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", apartmentNumber=" + apartmentNumber +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

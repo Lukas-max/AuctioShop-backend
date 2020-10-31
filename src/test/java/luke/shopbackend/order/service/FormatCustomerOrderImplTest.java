@@ -89,18 +89,18 @@ class FormatCustomerOrderImplTest {
                 () -> assertThat(customer.getLastName(), equalTo(orderRequest.getCustomer().getLastName())),
                 () -> assertThat(customer.getTelephone(), equalTo(orderRequest.getCustomer().getTelephone())),
                 () -> assertThat(customer.getEmail(), equalTo(orderRequest.getCustomer().getEmail())),
-                () -> assertThat(customer.getAddress().getCountry(), equalTo(orderRequest.getCustomer().getCountry())),
-                () -> assertThat(customer.getAddress().getStreet(), equalTo(orderRequest.getCustomer().getStreet())),
-                () -> assertThat(customer.getAddress().getHouseNumber(), equalTo(orderRequest.getCustomer().getHouseNumber())),
-                () -> assertThat(customer.getAddress().getApartmentNumber(), equalTo(orderRequest.getCustomer().getApartmentNumber())),
-                () -> assertThat(customer.getAddress().getPostalCode(), equalTo(orderRequest.getCustomer().getPostalCode())),
-                () -> assertThat(customer.getAddress().getCity(), equalTo(orderRequest.getCustomer().getCity()))
+                () -> assertThat(customer.getCountry(), equalTo(orderRequest.getCustomer().getCountry())),
+                () -> assertThat(customer.getStreet(), equalTo(orderRequest.getCustomer().getStreet())),
+                () -> assertThat(customer.getHouseNumber(), equalTo(orderRequest.getCustomer().getHouseNumber())),
+                () -> assertThat(customer.getApartmentNumber(), equalTo(orderRequest.getCustomer().getApartmentNumber())),
+                () -> assertThat(customer.getPostalCode(), equalTo(orderRequest.getCustomer().getPostalCode())),
+                () -> assertThat(customer.getCity(), equalTo(orderRequest.getCustomer().getCity()))
         );
 
         //telephone and address were not set by the "customer"
         assertAll(
                 () -> assertThat(customer.getTelephone(), is(nullValue())),
-                () -> assertThat(customer.getAddress().getApartmentNumber(), is(nullValue()))
+                () -> assertThat(customer.getApartmentNumber(), is(nullValue()))
         );
     }
 

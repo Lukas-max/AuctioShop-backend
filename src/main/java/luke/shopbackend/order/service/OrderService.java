@@ -3,7 +3,6 @@ package luke.shopbackend.order.service;
 
 import luke.shopbackend.exception.OrderNotFoundException;
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
-import luke.shopbackend.order.model.embeddable.Address;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;

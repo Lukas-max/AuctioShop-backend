@@ -1,7 +1,6 @@
 package luke.shopbackend.order.service;
 
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
-import luke.shopbackend.order.model.embeddable.Address;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
@@ -38,8 +37,8 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
     }
 
     /**
-     * This two methods map customer data to Customer and Address class. Address class is an embeddable of
-     * Customer class. After this the entity Customer is ready to be persisted.
+     * This two methods map customer data to Customer class.
+     * After this the entity Customer is ready to be persisted.
      */
     public Customer getCustomerObject(CustomerOrderRequest orderRequest) {
         return new Customer(
@@ -47,12 +46,6 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
                 orderRequest.getCustomer().getLastName(),
                 orderRequest.getCustomer().getTelephone(),
                 orderRequest.getCustomer().getEmail(),
-                getAddress(orderRequest)
-        );
-    }
-
-    public Address getAddress(CustomerOrderRequest orderRequest) {
-        return new Address(
                 orderRequest.getCustomer().getCountry(),
                 orderRequest.getCustomer().getStreet(),
                 orderRequest.getCustomer().getHouseNumber(),

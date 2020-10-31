@@ -12,6 +12,5 @@ public interface FormatCustomerOrder {
 
     List<CartItem> getCartItems(CustomerOrderRequest orderRequest);
     Customer getCustomerObject(CustomerOrderRequest orderRequest);
-    Address getAddress(CustomerOrderRequest orderRequest);
     CustomerOrder getCustomerOrder(List<CartItem> items, CustomerOrderRequest orderRequest);
 }

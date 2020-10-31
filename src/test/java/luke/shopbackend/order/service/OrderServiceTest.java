@@ -1,7 +1,6 @@
 package luke.shopbackend.order.service;
 
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
-import luke.shopbackend.order.model.embeddable.Address;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
@@ -135,25 +134,17 @@ class OrderServiceTest {
     }
 
     private Customer getCustomer(){
-        Address address = getCustomerAddress();
-
-        Customer customer = new Customer();
-        customer.setFirstName("Marek");
-        customer.setLastName("Czarek");
-        customer.setEmail("wpjan@wp.pl");
-        customer.setTelephone(555666777L);
-        customer.setAddress(address);
-        return customer;
-    }
-
-    private Address getCustomerAddress(){
-        Address address = new Address();
-        address.setCountry("Polska");
-        address.setApartmentNumber(12);
-        address.setHouseNumber(40);
-        address.setCity("Warszawa");
-        address.setPostalCode("00-100");
-        return address;
+        return new Customer(
+                "Marek",
+                "Czarek",
+                555666777L,
+                "wpjan@wp.pl",
+                "Polska",
+                "al. Jerozolimskie" ,
+                12,
+                40,
+                "Warszawa",
+                "00-100");
     }
 
     private CustomerOrder getCustomerOrder(){
