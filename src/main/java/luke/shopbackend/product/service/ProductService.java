@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -24,6 +25,14 @@ public class ProductService {
     public ProductService(ProductCategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+    }
+
+    public void deleteProduct(Long id){
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product with id: " + id);
+
+        productRepository.deleteById(id);
     }
 
     public Product persistProduct(ProductRequest productRequest) throws IOException {

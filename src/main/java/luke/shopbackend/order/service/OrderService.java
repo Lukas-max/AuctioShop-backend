@@ -100,10 +100,4 @@ public class OrderService {
         customerOrder.setUser(user);
         return customerOrderRepository.save(customerOrder);
     }
-
-//    public Customer getFakeCustomerData(){
-//        return new Customer("RODO", "RODO", 0L, "RODO", new Address(
-//                "RODO","RODO", 0,0, "RODO", "RODO" )
-//        );
-//    }
 }

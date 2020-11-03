@@ -48,6 +48,11 @@ public class UserController {
         return ResponseEntity.ok(orders);
     }
 
+    @DeleteMapping(path = "/{id}")
+    public void deleteUserById(@PathVariable Long id){
+        userService.deleteUserAndAllUserDataByUserId(id);
+    }
+
     @PostMapping(path = "/register")
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserRequest userRequest) {
         User savedUser = userService.addUser(userRequest);

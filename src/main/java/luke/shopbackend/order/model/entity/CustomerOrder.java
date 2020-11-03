@@ -1,5 +1,6 @@
 package luke.shopbackend.order.model.entity;
 
+import jdk.jfr.Name;
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.user.model.User;
@@ -16,7 +17,13 @@ import java.util.List;
         @NamedQuery(name = "CustomerOrder.getCustomerOrderByUserId",
                 query = "Select o from CustomerOrder o where o.user.id = ?1"),
         @NamedQuery(name = "CustomerOrder.getCustomerOrderByOrderId",
-                query = "Select o from CustomerOrder o where o.orderId = ?1")
+                query = "Select o from CustomerOrder o where o.orderId = ?1"),
+        @NamedQuery(name = "CustomerOrder.deleteCustomerFromCustomerOrderByUserId",
+                query = "Delete from Customer c where c.customerId in " +
+                        "(Select o.customer.customerId from CustomerOrder o where o.user.id =?1)"),
+        @NamedQuery(name = "CustomerOrder.deleteCustomerOrderByUserId",
+                query = "Delete from CustomerOrder o where o.orderId in " +
+                        "(Select o.orderId from CustomerOrder o where o.user.id =?1)")
 })
 public class CustomerOrder implements Serializable {
 

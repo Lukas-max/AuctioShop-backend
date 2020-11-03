@@ -70,6 +70,11 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @DeleteMapping(path = "/product/{id}")
+    public void deleteById(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+
     @PostMapping
     public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductRequest productRequest)
             throws IOException {
@@ -90,14 +95,5 @@ public class ProductController {
 
         Product product = productService.updateProduct(productRequest);
         return ResponseEntity.accepted().body(product);
-    }
-
-    @DeleteMapping(path = "/product/{id}")
-    public void deleteById(@PathVariable Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product with id: " + id);
-
-            productRepository.deleteById(id);
     }
 }
