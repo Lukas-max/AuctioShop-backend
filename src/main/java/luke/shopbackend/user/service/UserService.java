@@ -64,11 +64,17 @@ public class UserService {
         return userOptional.get();
     }
 
-    public void deleteUserAndAllUserDataByUserId(Long id){
+    public User getUserById(Long id){
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Nie znaleziono w bazie użytkownika o id: " + id);
+
+        return userOptional.get();
+    }
+
+    public void deleteUserAndAllUserDataByUserId(Long id){
+        getUserById(id);
 
         orderRepository.deleteCustomerFromCustomerOrderByUserId(id);
         orderRepository.deleteCustomerOrderByUserId(id);
