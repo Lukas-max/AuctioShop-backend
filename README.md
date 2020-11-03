@@ -35,7 +35,7 @@ Shop.token is the secret key for JSON Web Token authentication.
 - REST - providing endpoints for frontend app. 
  * Product categories endpoint  [ GET ]
  * Products endpoint [ GET, DELETE, POST, PUT ]
- * User endpoint. [ GET, POST ]
+ * User endpoint. [ GET, DELETE, POST ]
  * CustomerOrder endpoint [ GET, DELETE, POST ]
 - User registration and login.
 - Global validation of passed data.
@@ -52,6 +52,7 @@ Shop.token is the secret key for JSON Web Token authentication.
 |--------|-----|--------|----------|
 | `GET` | `/api/users` | `Get a page of users` | `ADMIN` | 
 | `GET` | `/api/users/{id}` | `Get a page of orders` | `ADMIN` |
+| `DELETE` | `/api/users/{id}` | `Delete user, users orders and address` | `Admin` |
 | `POST` | `/api/users/register` | `Resgister user with  ROLE_USER` | `ALL` |
 
 ### Product Controller
@@ -101,8 +102,8 @@ The service classes map dto objects to Customer and CustomerOrder class. The num
 Also if we ran out of the items that a client wants to purchase, we send him a ResponseException that we ran out of products.
 
 ### User Controller
-It's mainly for registering new users. The user data validation is on the front end side and here. Before adding a user we check if the user has set id or the username and email are in the database. If so we throw a exception that is visible on the front end side.
-We can also get all users or all customer orders.
+User register, deleting users and fetching user data.
+The user data validation is on the front end side and here. Before adding a user we check if the user has set id or the username and email are in the database. If so we throw a exception that is visible on the front end side.
 
 ### Exception handling
 Localy we use ResponseStatusException, and besides that for validation we have our own custom ResponseEntityExceptionHandler, that overrides handleMethodArgumentNotValid with custom exception message. And OrderNotFound exception when asking for order that does not yet exist.
