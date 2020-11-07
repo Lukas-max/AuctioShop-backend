@@ -11,7 +11,7 @@ public class CustomerOrderRequest {
     @NotNull(message = "Brak danych klienta.")
     private CustomerDto customer;
     @NotNull(message = "Brak koszyka z zakupami.")
-    private CartItemValidateDto[] items;
+    private CartItemValidateDto[] cartItems;
     @Min(value = 1, message = "Niepoprawna cena")
     private BigDecimal totalPrice;
     @Min(value = 1, message = "Niepoprawna ilość przedmiotów w koszyku.")
@@ -28,12 +28,12 @@ public class CustomerOrderRequest {
         this.customer = customer;
     }
 
-    public CartItemValidateDto[] getItems() {
-        return items;
+    public CartItemValidateDto[] getCartItems() {
+        return cartItems;
     }
 
-    public void setItems(CartItemValidateDto[] items) {
-        this.items = items;
+    public void setCartItems(CartItemValidateDto[] cartItems) {
+        this.cartItems = cartItems;
     }
 
     public BigDecimal getTotalPrice() {
@@ -64,7 +64,7 @@ public class CustomerOrderRequest {
     public String toString() {
         return "CustomerOrderRequest{" +
                 "customer=" + customer +
-                ", items=" + Arrays.toString(items) +
+                ", items=" + Arrays.toString(cartItems) +
                 ", totalPrice=" + totalPrice +
                 ", totalQuantity=" + totalQuantity +
                 ", username='" + username + '\'' +

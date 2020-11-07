@@ -1,6 +1,5 @@
 package luke.shopbackend.user;
 
-
 import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.user.service.UserService;
 import luke.shopbackend.user.model.User;

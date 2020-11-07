@@ -58,14 +58,14 @@ class FormatCustomerOrderImplTest {
         assertAll(
                 () -> assertThat(cartItems, not(empty())),
                 () -> assertThat(cartItems, hasSize(2)),
-                () -> assertThat(cartItems.get(0).getProductId(), equalTo(orderRequest.getItems()[0].getProductId())),
-                () -> assertThat(cartItems.get(0).getName(), equalTo(orderRequest.getItems()[0].getName())),
-                () -> assertThat(cartItems.get(0).getQuantity(), equalTo(orderRequest.getItems()[0].getQuantity())),
-                () -> assertThat(cartItems.get(0).getUnitPrice(), equalTo(orderRequest.getItems()[0].getUnitPrice())),
-                () -> assertThat(cartItems.get(1).getProductId(), equalTo(orderRequest.getItems()[1].getProductId())),
-                () -> assertThat(cartItems.get(1).getName(), equalTo(orderRequest.getItems()[1].getName())),
-                () -> assertThat(cartItems.get(1).getQuantity(), equalTo(orderRequest.getItems()[1].getQuantity())),
-                () -> assertThat(cartItems.get(1).getUnitPrice(), equalTo(orderRequest.getItems()[1].getUnitPrice()))
+                () -> assertThat(cartItems.get(0).getProductId(), equalTo(orderRequest.getCartItems()[0].getProductId())),
+                () -> assertThat(cartItems.get(0).getName(), equalTo(orderRequest.getCartItems()[0].getName())),
+                () -> assertThat(cartItems.get(0).getQuantity(), equalTo(orderRequest.getCartItems()[0].getQuantity())),
+                () -> assertThat(cartItems.get(0).getUnitPrice(), equalTo(orderRequest.getCartItems()[0].getUnitPrice())),
+                () -> assertThat(cartItems.get(1).getProductId(), equalTo(orderRequest.getCartItems()[1].getProductId())),
+                () -> assertThat(cartItems.get(1).getName(), equalTo(orderRequest.getCartItems()[1].getName())),
+                () -> assertThat(cartItems.get(1).getQuantity(), equalTo(orderRequest.getCartItems()[1].getQuantity())),
+                () -> assertThat(cartItems.get(1).getUnitPrice(), equalTo(orderRequest.getCartItems()[1].getUnitPrice()))
         );
     }
 
@@ -201,7 +201,7 @@ class FormatCustomerOrderImplTest {
         assertAll(
                 () -> assertThat(order.getTotalPrice(), equalTo(orderRequest.getTotalPrice())),
                 () -> assertThat(order.getTotalQuantity(), equalTo(orderRequest.getTotalQuantity())),
-                () -> assertThat(order.getCartItems().size(), equalTo(orderRequest.getItems().length))
+                () -> assertThat(order.getCartItems().size(), equalTo(orderRequest.getCartItems().length))
         );
     }
 
@@ -245,7 +245,7 @@ class FormatCustomerOrderImplTest {
     private CustomerOrderRequest getCustomerOrderRequest(){
         CustomerOrderRequest request = new CustomerOrderRequest();
         request.setCustomer(getCustomerDto());
-        request.setItems(getCartItemValidateDtoArray());
+        request.setCartItems(getCartItemValidateDtoArray());
         request.setTotalQuantity(3);
         request.setTotalPrice(BigDecimal.valueOf(449.97));
         return request;
@@ -254,7 +254,7 @@ class FormatCustomerOrderImplTest {
     private CustomerOrderRequest getCustomerOrderRequestWithTooManyProductsBought(){
         CustomerOrderRequest request = new CustomerOrderRequest();
         request.setCustomer(getCustomerDto());
-        request.setItems(getCartItemValidateDtoArrayWithToManyProducts());
+        request.setCartItems(getCartItemValidateDtoArrayWithToManyProducts());
         request.setTotalQuantity(30);
         request.setTotalPrice(BigDecimal.valueOf(3749.7));
         return request;

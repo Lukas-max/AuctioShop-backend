@@ -73,6 +73,10 @@ public class UserService {
         return userOptional.get();
     }
 
+    /**
+     *
+     * Deletes User, all orders(CustomerOrder entity) that belong to User and address (Customer entity)
+     */
     public void deleteUserAndAllUserDataByUserId(Long id){
         getUserById(id);
 

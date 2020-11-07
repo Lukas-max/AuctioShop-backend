@@ -8,13 +8,11 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Optional;
 
 
 @RestController
@@ -41,10 +39,7 @@ public class ProductController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
-        return productRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Nie znaleziono produktu o Id: " + id));
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @GetMapping(path = "/getByCategoryId")

@@ -25,7 +25,6 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 //    @Query("SELECT p FROM Product p WHERE upper(p.name) LIKE upper(CONCAT('%',?1,'%'))")
     Page<Product> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
-    @Transactional
     @Modifying
     @Query(name = "Product.saveProductWithoutImage")
     void saveProductWithoutImage(@Param("productId") Long productId,

@@ -30,7 +30,7 @@ public class FormatCustomerOrderImpl implements FormatCustomerOrder {
      */
     public List<CartItem> getCartItems(CustomerOrderRequest orderRequest) {
         List<CartItem> items = new LinkedList<>();
-        Arrays.stream(orderRequest.getItems())
+        Arrays.stream(orderRequest.getCartItems())
                 .forEach(i -> items.add(new CartItem(i)));
 
         return items;
