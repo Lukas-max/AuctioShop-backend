@@ -42,8 +42,9 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrderByOrderId(@PathVariable Long id){
+    public ResponseEntity<?> deleteOrderByOrderId(@PathVariable Long id){
         orderService.deleteCustomerOrderByOrderId(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping

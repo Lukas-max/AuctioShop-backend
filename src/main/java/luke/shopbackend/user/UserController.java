@@ -4,6 +4,7 @@ import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.user.service.UserService;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,8 +49,9 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteUserById(@PathVariable Long id){
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id){
         userService.deleteUserAndAllUserDataByUserId(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/register")
