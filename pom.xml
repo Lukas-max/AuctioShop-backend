@@ -16,12 +16,6 @@
 
     <properties>
         <java.version>11</java.version>
-
-        <Shop.admin.password>${Shop.admin.password}</Shop.admin.password>
-        <Shop.admin.username>${Shop.admin.username}</Shop.admin.username>
-        <Shop.token>${Shop.token}</Shop.token>
-        <spring.datasource.username>${spring.datasource.username}</spring.datasource.username>
-        <spring.datasource.password>${spring.datasource.password}</spring.datasource.password>
     </properties>
 
     <dependencies>

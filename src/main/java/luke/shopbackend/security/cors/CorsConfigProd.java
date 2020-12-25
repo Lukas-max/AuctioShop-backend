@@ -1,6 +1,6 @@
 package luke.shopbackend.security.cors;
 
-import luke.shopbackend.config.DefaultProfile;
+import luke.shopbackend.config.ProdProfile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -12,15 +12,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@DefaultProfile
-public class CorsConfig implements WebMvcConfigurer {
+@ProdProfile
+public class CorsConfigProd implements WebMvcConfigurer {
 
 
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://51.83.135.196", "http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("http://51.83.135.196"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList(
                 "Access-Control-Allow-Headers",
