@@ -2,9 +2,8 @@ package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.product.model.ProductRequest;
-import luke.shopbackend.product.repository.ProductRepository;
 import luke.shopbackend.productCategory.model.ProductCategory;
-import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
+import luke.shopbackend.productCategory.service.ProductCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,14 +29,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
 
-class ProductServiceTest {
+class ProductServiceImplTest {
 
     @Mock
     private ProductCategoryRepository categoryRepository;
     @Mock
     private ProductRepository productRepository;
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productServiceImpl;
 
     @BeforeEach
     public void setupMocks(){
@@ -55,7 +54,7 @@ class ProductServiceTest {
         ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
 
         //when
-        Product product = productService.updateProduct(productRequest);
+        Product product = productServiceImpl.updateProduct(productRequest);
 
         //then
         then(productRepository).should(times(1)).save(productCaptor.capture());
@@ -97,7 +96,7 @@ class ProductServiceTest {
         ArgumentCaptor<ProductCategory> productCategoryCaptor = ArgumentCaptor.forClass(ProductCategory.class);
 
         //when
-        Product product = productService.updateProduct(productRequest);
+        Product product = productServiceImpl.updateProduct(productRequest);
 
         //then
         then(productRepository).should(never()).save(product);
@@ -141,8 +140,8 @@ class ProductServiceTest {
         given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
 
         //when
-        Product product = productService.formatProduct(productRequest);
-        byte[] imageInBytes = productService.getStandardImage();
+        Product product = productServiceImpl.formatProduct(productRequest);
+        byte[] imageInBytes = productServiceImpl.getStandardImage();
 
         //then
         assertAll(
@@ -181,8 +180,8 @@ class ProductServiceTest {
         given(categoryRepository.findById(1L)).willReturn(getGamesCategory());
 
         //when
-        Product product = productService.formatProduct(productRequest);
-        byte[] imageInBytes = productService.getStandardImage();
+        Product product = productServiceImpl.formatProduct(productRequest);
+        byte[] imageInBytes = productServiceImpl.getStandardImage();
 
         //then
         assertAll(
@@ -219,7 +218,7 @@ class ProductServiceTest {
         boolean isImageChanged = false;
 
         //when
-        Product product = productService.formatProductForUpdate(productRequest, isImageChanged);
+        Product product = productServiceImpl.formatProductForUpdate(productRequest, isImageChanged);
 
         //then
         assertAll(
@@ -255,7 +254,7 @@ class ProductServiceTest {
         boolean isImageChanged = true;
 
         //when
-        Product product = productService.formatProductForUpdate(productRequest, isImageChanged);
+        Product product = productServiceImpl.formatProductForUpdate(productRequest, isImageChanged);
 
         //then
         assertAll(

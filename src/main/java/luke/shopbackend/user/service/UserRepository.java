@@ -1,4 +1,4 @@
-package luke.shopbackend.user.repository;
+package luke.shopbackend.user.service;
 
 import luke.shopbackend.user.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;

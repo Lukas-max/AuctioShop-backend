@@ -1,7 +1,7 @@
 package luke.shopbackend.security.user_details;
 
 import luke.shopbackend.user.model.User;
-import luke.shopbackend.user.repository.UserRepository;
+import luke.shopbackend.user.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

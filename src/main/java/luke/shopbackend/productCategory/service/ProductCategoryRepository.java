@@ -1,4 +1,4 @@
-package luke.shopbackend.productCategory.repository;
+package luke.shopbackend.productCategory.service;
 
 import luke.shopbackend.productCategory.model.ProductCategory;
 import org.springframework.data.jpa.repository.Query;

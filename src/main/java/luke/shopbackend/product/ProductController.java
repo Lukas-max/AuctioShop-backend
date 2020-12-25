@@ -1,10 +1,11 @@
 package luke.shopbackend.product;
 
-import luke.shopbackend.product.repository.ProductRepository;
-import luke.shopbackend.product.service.ProductService;
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.product.model.ProductRequest;
-import org.springframework.data.domain.*;
+import luke.shopbackend.product.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,9 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-    private final ProductRepository productRepository;
     private final ProductService productService;
 
-    public ProductController(ProductRepository productRepository,
-                             ProductService productService) {
-        this.productRepository = productRepository;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -32,7 +30,7 @@ public class ProductController {
             @RequestParam(name = "page", defaultValue = "0") int pageNo,
             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
-        Page<Product> products = productRepository.findAll(page);
+        Page<Product> products = productService.findAll(page);
 
         return ResponseEntity.ok().body(products);
     }
@@ -48,8 +46,8 @@ public class ProductController {
             @RequestParam(name = "page", defaultValue = "0") int pageNo,
             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<Product> productsByCategoryId = productRepository
-                .findProductsByProductCategoryId(categoryId, pageable);
+        Page<Product> productsByCategoryId = productService
+                .getProductsByProductCategoryId(categoryId, pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(productsByCategoryId);
     }
@@ -60,7 +58,7 @@ public class ProductController {
              @RequestParam(name = "page", defaultValue = "0") int pageNo,
              @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
-        Page<Product> products = productRepository.findByNameContainsIgnoreCase(name, page);
+        Page<Product> products = productService.getProductsByProductName(name, page);
 
         return ResponseEntity.ok(products);
     }

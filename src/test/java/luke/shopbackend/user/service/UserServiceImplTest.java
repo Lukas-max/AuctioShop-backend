@@ -5,16 +5,12 @@ import luke.shopbackend.user.model.Role;
 
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
-import luke.shopbackend.user.repository.RoleRepository;
-import luke.shopbackend.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,7 +26,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 
-class UserServiceTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -39,7 +35,7 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @BeforeEach
     public void setupMocks(){
@@ -58,7 +54,7 @@ class UserServiceTest {
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
         //when
-        userService.addUser(userRequest);
+        userServiceImpl.addUser(userRequest);
 
         //then
         then(userRepository).should(times(1)).save(userCaptor.capture());
@@ -85,7 +81,7 @@ class UserServiceTest {
         //when
         //then
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> userService.getUserByUsername(username));
+                () -> userServiceImpl.getUserByUsername(username));
 
         assertThat(e.getStatus(), is(HttpStatus.NOT_FOUND));
         assertThat(e.getReason(), equalTo("Nie znaleziono w bazie użytkownika o nazwie: " + username));
@@ -103,7 +99,7 @@ class UserServiceTest {
         //when
         //then
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> userService.validateRegisterData(userRequest));
+                () -> userServiceImpl.validateRegisterData(userRequest));
 
         assertThat(e.getStatus(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(e.getReason(), equalTo("Użytkownik z ustawionym ID nie może być zapisany w bazie."));
@@ -119,7 +115,7 @@ class UserServiceTest {
         //when
         //then
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> userService.validateRegisterData(userRequest));
+                () -> userServiceImpl.validateRegisterData(userRequest));
 
         assertThat(e.getStatus(), is(HttpStatus.BAD_REQUEST));
         assertThat(e.getReason(), equalTo("Użytkownik z takim imieniem już istnieje w bazie."));
@@ -135,7 +131,7 @@ class UserServiceTest {
         //when
         //then
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> userService.validateRegisterData(userRequest));
+                () -> userServiceImpl.validateRegisterData(userRequest));
 
         assertThat(e.getStatus(), is(HttpStatus.BAD_REQUEST));
         assertThat(e.getReason(), equalTo("Taki email już istnieje w bazie"));

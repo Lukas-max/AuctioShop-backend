@@ -1,20 +1,19 @@
 package luke.shopbackend.bootdata;
 
 import luke.shopbackend.product.model.Product;
-import luke.shopbackend.product.repository.ProductRepository;
+import luke.shopbackend.product.service.ProductRepository;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.enums.ShopRole;
-import luke.shopbackend.productCategory.repository.ProductCategoryRepository;
-import luke.shopbackend.user.repository.RoleRepository;
-import luke.shopbackend.user.repository.UserRepository;
+import luke.shopbackend.productCategory.service.ProductCategoryRepository;
+import luke.shopbackend.user.service.RoleRepository;
+import luke.shopbackend.user.service.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.math.BigDecimal;

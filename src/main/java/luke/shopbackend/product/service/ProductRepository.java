@@ -1,4 +1,4 @@
-package luke.shopbackend.product.repository;
+package luke.shopbackend.product.service;
 
 import luke.shopbackend.product.model.Product;
 import luke.shopbackend.productCategory.model.ProductCategory;

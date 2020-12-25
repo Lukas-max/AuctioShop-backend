@@ -4,7 +4,6 @@ import luke.shopbackend.order.model.dto.CustomerOrderRequest;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
-import luke.shopbackend.order.repository.CustomerOrderRepository;
 import luke.shopbackend.user.enums.ShopRole;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
@@ -30,14 +29,14 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 
-class OrderServiceTest {
+class OrderServiceImplTest {
 
     @Mock
     private CustomerOrderRepository orderRepository;
     @Mock
     private FormatCustomerOrderImpl formatCustomerOrder;
     @InjectMocks
-    private OrderService orderService;
+    private OrderServiceImpl orderServiceImpl;
 
     @BeforeEach
     public void setupMocks(){
@@ -57,7 +56,7 @@ class OrderServiceTest {
         //when
         //then
         ResponseStatusException e = assertThrows(ResponseStatusException.class,
-                () -> orderService.addOrder(orderRequest));
+                () -> orderServiceImpl.addOrder(orderRequest));
 
         assertAll(
                 () -> assertThat(e.getStatus(), is(HttpStatus.I_AM_A_TEAPOT)),
@@ -76,7 +75,7 @@ class OrderServiceTest {
         ArgumentCaptor<CustomerOrder> captor = ArgumentCaptor.forClass(CustomerOrder.class);
 
         //then
-        orderService.addOrder(orderRequest);
+        orderServiceImpl.addOrder(orderRequest);
 
         //then
         then(orderRepository).should(times(1)).save(captor.capture());
@@ -97,7 +96,7 @@ class OrderServiceTest {
         ArgumentCaptor<CustomerOrder> captor = ArgumentCaptor.forClass(CustomerOrder.class);
 
         //then
-        orderService.addOrder(orderRequest);
+        orderServiceImpl.addOrder(orderRequest);
 
         //then
         then(orderRepository).should(times(1)).save(captor.capture());

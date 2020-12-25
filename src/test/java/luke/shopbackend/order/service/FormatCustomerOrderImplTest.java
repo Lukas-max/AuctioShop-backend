@@ -7,7 +7,7 @@ import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.product.model.Product;
-import luke.shopbackend.product.repository.ProductRepository;
+import luke.shopbackend.product.service.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

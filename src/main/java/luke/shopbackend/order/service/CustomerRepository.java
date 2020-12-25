@@ -1,4 +1,4 @@
-package luke.shopbackend.order.repository;
+package luke.shopbackend.order.service;
 
 import luke.shopbackend.order.model.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
