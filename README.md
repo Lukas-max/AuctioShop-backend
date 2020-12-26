@@ -20,10 +20,9 @@ Data loading is done by Class implementing CommandLineRunner to postgreSQL datab
 
 ## RUN
 To run this part of the app you need to:
-- [x] Go to security package CorsConfig.java and when you want to run it on Angular set allowed origins to: `http://localhost:4200`, other origin you desire or all: `*`
-- [x] Go to application.properties and set spring.datasource.initialization-mode to always for database colonization with product, role and user data.
+- [x] Go to application.properties and set spring.datasource.initialization-mode to always. It will create your database columns in postgreSQL.
 - [x] In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
-- [x] Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will set up your database with data during application start.
+- [x] Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will load your database with data during application start.
 - [x] When running from a compiler, go to configuration and set Environment variables for:
 Shop.admin.username=HERE;Shop.admin.password=HERE;Shop.token=HERE;spring.datasource.password=HERE;spring.datasource.username=HERE
 or just paste them to command line when creating a maven package.
@@ -51,8 +50,8 @@ Shop.token is the secret key for JSON Web Token authentication.
 | Method | URI | Action | Security |
 |--------|-----|--------|----------|
 | `GET` | `/api/users` | `Get a page of users` | `ADMIN` | 
-| `GET` | `/api/users/{id}` | `Get a page of orders` | `ADMIN` |
-| `DELETE` | `/api/users/{id}` | `Delete user, users orders and address` | `Admin` |
+| `GET` | `/api/users/{id}` | `Get a page of orders` | `ADMIN`, `USER` |
+| `DELETE` | `/api/users/{id}` | `Delete user, users orders and address` | `ADMIN` |
 | `POST` | `/api/users/register` | `Resgister user with  ROLE_USER` | `ALL` |
 
 ### Product Controller
