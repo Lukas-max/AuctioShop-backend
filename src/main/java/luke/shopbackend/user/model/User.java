@@ -6,6 +6,10 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@NamedQueries({
+        @NamedQuery(name = "User.findAllWithoutAdmin",
+                query = "SELECT u FROM User u JOIN u.roles r WHERE NOT r.role = ?1")
+})
 public class User implements Serializable {
 
     @Id

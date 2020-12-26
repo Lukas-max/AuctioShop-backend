@@ -2,6 +2,7 @@ package luke.shopbackend.user.service;
 
 import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.order.service.CustomerOrderRepository;
+import luke.shopbackend.user.enums.ShopRole;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
@@ -33,11 +34,11 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * @return All users in database. Data without password.
+     * @return All users in database not containing ROLE_ADMIN.
      */
     @Override
     public Page<User> getAllUsers(Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
+        Page<User> users = userRepository.findAllWithoutAdmin(ShopRole.ROLE_ADMIN, pageable);
         if (users.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie ma użytkowników w bazie danych");
 
@@ -133,10 +134,11 @@ public class UserServiceImpl implements UserService{
 
     /**
      *
-     * @return  ROLE_USER for every new created User.
+     * @return  ROLE_ADMIN if ShopRole.ROLE_ADMIN is passed. Otherwise return ROLE_USER.
      */
     private Role getUserRole(){
         Optional<Role> optional = roleRepository.findById(2L);
+
         if (optional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not find user roles");
         }

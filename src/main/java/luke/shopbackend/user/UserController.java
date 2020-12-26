@@ -4,7 +4,6 @@ import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.user.model.User;
 import luke.shopbackend.user.model.UserRequest;
 import luke.shopbackend.user.service.UserService;
-import luke.shopbackend.user.service.UserServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

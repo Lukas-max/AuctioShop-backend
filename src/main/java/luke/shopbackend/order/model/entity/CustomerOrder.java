@@ -1,6 +1,5 @@
 package luke.shopbackend.order.model.entity;
 
-import jdk.jfr.Name;
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
 import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.user.model.User;

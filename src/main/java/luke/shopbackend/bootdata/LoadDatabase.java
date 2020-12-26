@@ -172,7 +172,7 @@ public class LoadDatabase implements CommandLineRunner {
         product8.setUnitsInStock(94);
         product8.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product8.setProductCategory(categoryGames);
-        product8.setProductImage(getImage( "fallout2.jpg"));
+        product8.setProductImage(getImage( "fallout2.jpeg"));
         productRepository.save(product8);
 
         Product product9 = new Product();
