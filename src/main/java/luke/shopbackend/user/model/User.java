@@ -7,9 +7,13 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findAllWithoutAdmin",
+        @NamedQuery(
+                name = "User.findAllWithoutAdmin",
                 query = "SELECT u FROM User u JOIN u.roles r WHERE NOT r.role = ?1")
 })
+@NamedEntityGraph(
+        name = "User.fetch.roles",
+        attributeNodes = { @NamedAttributeNode("roles") })
 public class User implements Serializable {
 
     @Id
@@ -26,7 +30,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -40,7 +44,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(UserRequest request){
+    public User(UserRequest request) {
         this.id = request.getId();
         this.username = request.getUsername();
         this.password = request.getPassword();

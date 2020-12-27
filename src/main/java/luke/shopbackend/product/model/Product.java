@@ -1,5 +1,6 @@
 package luke.shopbackend.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import luke.shopbackend.productCategory.model.ProductCategory;
 import org.hibernate.annotations.Type;
 
@@ -62,8 +63,9 @@ public class Product implements Serializable {
     @Column(name = "date_time_updated")
     private Timestamp dateTimeUpdated;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private ProductCategory productCategory;
 
     public Product() {
