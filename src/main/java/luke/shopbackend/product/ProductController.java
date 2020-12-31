@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @GetMapping(path = "/getByCategoryId")
+    @GetMapping(path = "/categoryId")
     public ResponseEntity<Page<Product>> getProductsByCategoryId(
             @RequestParam(name = "categoryId") Long categoryId,
             @RequestParam(name = "page", defaultValue = "0") int pageNo,
@@ -63,7 +63,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @DeleteMapping(path = "/product/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok().build();
