@@ -28,6 +28,9 @@ Shop.admin.username=HERE;Shop.admin.password=HERE;Shop.token=HERE;spring.datasou
 or just paste them to command line when creating a maven package.
 Shop.token is the secret key for JSON Web Token authentication.
 
+## RUN - ONLINE
+The project is now available online on VPS: http://51.83.135.196/
+
 ### Features
 - Loading data to database - products, categories and users (with one admin account).
 - Spring security - basic and JSON Web Token auth (However the active implem. is now JWT auth)
