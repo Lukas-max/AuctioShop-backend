@@ -43,12 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/products/*").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.GET, "/api/order").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PUT).hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/products/*").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/users").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/api/order").hasAuthority("ADMIN")
                 .anyRequest().permitAll();
 
         http.csrf().disable()

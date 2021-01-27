@@ -1,7 +1,6 @@
 package luke.shopbackend.security.filters;
 
 import luke.shopbackend.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String username = jwtUtil.extractUsername(token);
+        String username = jwtUtil.extractSubject(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

@@ -296,11 +296,11 @@ public class LoadDatabase implements CommandLineRunner {
         productRepository.save(product18);
 
         Role adminRole = new Role();
-        adminRole.setRole(ShopRole.ROLE_ADMIN);
+        adminRole.setRole(ShopRole.ADMIN);
         roleRepository.save(adminRole);
 
         Role userRole1 = new Role();
-        userRole1.setRole(ShopRole.ROLE_USER);
+        userRole1.setRole(ShopRole.USER);
         roleRepository.save(userRole1);
 
         User user = new User();

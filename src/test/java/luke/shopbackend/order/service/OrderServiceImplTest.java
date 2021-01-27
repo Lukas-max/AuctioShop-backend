@@ -188,6 +188,6 @@ class OrderServiceImplTest {
     }
 
     private Role getRole(){
-        return new Role(ShopRole.ROLE_USER);
+        return new Role(ShopRole.USER);
     }
 }
