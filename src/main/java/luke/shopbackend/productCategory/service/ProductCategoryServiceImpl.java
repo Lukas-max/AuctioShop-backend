@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService{
@@ -17,7 +17,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     }
 
     @Override
-    public Set<ProductCategory> getCategories() {
+    public List<ProductCategory> getCategories() {
         return productCategoryRepository
                 .getCategories()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE));

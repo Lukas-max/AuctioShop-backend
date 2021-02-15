@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -57,7 +56,7 @@ public class JwtAuthenticationController {
                 );
 
         authenticationManager.authenticate(token);
-        final String jwtToken = jwtUtil.generateToken(user);
+        final String jwtToken = jwtUtil.generateJSONToken(token);
 
         return ResponseEntity.ok(new AuthenticationResponse(
                 jwtToken,

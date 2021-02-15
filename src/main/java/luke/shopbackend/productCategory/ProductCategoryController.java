@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/product_category")
@@ -20,8 +20,8 @@ public class ProductCategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<ProductCategory>> getCategories() {
-        Set<ProductCategory> categories =
+    public ResponseEntity<List<ProductCategory>> getCategories() {
+        List<ProductCategory> categories =
                 productCategoryService.getCategories();
         return ResponseEntity.ok().body(categories);
     }

@@ -3,58 +3,100 @@ package luke.shopbackend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.security.core.userdetails.User;
-
-import luke.shopbackend.user.model.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+//import org.springframework.security.core.userdetails.User;
 
 @Service
 public class JwtUtil {
 
     @Value("${Shop.token}")
     private String SECRET_KEY;
+    private final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
-    public String generateToken(User user) {
-        return createToken(user.getUsername());
+    public String generateJSONToken(Authentication authentication) {
+        Claims claims = generateClaims(authentication);
+        return createToken(authentication, claims);
     }
 
-    //    claims to środkowa częśc tokena
-    private String createToken(String username) {
+    private Claims generateClaims(Authentication authentication){
+        String authorities = getAuthorities(authentication);
+        Claims claims = Jwts.claims();
+        claims.put("authority", authorities);
+        claims.put("credentials", authentication.getCredentials().toString());
+        return claims;
+    }
+
+    private String getAuthorities(Authentication authentication) {
+        return authentication
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+    }
+
+    private String createToken(Authentication authentication, Claims claims) {
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject(authentication.getName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractSubject(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-
     public String extractSubject(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token).getSubject();
     }
 
-    protected Date extractExpirationDate(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public String extractCredentials(String token){
+        return extractClaim(token).get("credentials", String.class);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-        return claimsResolver.apply(claims);
+    public Set<GrantedAuthority> extractAuthorities(String token){
+        String[] scope = extractClaim(token)
+                .get("authority", String.class)
+                .split(",");
+
+        return Arrays.stream(scope)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractExpirationDate(token).before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            return extractClaim(token)
+                    .getExpiration()
+                    .before(new Date());
+
+        }catch (Exception ex){
+            return false;
+        }
+    }
+
+    private Claims extractClaim(String token) {
+        Claims claims = null;
+
+        try{
+            claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+        }catch (Exception ex){
+            log.warn("Login attempt with invalid Json Web token.");
+        }
+        return claims;
     }
 }

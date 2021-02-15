@@ -2,9 +2,9 @@ package luke.shopbackend.productCategory.service;
 
 import luke.shopbackend.productCategory.model.ProductCategory;
 
-import java.util.Set;
+import java.util.List;
 
 public interface ProductCategoryService {
 
-    Set<ProductCategory> getCategories();
+    List<ProductCategory> getCategories();
 }
