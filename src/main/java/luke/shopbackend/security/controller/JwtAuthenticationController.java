@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,20 +49,21 @@ public class JwtAuthenticationController {
         if (!passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword()))
             throw new BadCredentialsException("Hasło albo nazwa użytkownika nie prawidłowe.");
 
-        UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getUsername(),
                         authenticationRequest.getPassword(),
                         authorities
-                );
+        );
 
         authenticationManager.authenticate(token);
         final String jwtToken = jwtUtil.generateJSONToken(token);
+        Date tokenExpiration = jwtUtil.getExpirationDate(jwtToken);
 
         return ResponseEntity.ok(new AuthenticationResponse(
                 jwtToken,
                 user.getId(),
                 user.getUsername(),
+                tokenExpiration,
                 authorities));
     }
 

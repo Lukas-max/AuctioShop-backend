@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService{
         Optional<Role> optional = roleRepository.findById(2L);
 
         if (optional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not find user roles");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Nie można znaleźć ról użytkownika.");
         }
         return optional.get();
     }

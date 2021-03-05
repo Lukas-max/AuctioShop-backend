@@ -51,7 +51,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(authentication.getName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
@@ -83,6 +83,10 @@ public class JwtUtil {
         }catch (Exception ex){
             return false;
         }
+    }
+
+    public Date getExpirationDate(String token) {
+        return extractClaim(token).getExpiration();
     }
 
     private Claims extractClaim(String token) {
