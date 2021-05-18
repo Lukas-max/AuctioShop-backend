@@ -3,7 +3,7 @@
 Project by Łukasz Jankowski.
 
 ### Prerequisites
-- JDK 11
+- Java 11
 - Maven
 - PostgreSQL database
 ### Build in:
@@ -14,16 +14,18 @@ Project by Łukasz Jankowski.
 - Spring Validation
 - JUnit 5, Mockito, Hamcrest
 - IntelliJ IDEA 2020.1 Ultimate Edition
+### Other
+- jjwt 0.9.1
 
 This is the back end of the application. The other part -> [Shop - FrontEnd part!](https://github.com/Lukas-max/shop-frontend).
 Data loading is done by Class implementing CommandLineRunner to postgreSQL database.
 
 ## RUN
 To run this part of the app you need to:
-- [x] Go to application.properties and set spring.datasource.initialization-mode to always. It will create your database columns in postgreSQL.
-- [x] In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
-- [x] Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will load your database with data during application start.
-- [x] When running from a compiler, go to configuration and set Environment variables for:
+- :ballot_box_with_check: Go to application.properties and set spring.datasource.initialization-mode to always. It will create your database columns in postgreSQL.
+- :ballot_box_with_check: In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
+- :ballot_box_with_check: Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will load your database with data during application start.
+- :ballot_box_with_check: When running from a compiler, go to configuration and set Environment variables for:
 Shop.admin.username=HERE;Shop.admin.password=HERE;Shop.token=HERE;spring.datasource.password=HERE;spring.datasource.username=HERE
 or just paste them to command line when creating a maven package.
 Shop.token is the secret key for JSON Web Token authentication.
