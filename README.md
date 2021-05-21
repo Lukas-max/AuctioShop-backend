@@ -25,10 +25,20 @@ To run this part of the app you need to:
 - :ballot_box_with_check: Go to application.properties and set spring.datasource.initialization-mode to always. It will create your database columns in postgreSQL.
 - :ballot_box_with_check: In application.properties set your spring.datasource.url to your databse. `Be aware that schema.sql was written to create tables for postgreSQL`
 - :ballot_box_with_check: Go to bootdata package and uncomment @Component from LoadDatabase.class. LoadDatabase will load your database with data during application start.
-- :ballot_box_with_check: When running from a compiler, go to configuration and set Environment variables for:
-Shop.admin.username=HERE;Shop.admin.password=HERE;Shop.token=HERE;spring.datasource.password=HERE;spring.datasource.username=HERE
-or just paste them to command line when creating a maven package.
-Shop.token is the secret key for JSON Web Token authentication.
+- :ballot_box_with_check: Set other variables in properties shown below. Shop.admin.username and password are the values which admin user on startup will be created
+- :ballot_box_with_check: Shop.token is the secret key for encrypting jwt.
+
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/[ your database name ]?useSSL=false&serverTimezone=UTC
+spring.datasource.username=
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=none
+spring.datasource.initialization-mode=never
+
+Shop.admin.username=
+Shop.admin.password=
+Shop.token=
+```
 
 ## RUN - ONLINE
 The project is now available online on VPS: http://auctioshop.xyz/
