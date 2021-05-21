@@ -31,7 +31,7 @@ or just paste them to command line when creating a maven package.
 Shop.token is the secret key for JSON Web Token authentication.
 
 ## RUN - ONLINE
-The project is now available online on VPS: http://51.83.135.196/
+The project is now available online on VPS: http://auctioshop.xyz/
 
 ### Features
 - Loading data to database - products, categories and users (with one admin account).
