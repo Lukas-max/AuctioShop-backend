@@ -118,17 +118,17 @@ public class UserServiceImpl implements UserService{
      */
     protected void validateRegisterData(UserRequest request) {
         if (request.getId() != null)
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Użytkownik z ustawionym ID nie może być zapisany w bazie.");
 
         Optional<User> optionalUser1 = userRepository.findByUsername(request.getUsername());
         if (optionalUser1.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Użytkownik z takim imieniem już istnieje w bazie.");
 
         Optional<User> optionalUser2 = userRepository.findByEmail(request.getEmail());
         if (optionalUser2.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Taki email już istnieje w bazie");
     }
 

@@ -47,35 +47,13 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return handleExceptionInternal(ex, response, headers, response.getStatus(), request);
     }
 
-   // Second implementation of handleMethodArgumentNotValid. Done and left here for training purpose.
-//    @Override
-//    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-//            MethodArgumentNotValidException ex,
-//            HttpHeaders headers,
-//            HttpStatus status,
-//            WebRequest request) {
-//
-//        List<String> errors = ex.getBindingResult()
-//                .getAllErrors()
-//                .stream()
-//                .map(e -> e.getDefaultMessage())
-//                .collect(Collectors.toList());
-//
-//        Map<String, Object> body = new HashMap<>();
-//        body.put("timestamp", new Timestamp(System.currentTimeMillis()));
-//        body.put("status", status.value());
-//        body.put("validationErrors", errors);
-//
-//        return new ResponseEntity<>(body, headers, status);
-//    }
-
     /**
      *
      * Handles OrderNotFoundException from OrderController.getOrderById(Long id);
      * Now, a user wont see a full stack trace when typing wrong order id on /api/order/{id} ,
      * but an info he will clearly understand.
      */
-    @ExceptionHandler
+    @ExceptionHandler(value = OrderNotFoundException.class)
     public ResponseEntity<ExceptionMessage> handleOrderNotFoundException(OrderNotFoundException ex){
         ExceptionMessage message = new ExceptionMessage();
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));

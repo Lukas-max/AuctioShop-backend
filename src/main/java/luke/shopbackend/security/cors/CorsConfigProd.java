@@ -20,7 +20,7 @@ public class CorsConfigProd implements WebMvcConfigurer {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://51.83.135.196"));
+        configuration.setAllowedOrigins(List.of("http://51.83.135.196", "http://auctioshop.xyz"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList(
                 "Access-Control-Allow-Headers",

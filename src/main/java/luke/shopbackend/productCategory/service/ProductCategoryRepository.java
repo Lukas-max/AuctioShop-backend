@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface ProductCategoryRepository extends PagingAndSortingRepository<ProductCategory, Long> {
 
     @Query("SELECT pc FROM ProductCategory pc")
-    Optional<List<ProductCategory>> getCategories();
+    List<ProductCategory> getCategories();
 }

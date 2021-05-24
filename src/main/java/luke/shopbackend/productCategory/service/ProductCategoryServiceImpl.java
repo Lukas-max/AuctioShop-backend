@@ -18,8 +18,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
 
     @Override
     public List<ProductCategory> getCategories() {
-        return productCategoryRepository
-                .getCategories()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE));
+        return productCategoryRepository.getCategories();
     }
 }

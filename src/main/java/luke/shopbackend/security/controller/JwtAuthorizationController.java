@@ -21,14 +21,14 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @RestController
-public class JwtAuthenticationController {
+public class JwtAuthorizationController {
 
     private final UserServiceImpl userServiceImpl;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-    public JwtAuthenticationController(
+    public JwtAuthorizationController(
             UserServiceImpl userServiceImpl,
             AuthenticationManager authenticationManager,
             JwtUtil jwtUtil,
@@ -55,7 +55,6 @@ public class JwtAuthenticationController {
                         authorities
         );
 
-        authenticationManager.authenticate(token);
         final String jwtToken = jwtUtil.generateJSONToken(token);
         Date tokenExpiration = jwtUtil.getExpirationDate(jwtToken);
 

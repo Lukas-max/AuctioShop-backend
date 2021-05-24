@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-//import org.springframework.security.core.userdetails.User;
-
 @Service
 public class JwtUtil {
 
@@ -74,6 +72,10 @@ public class JwtUtil {
                 .collect(Collectors.toSet());
     }
 
+    public Date getExpirationDate(String token) {
+        return extractClaim(token).getExpiration();
+    }
+
     public boolean isTokenExpired(String token) {
         try {
             return extractClaim(token)
@@ -83,10 +85,6 @@ public class JwtUtil {
         }catch (Exception ex){
             return false;
         }
-    }
-
-    public Date getExpirationDate(String token) {
-        return extractClaim(token).getExpiration();
     }
 
     private Claims extractClaim(String token) {
