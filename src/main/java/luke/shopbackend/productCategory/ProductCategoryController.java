@@ -21,8 +21,7 @@ public class ProductCategoryController {
 
     @GetMapping
     public ResponseEntity<List<ProductCategory>> getCategories() {
-        List<ProductCategory> categories =
-                productCategoryService.getCategories();
+        List<ProductCategory> categories = productCategoryService.getCategories();
         return ResponseEntity.ok().body(categories);
     }
 }

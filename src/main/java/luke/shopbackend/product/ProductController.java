@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -40,9 +40,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @GetMapping(path = "/categoryId")
+    @GetMapping(path = "/category/{categoryId}")
     public ResponseEntity<Page<Product>> getProductsByCategoryId(
-            @RequestParam(name = "categoryId") Long categoryId,
+            @PathVariable(name = "categoryId") Long categoryId,
             @RequestParam(name = "page", defaultValue = "0") int pageNo,
             @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(pageNo, size);
@@ -52,9 +52,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productsByCategoryId);
     }
 
-    @GetMapping(path = "/name")
+    @GetMapping(path = "/name/{keyWord}")
     public ResponseEntity<Page<Product>> getProductsByName
-            (@RequestParam(name = "keyWord") String name,
+            (@PathVariable(name = "keyWord") String name,
              @RequestParam(name = "page", defaultValue = "0") int pageNo,
              @RequestParam(name = "size", defaultValue = "8") int size) {
         Pageable page = PageRequest.of(pageNo, size);
@@ -70,17 +70,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductRequest productRequest)
+    public ResponseEntity<Product> saveProduct(
+            @Valid @RequestBody ProductRequest productRequest,
+            UriComponentsBuilder uriComponentsBuilder)
             throws IOException {
+
         Product product = productService.persistProduct(productRequest);
+        URI uri = uriComponentsBuilder
+                .path("/api/products/{id}")
+                .build(product.getProductId());
 
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(product.getProductId())
-                .toUri();
-
-        return ResponseEntity.created(uri).body(product);
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping

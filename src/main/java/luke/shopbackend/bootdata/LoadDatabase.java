@@ -160,7 +160,7 @@ public class LoadDatabase implements CommandLineRunner {
         product7.setUnitsInStock(54);
         product7.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product7.setProductCategory(categoryGames);
-        product7.setProductImage(getImage( "horizon.jpg"));
+        product7.setProductImage(getImage( "horizon.jpeg"));
         productRepository.save(product7);
 
         Product product8 = new Product();
@@ -172,7 +172,7 @@ public class LoadDatabase implements CommandLineRunner {
         product8.setUnitsInStock(94);
         product8.setDateTimeCreated(new Timestamp(System.currentTimeMillis()));
         product8.setProductCategory(categoryGames);
-        product8.setProductImage(getImage( "fallout2.jpeg"));
+        product8.setProductImage(getImage( "fallout2.jpg"));
         productRepository.save(product8);
 
         Product product9 = new Product();

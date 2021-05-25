@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 public class ProductRequest {
 
     private Long productId;
-    @NotEmpty
+    @NotEmpty(message = "Pole nie może być puste")
     @Size(max = 255, message = "Pole SKU nie może mieć więcej niż 255 znaków")
     private String sku;
-    @NotEmpty
+    @NotEmpty(message = "Pole nie może być puste")
     @Size(max = 255, message = "Pole nazwa produktu nie może mieć więcej niż 255 znaków")
     private String name;
     private String description;

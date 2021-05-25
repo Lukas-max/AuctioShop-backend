@@ -1,7 +1,6 @@
 package luke.shopbackend.security;
 
 import luke.shopbackend.security.filters.JwtRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,10 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.PUT).hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/products/*").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/users").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PATCH).hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/products").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/users", "/api/order", "/api/order/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers(HttpMethod.GET, "/api/order").hasAuthority("ADMIN")
                 .anyRequest().permitAll();
 
         http.csrf().disable()

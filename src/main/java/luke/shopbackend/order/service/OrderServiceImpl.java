@@ -7,7 +7,7 @@ import luke.shopbackend.order.model.embeddable.CartItem;
 import luke.shopbackend.order.model.entity.Customer;
 import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.user.model.User;
-import luke.shopbackend.user.service.UserServiceImpl;
+import luke.shopbackend.user.service.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,19 +18,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final CustomerOrderRepository customerOrderRepository;
     private final FormatCustomerOrder format;
-    private final UserServiceImpl userServiceImpl;
+    private final UserRepository userRepository;
 
 
     public OrderServiceImpl(
             CustomerOrderRepository customerOrderRepository,
-            FormatCustomerOrder formatCustomerOrder,
-            UserServiceImpl userServiceImpl) {
+            FormatCustomerOrder formatCustomerOrder, UserRepository userRepository) {
         this.customerOrderRepository = customerOrderRepository;
         this.format = formatCustomerOrder;
-        this.userServiceImpl = userServiceImpl;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -55,7 +54,7 @@ public class OrderServiceImpl implements OrderService{
      * Calls out OrderService().getOrder(Long id) to check if the order exists, then deletes the CustomerOrder.
      */
     @Override
-    public void deleteCustomerOrderByOrderId(Long id){
+    public void deleteCustomerOrderByOrderId(Long id) {
         CustomerOrder order = getOrder(id);
         customerOrderRepository.delete(order);
     }
@@ -91,15 +90,18 @@ public class OrderServiceImpl implements OrderService{
     /**
      * Saves order of unregistered user.
      */
-    protected CustomerOrder saveOrderForeignUser(CustomerOrder customerOrder){
+    protected CustomerOrder saveOrderForeignUser(CustomerOrder customerOrder) {
         return customerOrderRepository.save(customerOrder);
     }
 
     /**
      * Saves order of registered user.
      */
-    protected CustomerOrder saveOrderRegisteredUser(CustomerOrder customerOrder, String username){
-        User user = userServiceImpl.getUserByUsername(username);
+    protected CustomerOrder saveOrderRegisteredUser(CustomerOrder customerOrder, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Nie znaleziono w bazie użytkownika o nazwie: " + username));
+
         customerOrder.setUser(user);
         return customerOrderRepository.save(customerOrder);
     }
