@@ -1,9 +1,9 @@
 package luke.shopbackend.order;
 
 import luke.shopbackend.order.model.dto.CustomerOrderRequest;
-import luke.shopbackend.order.model.entity.CustomerOrder;
 import luke.shopbackend.order.service.OrderService;
 import luke.shopbackend.product.ProductTestUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,13 +18,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,17 +69,34 @@ class OrderControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(authorities = "USER")
-    void getOrderByIdUSER() throws Exception {
-        mockMvc.perform(get("/api/order/10"))
-                .andExpect(status().isForbidden());
+    @DisplayName("Should be status ok when username the same as the order owner username")
+    @WithMockUser(username = "Wojtek",authorities = "USER")
+    void getOrderByOrderIdOwnerUser() throws Exception {
+        Long orderId = 1L;
+        given(orderService.getOrder(orderId)).willReturn(OrderTestUtils.getCustomerOrderOne());
 
-        then(orderService).should(times(0)).getOrder(10L);
+        mockMvc.perform(get("/api/order/1"))
+                .andExpect(status().isOk());
+
+        then(orderService).should(times(1)).getOrder(orderId);
+    }
+
+    @Test
+    @DisplayName("Should be status forbidden when username not the same as the order owner username")
+    @WithMockUser(username = "Wojtek",authorities = "USER")
+    void getOrderByOrderIdForeignUser() throws Exception {
+        Long orderId = 1L;
+        given(orderService.getOrder(orderId)).willReturn(OrderTestUtils.getCustomerOrderOne());
+
+        mockMvc.perform(get("/api/order/1"))
+                .andExpect(status().isOk());
+
+        then(orderService).should(times(1)).getOrder(orderId);
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void getOrderByIdADMIN() throws Exception {
+    void getOrderByOrderIdADMIN() throws Exception {
         Long orderId = 1L;
         given(orderService.getOrder(orderId)).willReturn(OrderTestUtils.getCustomerOrderOne());
 
@@ -133,23 +148,3 @@ class OrderControllerIntegrationTest {
         then(orderService).should(times(1)).addOrder(any(CustomerOrderRequest.class));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

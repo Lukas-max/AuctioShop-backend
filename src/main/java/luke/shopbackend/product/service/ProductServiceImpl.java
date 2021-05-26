@@ -42,9 +42,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Page<Product> getProductsByProductCategoryId(Long categoryId, Pageable pageable) {
-        return productRepository.findProductsByProductCategoryId(categoryId, pageable)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Nie znaleziono produktów o wskazanej kategorii"));
+        return productRepository.findProductsByProductCategoryId(categoryId, pageable);
     }
 
     @Override
@@ -80,7 +78,7 @@ public class ProductServiceImpl implements ProductService{
         if (isImageChanged){
             productRepository.save(product);
         }else{
-            productRepository.saveProductWithoutImage(
+            productRepository.updateProductWithoutImage(
                     product.getProductId(),
                     product.getSku(),
                     product.getName(),

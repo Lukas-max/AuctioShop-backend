@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "product")
 @NamedQueries({
-        @NamedQuery(name = "Product.saveProductWithoutImage",
+        @NamedQuery(name = "Product.updateProductWithoutImage",
                 query = "UPDATE Product p " +
                         "SET p.sku = :sku, p.name = :name, " +
                         "p.description = :description, " +

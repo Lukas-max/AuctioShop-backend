@@ -3,6 +3,7 @@ package luke.shopbackend.user;
 import luke.shopbackend.user.enums.ShopRole;
 import luke.shopbackend.user.model.Role;
 import luke.shopbackend.user.model.User;
+import luke.shopbackend.user.model.UserRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -41,5 +42,13 @@ public interface UserTestUtils {
         Role userRole1 = new Role();
         userRole1.setRole(ShopRole.USER);
         return userRole1;
+    }
+
+    static UserRequest getUserRequest() {
+        UserRequest request = new UserRequest();
+        request.setUsername("jacek");
+        request.setPassword("JegoHaslo");
+        request.setEmail("innyemail@gmail.com");
+        return request;
     }
 }

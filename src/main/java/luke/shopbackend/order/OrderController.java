@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,6 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PostAuthorize("hasAuthority('ADMIN') or returnObject.body.user.username == authentication.name")
     public ResponseEntity<CustomerOrder> getOrderByOrderId(@PathVariable Long id){
         CustomerOrder order = orderService.getOrder(id);
         return ResponseEntity.ok().body(order);

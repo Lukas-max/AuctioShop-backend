@@ -81,4 +81,10 @@ public interface ProductTestUtils {
         categoryGames.setCategoryName("Gry");
         return categoryGames;
     }
+
+    static ProductCategory getCategoryTwo() {
+        ProductCategory categoryElectronics = new ProductCategory();
+        categoryElectronics.setCategoryName("Elektronika");
+        return categoryElectronics;
+    }
 }

@@ -21,21 +21,21 @@ import java.util.Optional;
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.productCategory.productCategoryId = ?1")
-    Optional<Page<Product>> findProductsByProductCategoryId(Long categoryId, Pageable pageable);
+    Page<Product> findProductsByProductCategoryId(Long categoryId, Pageable pageable);
 
 //    @Query("SELECT p FROM Product p WHERE upper(p.name) LIKE upper(CONCAT('%',?1,'%'))")
     Page<Product> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
     @Modifying
-    @Query(name = "Product.saveProductWithoutImage")
-    void saveProductWithoutImage(@Param("productId") Long productId,
-                                 @Param("sku") String sku,
-                                 @Param("name") String name,
-                                 @Param("description") String description,
-                                 @Param("unitPrice") BigDecimal unitPrice,
-                                 @Param("active") boolean active,
-                                 @Param("unitsInStock") int unitsInStock,
-                                 @Param("dateTimeCreated") Timestamp dateTimeCreated,
-                                 @Param("dateTimeUpdated") Timestamp dateTimeUpdated,
-                                 @Param("productCategory") ProductCategory productCategory);
+    @Query(name = "Product.updateProductWithoutImage")
+    void updateProductWithoutImage(@Param("productId") Long productId,
+                                   @Param("sku") String sku,
+                                   @Param("name") String name,
+                                   @Param("description") String description,
+                                   @Param("unitPrice") BigDecimal unitPrice,
+                                   @Param("active") boolean active,
+                                   @Param("unitsInStock") int unitsInStock,
+                                   @Param("dateTimeCreated") Timestamp dateTimeCreated,
+                                   @Param("dateTimeUpdated") Timestamp dateTimeUpdated,
+                                   @Param("productCategory") ProductCategory productCategory);
 }

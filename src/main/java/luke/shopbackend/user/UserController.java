@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -53,14 +53,15 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserRequest userRequest) {
-        User savedUser = userService.addUser(userRequest);
+    public ResponseEntity<?> register(
+            @Valid @RequestBody UserRequest userRequest,
+            UriComponentsBuilder uriComponentsBuilder) {
 
-        URI locationUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedUser.getId())
-                .toUri();
+        User savedUser = userService.addUser(userRequest);
+        URI locationUri = uriComponentsBuilder
+                .path("/api/users/{id}")
+                .build(savedUser.getId());
+
         return ResponseEntity.created(locationUri).body(savedUser);
     }
 }

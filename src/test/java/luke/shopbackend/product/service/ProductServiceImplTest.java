@@ -116,7 +116,7 @@ class ProductServiceImplTest {
         Long userId = 1L;
         Pageable pageable = PageRequest.of(0, 2);
         given(productRepository.findProductsByProductCategoryId(userId, pageable))
-                .willReturn(Optional.of(new PageImpl<>(List.of(getProductOne(), getProductTwo()))));
+                .willReturn(new PageImpl<>(List.of(getProductOne(), getProductTwo())));
 
         //when
         Page<Product> page = productServiceImpl.getProductsByProductCategoryId(userId, pageable);
@@ -131,23 +131,6 @@ class ProductServiceImplTest {
                 () -> assertThat(page.get().findFirst().get().getUnitsInStock(), is(5)),
                 () -> assertThat(page.get().findFirst().get().getUnitPrice(), is(new BigDecimal("49.99")))
         );
-    }
-
-    @Test
-    void getProductsByProductCategoryIdShouldThrowExceptionWhenNoProductFound() {
-        //given
-        Long userId = 1L;
-        Pageable pageable = PageRequest.of(0, 2);
-        given(productRepository.findProductsByProductCategoryId(userId, pageable))
-                .willReturn(Optional.empty());
-
-        //when
-        //then
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
-                () -> productServiceImpl.getProductsByProductCategoryId(userId, pageable));
-
-        assertThat(ex.getStatus(), is(HttpStatus.NOT_FOUND));
-        assertThat(ex.getReason(), is("Nie znaleziono produktów o wskazanej kategorii"));
     }
 
     @Test
@@ -282,7 +265,7 @@ class ProductServiceImplTest {
 
         //then
         then(productRepository).should(never()).save(product);
-        then(productRepository).should(times(1)).saveProductWithoutImage(
+        then(productRepository).should(times(1)).updateProductWithoutImage(
                 productIdCaptor.capture(),
                 skuCaptor.capture(),
                 nameCaptor.capture(),

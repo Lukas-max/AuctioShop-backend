@@ -24,17 +24,14 @@ import java.util.stream.Collectors;
 public class JwtAuthorizationController {
 
     private final UserServiceImpl userServiceImpl;
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
     public JwtAuthorizationController(
             UserServiceImpl userServiceImpl,
-            AuthenticationManager authenticationManager,
             JwtUtil jwtUtil,
             PasswordEncoder passwordEncoder) {
         this.userServiceImpl = userServiceImpl;
-        this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
     }
