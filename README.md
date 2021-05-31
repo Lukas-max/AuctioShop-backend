@@ -100,6 +100,9 @@ size: 8
 ## More info
 More documentation is in the code.
 
+## Tests
+Provided unit tests for services. Integration tests for controllers with security testing of endpoints. And one integration test of ProductRepository, written with TestContainers for postgreSql. No auto configuration. No H2 database testing.
+
 ### Product Controller
 Mostly it does just what the table above says. Just when posting new product or updating it we validate the ProductRequest and then using the service we map it to Product class 
 and persist it. When adding a product without image the application will set a standard 404 not found image. If an image is sent, it's sent in base64 data. Using new FileReader().readAsDataURL. So we split the String at the ','  and decode the second part.
