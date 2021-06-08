@@ -16,6 +16,8 @@ Project by Łukasz Jankowski.
 - IntelliJ IDEA 2020.1 Ultimate Edition
 ### Other
 - jjwt 0.9.1
+- FlywayDb
+- Test containers for postgreSql
 
 This is the back end of the application. The other part -> [Shop - FrontEnd part!](https://github.com/Lukas-max/shop-frontend).
 Data loading is done by Class implementing CommandLineRunner to postgreSQL database.
@@ -103,6 +105,47 @@ More documentation is in the code.
 ## Tests
 Provided unit tests for services. Integration tests for controllers with security testing of endpoints. And one integration test of ProductRepository, written with TestContainers for postgreSql. No auto configuration. No H2 database testing.
 
+```java
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void getAllADMIN() throws Exception {
+        Pageable pageable = PageRequest.of(0, 10);
+        given(orderService.getAllPageable(pageable))
+                .willReturn(OrderTestUtils.getPageOfOrders());
+
+        mockMvc.perform(get("/api/order?page=0&size=10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.size()", is(2)))
+                .andExpect(jsonPath("$.content[0].cartItems[0].name", is("God of War 4")))
+                .andExpect(jsonPath("$.content[0].totalPrice", is(49.99)))
+                .andExpect(jsonPath("$.content[0].user.username", is("Wojtek")))
+                .andExpect(jsonPath("$.content[0].customer.lastName", is("Czarek")));
+
+        then(orderService).should(times(1)).getAllPageable(pageable);
+    }
+ ```  
+ Repository testing in a container:  
+ ```java
+ @DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class ProductRepositoryTest {
+
+    @Container
+    static PostgreSQLContainer database = new PostgreSQLContainer("postgres:11")
+            .withDatabaseName("spring")
+            .withPassword("spring")
+            .withUsername("spring");
+
+    @DynamicPropertySource
+    static void getSourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", database::getJdbcUrl);
+        registry.add("spring.datasource.username", database::getUsername);
+        registry.add("spring.datasource.password", database::getPassword);
+    }
+ ```
+
+## Controllers
 ### Product Controller
 Mostly it does just what the table above says. Just when posting new product or updating it we validate the ProductRequest and then using the service we map it to Product class 
 and persist it. When adding a product without image the application will set a standard 404 not found image. If an image is sent, it's sent in base64 data. Using new FileReader().readAsDataURL. So we split the String at the ','  and decode the second part.
